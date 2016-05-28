@@ -142,7 +142,7 @@ public abstract class ResourceBundleResourceI18nConcern extends AbstractResource
 	 */
 	@Override
 	public Resources getResources(final Class<?> contextClass) throws ResourceConfigurationException {
-		final Map<Class<?>, ResourceBundle> resourceBundles = getResourceBundles(contextClass, Rincl.getLocale());
+		final Map<Class<?>, ResourceBundle> resourceBundles = getResourceBundles(contextClass, Rincl.getLocale(Locale.Category.DISPLAY));
 		return resourceBundles.entrySet().stream().findAny()
 				//Convert one of the resource bundles to Resources. TODO improve to convert all of them in a hierarchy
 				//Use the current reference class when creating the resource bundle, TODO verify
