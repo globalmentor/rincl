@@ -19,6 +19,7 @@ package io.rincl;
 import static com.globalmentor.java.Objects.*;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.annotation.*;
@@ -49,7 +50,7 @@ public abstract class BaseResources extends AbstractResources {
 			if(arguments.length > 0) { //if there are arguments, format the string
 				//TODO improve source of MessageFormat; maybe use ThreadLocal
 				//TODO switch to using ICU4J
-				string = Optional.of(new MessageFormat(string.get(), Rincl.getLocale()).format(arguments));
+				string = Optional.of(new MessageFormat(string.get(), Rincl.getLocale(Locale.Category.FORMAT)).format(arguments));
 			}
 		} else { //if there is no string, delegate to the parent resources
 			string = getParentResources().flatMap(resources -> resources.getOptionalString(key));

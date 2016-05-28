@@ -16,7 +16,7 @@
 
 package io.rincl;
 
-import java.util.Locale;
+import java.util.*;
 
 import javax.annotation.*;
 
@@ -39,13 +39,6 @@ import io.csar.*;
  * @see Csar
  */
 public class Rincl {
-
-	//TODO finish to first look up from Csar
-	//TODO implement setLocale(Locale) using Csar
-	public static Locale getLocale() {
-		//TODO see MessageFormat Locale lookup by category
-		return Locale.getDefault(); //TODO fix
-	}
 
 	/**
 	 * Returns the default resource i18n concern.
@@ -74,6 +67,95 @@ public class Rincl {
 	 */
 	public static ResourceI18nConcern getResourceI18nConcern() {
 		return Csar.getConcern(ResourceI18nConcern.class);
+	}
+
+	/**
+	 * Retrieves the configured locale for the given category in the current context.
+	 * <p>
+	 * If no category has been configured for the concern context, or there is no configured {@link ResourceI18nConcern}, this method delegates to
+	 * {@link Locale#getDefault(Locale.Category)}.
+	 * </p>
+	 * <p>
+	 * This method may safely be used without configuring Rincl.
+	 * </p>
+	 * @param category The category of locale to return.
+	 * @throws NullPointerException if the given category is <code>null</code>.
+	 * @return The the configured locale for the given category.
+	 * @see #getResourceI18nConcern()
+	 * @see ResourceI18nConcern#getLocale(Locale.Category)
+	 * @see Locale#getDefault(Locale.Category)
+	 */
+	public static Locale getLocale(@Nonnull Locale.Category category) {
+		try {
+			return getResourceI18nConcern().getLocale(category);
+		} catch(final ConcernNotFoundException concernNotFoundException) {
+			return Locale.getDefault(category);
+		}
+	}
+
+	/**
+	 * Configures the locale for the current context for the given locale category. Future calls to {@link #getLocale(Locale.Category)} will return the value set
+	 * here.
+	 * <p>
+	 * If the current context {@link ResourceI18nConcern} is the default, or there is no configured {@link ResourceI18nConcern}, this method updates the JVM
+	 * default category using {@link Locale#setDefault(Locale.Category, Locale)}.
+	 * </p>
+	 * <p>
+	 * This method may safely be used without configuring Rincl.
+	 * </p>
+	 * @param category The category for which the locale should be set.
+	 * @param locale The new locale value.
+	 * @throws SecurityException if a security manager exists and its {@link SecurityManager#checkPermission(java.security.Permission)} method doesn't allow the
+	 *           operation.
+	 * @throws NullPointerException if the given category and/or new locale is <code>null</code>.
+	 * @see SecurityManager#checkPermission(java.security.Permission)
+	 * @see PropertyPermission
+	 * @see Locale#setDefault(Locale.Category, Locale)
+	 * @see #getLocale(Locale.Category)
+	 * 
+	 */
+	public static void setLocale(@Nonnull Locale.Category category, @Nonnull Locale locale) {
+		boolean setDefault = false; //whether we should also update the JVM default locale
+		try {
+			final ResourceI18nConcern resourceI18nConcern = getResourceI18nConcern();
+			resourceI18nConcern.setLocale(category, locale); //set the context locale
+			//if the context concern is that registered as the default, update the JVM default locale as well
+			setDefault = resourceI18nConcern == getDefaultResourceI18nConcern();
+		} catch(final ConcernNotFoundException concernNotFoundException) {
+			setDefault = true; //if Rincl isn't configured, updating the JVM default locale is all we can do
+		}
+		if(setDefault) {
+			Locale.setDefault(category, locale);
+		}
+	}
+
+	/**
+	 * Configures the locale for the current context for all locale categories. Future calls to {@link #getLocale(Locale.Category)} will return the value set
+	 * here.
+	 * <p>
+	 * If the current context {@link ResourceI18nConcern} is the default, or there is no configured {@link ResourceI18nConcern}, this method updates the JVM
+	 * default category using {@link Locale#setDefault(Locale.Category, Locale)}.
+	 * </p>
+	 * <p>
+	 * This is a convenience method to set all locale categories.
+	 * </p>
+	 * <p>
+	 * This method may safely be used without configuring Rincl.
+	 * </p>
+	 * @param locale The new locale value.
+	 * @throws SecurityException if a security manager exists and its {@link SecurityManager#checkPermission(java.security.Permission)} method doesn't allow the
+	 *           operation.
+	 * @throws NullPointerException if the given category and/or new locale is <code>null</code>.
+	 * @see SecurityManager#checkPermission(java.security.Permission)
+	 * @see PropertyPermission
+	 * @see Locale#setDefault(Locale.Category, Locale)
+	 * @see #getLocale(Locale.Category)
+	 * 
+	 */
+	public static void setLocale(@Nonnull Locale locale) {
+		for(final Locale.Category category : Locale.Category.values()) {
+			setLocale(category, locale);
+		}
 	}
 
 }

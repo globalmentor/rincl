@@ -16,7 +16,7 @@
 
 package io.rincl;
 
-import java.util.Optional;
+import java.util.*;
 
 import javax.annotation.*;
 
@@ -25,6 +25,30 @@ import javax.annotation.*;
  * @author Garret Wilson
  */
 public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern {
+
+	@SuppressWarnings("unchecked")
+	private final Optional<Locale>[] locales = new Optional[Locale.Category.values().length];
+
+	@Override
+	public Locale getLocale(@Nonnull Locale.Category category) {
+		return locales[category.ordinal()].orElse(Locale.getDefault(category));
+	}
+
+	/**
+	 * Configures the locale for this concern instance for the given locale category. Future calls to {@link #getLocale(Locale.Category)} will return the value
+	 * set here.
+	 * <p>
+	 * This method does not modify the default JVM locale.
+	 * </p>
+	 * @param category The category for which the locale should be set..
+	 * @param locale The new locale value.
+	 * @throws NullPointerException if the given category and/or new locale is <code>null</code>.
+	 * @see #getLocale(Locale.Category)
+	 */
+	@Override
+	public void setLocale(@Nonnull Locale.Category category, @Nonnull Locale locale) {
+		locales[category.ordinal()] = Optional.of(locale);
+	}
 
 	/**
 	 * Retrieves parent resources for the given context.
