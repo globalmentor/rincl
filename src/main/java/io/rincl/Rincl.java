@@ -98,7 +98,7 @@ public class Rincl {
 	 * here.
 	 * <p>
 	 * If the current context {@link ResourceI18nConcern} is the default, or there is no configured {@link ResourceI18nConcern}, this method updates the JVM
-	 * default category using {@link Locale#setDefault(Locale.Category, Locale)}.
+	 * default locale for the category using {@link Locale#setDefault(Locale.Category, Locale)}.
 	 * </p>
 	 * <p>
 	 * This method may safely be used without configuring Rincl.
@@ -115,14 +115,17 @@ public class Rincl {
 	 * 
 	 */
 	public static void setLocale(@Nonnull Locale.Category category, @Nonnull Locale locale) {
+		ResourceI18nConcern resourceI18nConcern = null;
 		boolean setDefault = false; //whether we should also update the JVM default locale
 		try {
-			final ResourceI18nConcern resourceI18nConcern = getResourceI18nConcern();
-			resourceI18nConcern.setLocale(category, locale); //set the context locale
+			resourceI18nConcern = getResourceI18nConcern();
 			//if the context concern is that registered as the default, update the JVM default locale as well
 			setDefault = resourceI18nConcern == getDefaultResourceI18nConcern();
 		} catch(final ConcernNotFoundException concernNotFoundException) {
 			setDefault = true; //if Rincl isn't configured, updating the JVM default locale is all we can do
+		}
+		if(resourceI18nConcern != null) {
+			resourceI18nConcern.setLocale(category, locale); //set the context locale
 		}
 		if(setDefault) {
 			Locale.setDefault(category, locale);
@@ -134,10 +137,7 @@ public class Rincl {
 	 * here.
 	 * <p>
 	 * If the current context {@link ResourceI18nConcern} is the default, or there is no configured {@link ResourceI18nConcern}, this method updates the JVM
-	 * default category using {@link Locale#setDefault(Locale.Category, Locale)}.
-	 * </p>
-	 * <p>
-	 * This is a convenience method to set all locale categories.
+	 * default locale using {@link Locale#setDefault(Locale)}.
 	 * </p>
 	 * <p>
 	 * This method may safely be used without configuring Rincl.
@@ -148,13 +148,25 @@ public class Rincl {
 	 * @throws NullPointerException if the given category and/or new locale is <code>null</code>.
 	 * @see SecurityManager#checkPermission(java.security.Permission)
 	 * @see PropertyPermission
-	 * @see Locale#setDefault(Locale.Category, Locale)
+	 * @see Locale#setDefault(Locale)
 	 * @see #getLocale(Locale.Category)
 	 * 
 	 */
 	public static void setLocale(@Nonnull Locale locale) {
-		for(final Locale.Category category : Locale.Category.values()) {
-			setLocale(category, locale);
+		ResourceI18nConcern resourceI18nConcern = null;
+		boolean setDefault = false; //whether we should also update the JVM default locale
+		try {
+			resourceI18nConcern = getResourceI18nConcern();
+			//if the context concern is that registered as the default, update the JVM default locale as well
+			setDefault = resourceI18nConcern == getDefaultResourceI18nConcern();
+		} catch(final ConcernNotFoundException concernNotFoundException) {
+			setDefault = true; //if Rincl isn't configured, updating the JVM default locale is all we can do
+		}
+		if(resourceI18nConcern != null) {
+			resourceI18nConcern.setLocale(locale); //set the context locale
+		}
+		if(setDefault) {
+			Locale.setDefault(locale);
 		}
 	}
 
