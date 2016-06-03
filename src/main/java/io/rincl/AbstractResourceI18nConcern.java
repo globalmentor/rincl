@@ -22,6 +22,9 @@ import javax.annotation.*;
 
 /**
  * Abstract base class to facilitate implementing the concern for internationalization of resources.
+ * <p>
+ * This class provides an implementation of {@link #getLocale(Locale.Category)} and {@link #setLocale(Locale)}.
+ * </p>
  * @author Garret Wilson
  */
 public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern {
@@ -32,6 +35,11 @@ public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern
 	@Override
 	public Locale getLocale(@Nonnull Locale.Category category) {
 		return locales[category.ordinal()].orElse(Locale.getDefault(category));
+	}
+
+	/** Default constructor. */
+	public AbstractResourceI18nConcern() {
+		Arrays.fill(locales, Optional.empty());
 	}
 
 	/**
