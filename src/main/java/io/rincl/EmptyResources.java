@@ -59,6 +59,11 @@ public final class EmptyResources extends AbstractResources {
 	}
 
 	@Override
+	public boolean hasResource(String key) throws ResourceConfigurationException {
+		return false;
+	}
+
+	@Override
 	public Optional<Boolean> getOptionalBoolean(String key) throws ResourceConfigurationException {
 		return getParentResources().flatMap(resources -> resources.getOptionalBoolean(key));
 	}

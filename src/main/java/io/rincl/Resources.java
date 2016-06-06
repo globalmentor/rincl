@@ -56,6 +56,18 @@ public interface Resources {
 				getContextClass().getName(), checkInstance(key)));
 	}
 
+	/**
+	 * Determines whether a resource of some type exists for the given resource key.
+	 * <p>
+	 * This method searches the parent resources hierarchy if no resource is available in this instance.
+	 * </p>
+	 * @param key The resource key.
+	 * @return <code>true</code> if a resource of type type could be retrieved from these resources using the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public boolean hasResource(@Nonnull final String key) throws ResourceConfigurationException;
+
 	//boolean
 
 	/**

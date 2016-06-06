@@ -27,7 +27,7 @@ import javax.annotation.*;
 /**
  * Base i18n resources implementation providing common base functionality.
  * <p>
- * An implementing subclass must override {@link #getStringImpl(String)} for local raw string retrieval.
+ * An implementing subclass must override {@link #getOptionalStringImpl(String)} for local raw string retrieval.
  * </p>
  * @author Garret Wilson
  */
@@ -45,7 +45,7 @@ public abstract class BaseResources extends AbstractResources {
 
 	@Override
 	public final Optional<String> getOptionalString(final String key, final String... arguments) throws ResourceConfigurationException {
-		Optional<String> string = getDereferencedString(key); //get the dereferenced string
+		Optional<String> string = getOptionalDereferencedString(key); //get the dereferenced string
 		if(string.isPresent()) { //if there is a string
 			if(arguments.length > 0) { //if there are arguments, format the string
 				//TODO improve source of MessageFormat; maybe use ThreadLocal
@@ -64,15 +64,15 @@ public abstract class BaseResources extends AbstractResources {
 	 * This method must not fall back to parent resources; only local strings must be returned.
 	 * </p>
 	 * <p>
-	 * This implementation delegates to {@link #getStringImpl(String)}.
+	 * This implementation delegates to {@link #getOptionalStringImpl(String)}.
 	 * </p>
 	 * @param key The resource key.
 	 * @return The value of the resource associated with the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
 	 * @throws ResourceConfigurationException if an expression is not in the correct format, or if no resource is associated with a key in an expression.
 	 */
-	protected final Optional<String> getDereferencedString(final String key) throws ResourceConfigurationException {
-		return getStringImpl(key).map(this::dereferenceString); //get the string resource and evaluate references before passing it back
+	protected final Optional<String> getOptionalDereferencedString(final String key) throws ResourceConfigurationException {
+		return getOptionalStringImpl(key).map(this::dereferenceString); //get the string resource and evaluate references before passing it back
 	}
 
 	/**
@@ -89,7 +89,7 @@ public abstract class BaseResources extends AbstractResources {
 	 * @throws NullPointerException if the given key is <code>null</code>.
 	 * @throws ResourceConfigurationException if an expression is not in the correct format, or if no resource is associated with a key in an expression.
 	 */
-	protected abstract Optional<String> getStringImpl(final String key) throws ResourceConfigurationException;
+	protected abstract Optional<String> getOptionalStringImpl(final String key) throws ResourceConfigurationException;
 
 	/**
 	 * Evaluates and replaces any references in the given string.

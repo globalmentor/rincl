@@ -23,7 +23,7 @@ import javax.annotation.*;
 /**
  * Abstract implementation of access to i18n resources for which the underlying storage is based on strings.
  * <p>
- * This class retrieves all resources as stored in string format based upon {@link #getStringImpl(String)}.
+ * This class retrieves all resources as stored in string format based upon {@link #getOptionalStringImpl(String)}.
  * </p>
  * @author Garret Wilson
  */
@@ -42,12 +42,23 @@ public abstract class AbstractStringResources extends BaseResources {
 	/**
 	 * {@inheritDoc}
 	 * <p>
+	 * This implementation delegates to {@link #getOptionalStringImpl(String)}.
+	 * </p>
+	 */
+	@Override
+	public boolean hasResource(@Nonnull final String key) throws ResourceConfigurationException {
+		return getOptionalStringImpl(key).isPresent();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
 	 * This implementation parses the value using {@link Boolean#valueOf(String)}.
 	 * </p>
 	 */
 	@Override
 	public Optional<Boolean> getOptionalBoolean(final String key) throws ResourceConfigurationException {
-		return getDereferencedString(key).map(Boolean::valueOf)
+		return getOptionalDereferencedString(key).map(Boolean::valueOf)
 				//delegate TODO switch to Optional.or() in Java 9: http://hg.openjdk.java.net/jdk9/dev/jdk/rev/423df075cf72
 				.map(Optional::of).orElseGet(() -> getParentResources().flatMap(resources -> resources.getOptionalBoolean(key)));
 	}
@@ -61,7 +72,7 @@ public abstract class AbstractStringResources extends BaseResources {
 	@Override
 	public Optional<Double> getOptionalDouble(final String key) throws ResourceConfigurationException {
 		try {
-			return getDereferencedString(key).map(Double::valueOf)
+			return getOptionalDereferencedString(key).map(Double::valueOf)
 					//delegate TODO switch to Optional.or() in Java 9: http://hg.openjdk.java.net/jdk9/dev/jdk/rev/423df075cf72
 					.map(Optional::of).orElseGet(() -> getParentResources().flatMap(resources -> resources.getOptionalDouble(key)));
 		} catch(final NumberFormatException numberFormatException) {
@@ -78,7 +89,7 @@ public abstract class AbstractStringResources extends BaseResources {
 	@Override
 	public Optional<Integer> getOptionalInt(final String key) throws ResourceConfigurationException {
 		try {
-			return getDereferencedString(key).map(Integer::valueOf)
+			return getOptionalDereferencedString(key).map(Integer::valueOf)
 					//delegate TODO switch to Optional.or() in Java 9: http://hg.openjdk.java.net/jdk9/dev/jdk/rev/423df075cf72
 					.map(Optional::of).orElseGet(() -> getParentResources().flatMap(resources -> resources.getOptionalInt(key)));
 		} catch(final NumberFormatException numberFormatException) {

@@ -33,7 +33,7 @@ import io.csar.Csar;
  */
 public class RinclTest {
 
-	private Locale defaultLocale, defaultDisplayLocale, defaultFormatLocale;
+	private Locale defaultLocale, defaultDisplayLocale, defaultFormatLocale; //TODO transfer to an ExternalResource in a rincl-test package
 
 	@Before
 	public void saveDefaultLocales() {
