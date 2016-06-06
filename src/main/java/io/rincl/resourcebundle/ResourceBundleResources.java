@@ -74,11 +74,27 @@ public class ResourceBundleResources extends AbstractStringResources {
 	/**
 	 * {@inheritDoc}
 	 * <p>
+	 * This implementation checks the resource bundle directly using {@link ResourceBundle#containsKey(String)}.
+	 * </p>
+	 */
+	@Override
+	public boolean hasResource(String key) throws ResourceConfigurationException {
+		//check the resource bundle directly
+		if(getResourceBundle().containsKey(key)) {
+			return true;
+		}
+		//if the resource bundle doesn't have the resource, delegate the parent resources if any
+		return getParentResources().map(parentResources -> parentResources.hasResource(key)).orElse(false);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
 	 * This implementation delegates to {@link ResourceBundle#getString(String)}.
 	 * </p>
 	 */
 	@Override
-	protected Optional<String> getStringImpl(String key) throws ResourceConfigurationException {
+	protected Optional<String> getOptionalStringImpl(String key) throws ResourceConfigurationException {
 		try {
 			return Optional.of(getResourceBundle().getString(key));
 		} catch(final MissingResourceException missingResourceException) { //if we couldn't get the resource bundle
