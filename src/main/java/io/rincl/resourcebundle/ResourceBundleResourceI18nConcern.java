@@ -57,7 +57,6 @@ public abstract class ResourceBundleResourceI18nConcern extends AbstractResource
 	public static ResourceBundleResourceI18nConcern forBaseNameFirst(@Nonnull final String baseName) {
 		checkInstance(baseName);
 		return new ResourceBundleResourceI18nConcern() {
-
 			@Override
 			protected Stream<String> baseNames(Class<?> referenceClass) throws ResourceConfigurationException {
 				return Stream.concat(Stream.of(baseName), super.baseNames(referenceClass));
@@ -77,7 +76,6 @@ public abstract class ResourceBundleResourceI18nConcern extends AbstractResource
 	public static ResourceBundleResourceI18nConcern forBaseNameLast(@Nonnull final String baseName) {
 		checkInstance(baseName);
 		return new ResourceBundleResourceI18nConcern() {
-
 			@Override
 			protected Stream<String> baseNames(Class<?> referenceClass) throws ResourceConfigurationException {
 				return Stream.concat(super.baseNames(referenceClass), Stream.of(baseName));
@@ -96,7 +94,6 @@ public abstract class ResourceBundleResourceI18nConcern extends AbstractResource
 	public static ResourceBundleResourceI18nConcern forOnlyBaseName(@Nonnull final String baseName) {
 		checkInstance(baseName);
 		return new ResourceBundleResourceI18nConcern() {
-
 			@Override
 			protected Stream<String> baseNames(Class<?> referenceClass) throws ResourceConfigurationException {
 				return Stream.of(baseName);
@@ -125,32 +122,34 @@ public abstract class ResourceBundleResourceI18nConcern extends AbstractResource
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation will search up the implementation hierarchy of the given context class until it finds a resource bundle it can load via
-	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader)}; using the base names returned by {@link #baseNames(Class)} for each reference class, the
-	 * locale returned by {@link Rincl#getLocale()}, and the class loader of each reference class.
+	 * This implementation returns a hierarchy of {@link ResourceBundleResources} implementations from the discovered resource bundles loaded via
+	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader)}; using the base names returned by {@link #baseNames(Class)} for each reference class up the
+	 * hierarchy of parent classes and interfaces, the locale returned by {@link Rincl#getLocale()}, and the class loader of each reference class.
 	 * </p>
 	 * <p>
-	 * If an appropriate resource bundle is not present, an {@link EmptyResources} instance will be returned.
+	 * If no appropriate resource bundle is found up the hierarchy, an {@link EmptyResources} instance will be returned.
 	 * </p>
 	 * <p>
 	 * TODO implement resources caching
-	 * </p>
-	 * <p>
-	 * TODO implement parent resources discovery
 	 * </p>
 	 * @see Rincl#getLocale()
 	 */
 	@Override
 	public Resources getResources(final Class<?> contextClass) throws ResourceConfigurationException {
 		final Map<Class<?>, ResourceBundle> resourceBundles = getResourceBundles(contextClass, Rincl.getLocale(Locale.Category.DISPLAY));
-		return resourceBundles.entrySet().stream().findAny()
-				//Convert one of the resource bundles to Resources. TODO improve to convert all of them in a hierarchy
-				//Use the current reference class when creating the resource bundle, TODO verify
-				//but use the original requested context class when requesting the parent resources.
-				//TODO fix; the parent resources approach doesn't seem correct, as we may have already went up the chain
-				.<Resources>map(entry -> new ResourceBundleResources(entry.getKey(), getParentResources(contextClass), entry.getValue()))
-				//If no resource bundles were found, return empty resources.
-				.orElseGet(() -> new EmptyResources(contextClass, getParentResources(contextClass)));
+		if(resourceBundles.isEmpty()) {
+			return new EmptyResources(contextClass, getParentResources(contextClass));
+		}
+		//get a list of the entries and look at them in reverse order, so that we can connect parent resources correctly
+		final List<Map.Entry<Class<?>, ResourceBundle>> resourceBundleEntries = new ArrayList<>(resourceBundles.entrySet());
+		final ListIterator<Map.Entry<Class<?>, ResourceBundle>> resourceBundleEntryIterator = resourceBundleEntries.listIterator(resourceBundleEntries.size());
+		Resources resources = null;
+		do { //we know there is at least one resource bundle
+			final Map.Entry<Class<?>, ResourceBundle> resourceBundleEntry = resourceBundleEntryIterator.previous();
+			//create resources using the existing resources, if any, as the parent
+			resources = new ResourceBundleResources(resourceBundleEntry.getKey(), Optional.ofNullable(resources), resourceBundleEntry.getValue());
+		} while(resourceBundleEntryIterator.hasPrevious());
+		return resources;
 	}
 
 	/**
