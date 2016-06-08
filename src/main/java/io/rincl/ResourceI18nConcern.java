@@ -33,6 +33,11 @@ import io.csar.*;
  */
 public interface ResourceI18nConcern extends Concern {
 
+	@Override
+	public default Class<ResourceI18nConcern> getConcernType() {
+		return ResourceI18nConcern.class;
+	}
+
 	/**
 	 * Retrieves the configured locale for the given category.
 	 * <p>

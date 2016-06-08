@@ -45,7 +45,7 @@ public class Rincl {
 	 * @return The default resource i18n concern.
 	 * @see Csar#getDefaultConcern(Class)
 	 */
-	public static ResourceI18nConcern getDefaultResourceI18nConcern() {
+	public static Optional<ResourceI18nConcern> getDefaultResourceI18nConcern() {
 		return Csar.getDefaultConcern(ResourceI18nConcern.class);
 	}
 
@@ -56,13 +56,14 @@ public class Rincl {
 	 * @throws NullPointerException if the given concern is <code>null</code>.
 	 * @see Csar#registerDefaultConcern(Class, Concern)
 	 */
-	public static ResourceI18nConcern setDefaultResourceI18nConcern(@Nonnull final ResourceI18nConcern resourceI18nConcern) {
+	public static Optional<ResourceI18nConcern> setDefaultResourceI18nConcern(@Nonnull final ResourceI18nConcern resourceI18nConcern) {
 		return Csar.registerDefaultConcern(ResourceI18nConcern.class, resourceI18nConcern);
 	}
 
 	/**
 	 * Returns the configured resource i18n concern for the current context.
 	 * @return The configured resource i18n concern for the current context.
+	 * @throws ConcernNotFoundException if no resource i18n concern is configured.
 	 * @see Csar#getConcern(Class)
 	 */
 	public static ResourceI18nConcern getResourceI18nConcern() {
@@ -120,7 +121,8 @@ public class Rincl {
 		try {
 			resourceI18nConcern = getResourceI18nConcern();
 			//if the context concern is that registered as the default, update the JVM default locale as well
-			setDefault = resourceI18nConcern == getDefaultResourceI18nConcern();
+			final Optional<ResourceI18nConcern> defaultResourceI18nConcern = getDefaultResourceI18nConcern();
+			setDefault = defaultResourceI18nConcern.isPresent() && defaultResourceI18nConcern.get() == resourceI18nConcern;
 		} catch(final ConcernNotFoundException concernNotFoundException) {
 			setDefault = true; //if Rincl isn't configured, updating the JVM default locale is all we can do
 		}
@@ -158,7 +160,8 @@ public class Rincl {
 		try {
 			resourceI18nConcern = getResourceI18nConcern();
 			//if the context concern is that registered as the default, update the JVM default locale as well
-			setDefault = resourceI18nConcern == getDefaultResourceI18nConcern();
+			final Optional<ResourceI18nConcern> defaultResourceI18nConcern = getDefaultResourceI18nConcern();
+			setDefault = defaultResourceI18nConcern.isPresent() && defaultResourceI18nConcern.get() == resourceI18nConcern;
 		} catch(final ConcernNotFoundException concernNotFoundException) {
 			setDefault = true; //if Rincl isn't configured, updating the JVM default locale is all we can do
 		}
