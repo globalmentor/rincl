@@ -16,14 +16,12 @@
 
 package io.rincl.resourcebundle;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-
-import com.globalmentor.java.Classes;
 
 import io.rincl.*;
 
@@ -36,95 +34,48 @@ import io.rincl.*;
  * @author Garret Wilson
  * @see ResourceBundleResources
  */
-public abstract class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConcern {
+public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConcern {
 
-	/** Default implementation of resource bundle-based resources. */
-	public static final ResourceBundleResourceI18nConcern DEFAULT = new ResourceBundleResourceI18nConcern() {};
+	/**
+	 * Default implementation of resource bundle-based resources, searching for base names based upon class names up the hierarchy of the class.
+	 * @see BaseNameStrategy#CLASS_BASE_NAME_STRATEGY
+	 * @see ResolvingClassStrategy#DEFAULT
+	 */
+	public static final ResourceBundleResourceI18nConcern DEFAULT = new ResourceBundleResourceI18nConcern(BaseNameStrategy.CLASS_BASE_NAME_STRATEGY,
+			ResolvingClassStrategy.DEFAULT);
 
-	/** This class cannot be publicly instantiated. */
-	private ResourceBundleResourceI18nConcern() {
+	private final BaseNameStrategy baseNameStrategy;
+
+	/** @return The strategy for determining base names for a reference class. */
+	protected BaseNameStrategy getBaseNameStrategy() {
+		return baseNameStrategy;
+	}
+
+	private final ResolvingClassStrategy resolvingClassStrategy;
+
+	/** @return The strategy for determining parent resources for resolving classes. */
+	protected ResolvingClassStrategy getResolvingClassStrategy() {
+		return resolvingClassStrategy;
 	}
 
 	/**
-	 * Creates resource bundle resources that first use the given base name when loading resource bundles before using the base name derived from the reference
-	 * class.
-	 * <p>
-	 * The context class hierarchy is still traversed when searching for resource bundles.
-	 * </p>
-	 * @param baseName The specific base name used for resource bundle loading.
-	 * @return Resource bundle resources.
+	 * Base name and resolving class strategy.
+	 * @param baseNameStrategy The strategy for determining the base names to use for a reference class when searching for resource bundles.
+	 * @param resolvingClassStrategy Strategy for determining the parent class priority when creating resolving parent resources.
+	 * @throws NullPointerException if the given base name strategy and/or resolving class strategy is <code>null</code>.
 	 */
-	public static ResourceBundleResourceI18nConcern forBaseNameFirst(@Nonnull final String baseName) {
-		checkInstance(baseName);
-		return new ResourceBundleResourceI18nConcern() {
-			@Override
-			protected Stream<String> baseNames(Class<?> referenceClass) throws ResourceConfigurationException {
-				return Stream.concat(Stream.of(baseName), super.baseNames(referenceClass));
-			}
-		};
-	}
-
-	/**
-	 * Creates resource bundle resources that lastly use the given base name when loading resource bundles before using the base name derived from the reference
-	 * class.
-	 * <p>
-	 * The context class hierarchy is still traversed when searching for resource bundles.
-	 * </p>
-	 * @param baseName The specific base name used for resource bundle loading.
-	 * @return Resource bundle resources.
-	 */
-	public static ResourceBundleResourceI18nConcern forBaseNameLast(@Nonnull final String baseName) {
-		checkInstance(baseName);
-		return new ResourceBundleResourceI18nConcern() {
-			@Override
-			protected Stream<String> baseNames(Class<?> referenceClass) throws ResourceConfigurationException {
-				return Stream.concat(super.baseNames(referenceClass), Stream.of(baseName));
-			}
-		};
-	}
-
-	/**
-	 * Creates resource bundle resources that only use the given base name when loading resource bundles.
-	 * <p>
-	 * The context class hierarchy is still traversed when searching for resource bundles.
-	 * </p>
-	 * @param baseName The specific base name used for resource bundle loading.
-	 * @return Resource bundle resources.
-	 */
-	public static ResourceBundleResourceI18nConcern forOnlyBaseName(@Nonnull final String baseName) {
-		checkInstance(baseName);
-		return new ResourceBundleResourceI18nConcern() {
-			@Override
-			protected Stream<String> baseNames(Class<?> referenceClass) throws ResourceConfigurationException {
-				return Stream.of(baseName);
-			}
-		};
-	}
-
-	/**
-	 * Retrieves a stream of base names appropriate for the given reference class.
-	 * <p>
-	 * The given class represents a single reference point. This method will typically be called with various reference classes up the hierarchy for a given
-	 * context class. The implementation of this method therefore would not normally look up the hierarchy chain.
-	 * </p>
-	 * <p>
-	 * The default implementation merely returns the name of the class.
-	 * </p>
-	 * @param referenceClass The class being reference at a single hierarchy for which base names will be returned when searching for resource bundles.
-	 * @return Access to configured resources for the given context class.
-	 * @throws NullPointerException if the given context class is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
-	 */
-	protected Stream<String> baseNames(@Nonnull final Class<?> referenceClass) throws ResourceConfigurationException {
-		return Stream.of(referenceClass.getName());
+	public ResourceBundleResourceI18nConcern(@Nonnull final BaseNameStrategy baseNameStrategy, @Nonnull ResolvingClassStrategy resolvingClassStrategy) {
+		this.baseNameStrategy = requireNonNull(baseNameStrategy);
+		this.resolvingClassStrategy = requireNonNull(resolvingClassStrategy);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * This implementation returns a hierarchy of {@link ResourceBundleResources} implementations from the discovered resource bundles loaded via
-	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader)}; using the base names returned by {@link #baseNames(Class)} for each reference class up the
-	 * hierarchy of parent classes and interfaces, the locale returned by {@link Rincl#getLocale()}, and the class loader of each reference class.
+	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader)}; using the base names returned by the {@link #getBaseNameStrategy()}, the classes returned by
+	 * {@link #getResolvingClassStrategy()}, the locale returned by {@link Rincl#getLocale(Locale.Category)} for {@link Locale.Category#DISPLAY}, and the class
+	 * loader of each reference class.
 	 * </p>
 	 * <p>
 	 * If no appropriate resource bundle is found up the hierarchy, an {@link EmptyResources} instance will be returned.
@@ -132,61 +83,57 @@ public abstract class ResourceBundleResourceI18nConcern extends AbstractResource
 	 * <p>
 	 * TODO implement resources caching
 	 * </p>
-	 * @see Rincl#getLocale()
+	 * @see Rincl#getLocale(Locale.Category)
+	 * @see Locale.Category#DISPLAY
 	 */
 	@Override
 	public Resources getResources(final Class<?> contextClass) throws ResourceConfigurationException {
-		final Map<Class<?>, ResourceBundle> resourceBundles = getResourceBundles(contextClass, Rincl.getLocale(Locale.Category.DISPLAY));
-		if(resourceBundles.isEmpty()) {
-			return new EmptyResources(contextClass, getParentResources(contextClass));
+		//start with the (optional) resolving parent resources
+		Optional<Resources> resources = getParentResources(contextClass);
+		//get a list of the resolving classes to use
+		final List<Class<?>> resolvingClassList = getResolvingClassStrategy().resolvingClasses(contextClass).collect(Collectors.toList());
+		if(!resolvingClassList.isEmpty()) { //no need to get the locale or create an iterator if the list is empty
+			final Locale locale = Rincl.getLocale(Locale.Category.DISPLAY);
+			//look at the resolving classes in reverse order, so that we can connect parent resources correctly
+			final ListIterator<Class<?>> resolvingClassListIterator = resolvingClassList.listIterator(resolvingClassList.size());
+			do { //we know there is at least one resource bundle
+				final Class<?> resolvingClass = resolvingClassListIterator.previous();
+				final Optional<ResourceBundle> resourceBundle = getResourceBundle(resolvingClass, locale);
+				if(resourceBundle.isPresent()) {
+					resources = Optional.of(new ResourceBundleResources(resolvingClass, resources, resourceBundle.get()));
+				}
+			} while(resolvingClassListIterator.hasPrevious());
 		}
-		//get a list of the entries and look at them in reverse order, so that we can connect parent resources correctly
-		final List<Map.Entry<Class<?>, ResourceBundle>> resourceBundleEntries = new ArrayList<>(resourceBundles.entrySet());
-		final ListIterator<Map.Entry<Class<?>, ResourceBundle>> resourceBundleEntryIterator = resourceBundleEntries.listIterator(resourceBundleEntries.size());
-		Resources resources = null;
-		do { //we know there is at least one resource bundle
-			final Map.Entry<Class<?>, ResourceBundle> resourceBundleEntry = resourceBundleEntryIterator.previous();
-			//create resources using the existing resources, if any, as the parent
-			resources = new ResourceBundleResources(resourceBundleEntry.getKey(), Optional.ofNullable(resources), resourceBundleEntry.getValue());
-		} while(resourceBundleEntryIterator.hasPrevious());
-		return resources;
+		return resources.orElseGet(() -> new EmptyResources(contextClass));
 	}
 
 	/**
-	 * Retrieves resource bundles for the given context in the given locale, associated with classes used for lookup. The map entries will be sorted in order of
-	 * precedence, from highest priority to lowest priority.
+	 * Retrieves a resource bundle for the given context class in the given locale.
 	 * <p>
-	 * This implementation will search up the implementation hierarchy of the given context class, finding every resource bundle it can load via
-	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader)}; using the base names returned by {@link #baseNames(Class)} for each reference class, the
-	 * locale returned by {@link Rincl#getLocale()}, and the class loader of each reference class. Only the first base name that returns a resource bundle will be
-	 * used.
+	 * This implementation calls {@link ResourceBundle#getBundle(String, Locale, ClassLoader)} using the base names returned by {@link #getBaseNameStrategy()} for
+	 * the reference class, the locale returned by {@link Rincl#getLocale()}, and the class loader of each reference class. Only the first base name that returns
+	 * a resource bundle will be used.
 	 * </p>
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
+	 * @param referenceClass The class with which these resources are related.
 	 * @param locale The locale to use for retrieving the resource bundles.
-	 * @return Resource bundles discovered for the given context class and locale.
+	 * @return The resource bundle discovered for the given context class and locale.
 	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
 	 */
-	Map<Class<?>, ResourceBundle> getResourceBundles(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
-		checkInstance(locale);
-		final List<Class<?>> referenceClasses = Classes.getAncestorClasses(contextClass); //get the classes for which we should find resource bundles
-		final Map<Class<?>, ResourceBundle> resourceBundles = new LinkedHashMap<>(referenceClasses.size());
-		for(final Class<?> referenceClass : referenceClasses) {
-			final ClassLoader classLoader = referenceClass.getClassLoader();
-			//if this context class has no class loader, it's probably because we reached Object or some similar class,
-			//which uses the bootstrap class loader; skip it and go on (we may be out of super classes anyway)
-			if(classLoader == null) {
-				continue;
-			}
-			for(final String baseName : (Iterable<String>)baseNames(referenceClass)::iterator) {
+	Optional<ResourceBundle> getResourceBundle(@Nonnull final Class<?> referenceClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
+		requireNonNull(locale);
+		final ClassLoader classLoader = referenceClass.getClassLoader();
+		//if this context class has no class loader, it's probably because we reached Object or some similar class,
+		//which uses the bootstrap class loader; skip it and go on (we may be out of super classes anyway)
+		if(classLoader != null) {
+			for(final String baseName : (Iterable<String>)getBaseNameStrategy().baseNames(referenceClass)::iterator) {
 				try {
-					final ResourceBundle resourceBundle = ResourceBundle.getBundle(baseName, locale, classLoader);
-					resourceBundles.put(referenceClass, resourceBundle);
+					return Optional.of(ResourceBundle.getBundle(baseName, locale, classLoader));
 				} catch(final MissingResourceException missingResourceException) { //if we couldn't get the resource bundle
-					//keep searching up the chain
+					//keep searching
 				}
 			}
 		}
-		return resourceBundles;
+		return Optional.empty();
 	}
 
 }

@@ -48,96 +48,6 @@ public class ResourceBundleResourceI18ConcernTest {
 		Locale.setDefault(Category.FORMAT, defaultFormatLocale);
 	}
 
-	//ResourceBundleResourceI18nConcern.getResourceBundles(Class, Locale)
-
-	/**
-	 * Happy path test of loading a resource bundle for {@link FooBar}.
-	 * @see ResourceBundleResourceI18nConcern#DEFAULT
-	 * @see ResourceBundleResourceI18nConcern#getResourceBundles(Class, Locale)
-	 * @see FooBar
-	 */
-	@Test
-	public void testDefaultGetResourceBundlesForFooBar() {
-		final Map<Class<?>, ResourceBundle> resourceBundles = ResourceBundleResourceI18nConcern.DEFAULT.getResourceBundles(FooBar.class, Locale.US);
-		assertThat(resourceBundles.size(), is(1));
-		assertThat(resourceBundles.containsKey(FooBar.class), is(true));
-		assertThat(resourceBundles.get(FooBar.class).getString("foo"), is("bar"));
-	}
-
-	/**
-	 * Tests loading resource bundles for {@link Interface}.
-	 * @see ResourceBundleResourceI18nConcern#DEFAULT
-	 * @see ResourceBundleResourceI18nConcern#getResourceBundles(Class, Locale)
-	 * @see Interface
-	 */
-	@Test
-	public void testDefaultGetResourceBundlesForInterface() {
-		final Map<Class<?>, ResourceBundle> resourceBundles = ResourceBundleResourceI18nConcern.DEFAULT.getResourceBundles(Interface.class, Locale.US);
-		assertThat(resourceBundles.size(), is(1));
-		assertThat(resourceBundles.get(Interface.class).getString("interface"), is("interface-value"));
-	}
-
-	/**
-	 * Tests loading resource bundles for {@link SubInterface}.
-	 * @see ResourceBundleResourceI18nConcern#DEFAULT
-	 * @see ResourceBundleResourceI18nConcern#getResourceBundles(Class, Locale)
-	 * @see SubInterface
-	 */
-	@Test
-	public void testDefaultGetResourceBundlesForSubInterface() {
-		final Map<Class<?>, ResourceBundle> resourceBundles = ResourceBundleResourceI18nConcern.DEFAULT.getResourceBundles(SubInterface.class, Locale.US);
-		assertThat(resourceBundles.size(), is(2));
-		assertThat(resourceBundles.get(Interface.class).getString("interface"), is("interface-value"));
-		assertThat(resourceBundles.get(SubInterface.class).getString("subInterface"), is("subInterface-value"));
-	}
-
-	/**
-	 * Tests loading resource bundles for {@link AbstractImpl}.
-	 * @see ResourceBundleResourceI18nConcern#DEFAULT
-	 * @see ResourceBundleResourceI18nConcern#getResourceBundles(Class, Locale)
-	 * @see AbstractImpl
-	 */
-	@Test
-	public void testDefaultGetResourceBundlesForAbstractImpl() {
-		final Map<Class<?>, ResourceBundle> resourceBundles = ResourceBundleResourceI18nConcern.DEFAULT.getResourceBundles(AbstractImpl.class, Locale.US);
-		assertThat(resourceBundles.size(), is(2));
-		assertThat(resourceBundles.get(Interface.class).getString("interface"), is("interface-value"));
-		assertThat(resourceBundles.get(AbstractImpl.class).getString("abstractImpl"), is("abstractImpl-value"));
-	}
-
-	/**
-	 * Tests loading resource bundles for {@link BaseImpl}.
-	 * @see ResourceBundleResourceI18nConcern#DEFAULT
-	 * @see ResourceBundleResourceI18nConcern#getResourceBundles(Class, Locale)
-	 * @see BaseImpl
-	 */
-	@Test
-	public void testDefaultGetResourceBundlesForBaseImpl() {
-		final Map<Class<?>, ResourceBundle> resourceBundles = ResourceBundleResourceI18nConcern.DEFAULT.getResourceBundles(BaseImpl.class, Locale.US);
-		assertThat(resourceBundles.size(), is(4));
-		assertThat(resourceBundles.get(Interface.class).getString("interface"), is("interface-value"));
-		assertThat(resourceBundles.get(SubInterface.class).getString("subInterface"), is("subInterface-value"));
-		assertThat(resourceBundles.get(AbstractImpl.class).getString("abstractImpl"), is("abstractImpl-value"));
-		assertThat(resourceBundles.get(BaseImpl.class).getString("baseImpl"), is("baseImpl-value"));
-	}
-
-	/**
-	 * Tests loading resource bundles for {@link Impl}.
-	 * @see ResourceBundleResourceI18nConcern#DEFAULT
-	 * @see ResourceBundleResourceI18nConcern#getResourceBundles(Class, Locale)
-	 * @see Impl
-	 */
-	@Test
-	public void testDefaultGetResourceBundlesForImpl() {
-		final Map<Class<?>, ResourceBundle> resourceBundles = ResourceBundleResourceI18nConcern.DEFAULT.getResourceBundles(Impl.class, Locale.US);
-		assertThat(resourceBundles.size(), is(5));
-		assertThat(resourceBundles.get(Interface.class).getString("interface"), is("interface-value"));
-		assertThat(resourceBundles.get(SubInterface.class).getString("subInterface"), is("subInterface-value"));
-		assertThat(resourceBundles.get(AbstractImpl.class).getString("abstractImpl"), is("abstractImpl-value"));
-		assertThat(resourceBundles.get(BaseImpl.class).getString("baseImpl"), is("baseImpl-value"));
-		assertThat(resourceBundles.get(Impl.class).getString("impl"), is("impl-value"));
-	}
-
 	//ResourceBundleResourceI18nConcern.getResources(Class)
 
 	/**
@@ -223,6 +133,7 @@ public class ResourceBundleResourceI18ConcernTest {
 	 */
 	@Test
 	public void testDefaultGetResourcesForBaseImpl() {
+		System.out.println("ready to test BaseImpl");
 		final Resources resources = ResourceBundleResourceI18nConcern.DEFAULT.getResources(BaseImpl.class);
 		assertThat(resources.getString("interface"), is("interface-value"));
 		assertThat(resources.getString("interfaceToOverride"), is("interfaceToOverride-abstractImpl"));
@@ -244,6 +155,7 @@ public class ResourceBundleResourceI18ConcernTest {
 	 */
 	@Test
 	public void testDefaultGetResourcesForImpl() {
+		System.out.println("ready to test Impl");
 		final Resources resources = ResourceBundleResourceI18nConcern.DEFAULT.getResources(Impl.class);
 		assertThat(resources.getString("interface"), is("interface-value"));
 		assertThat(resources.getString("interfaceToOverride"), is("interfaceToOverride-abstractImpl"));
