@@ -26,7 +26,7 @@ import javax.annotation.*;
 /**
  * Access to i18n resources.
  * <p>
- * Each resource lookup method such as {@link #getString(String, String...)} is expected to attempt to look up resources in the {@link #getParentResources()}
+ * Each resource lookup method such as {@link #getString(String, Object...)} is expected to attempt to look up resources in the {@link #getParentResources()}
  * (if any) if the resource is not found in this resources instance.
  * </p>
  * @author Garret Wilson
