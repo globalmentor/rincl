@@ -44,7 +44,7 @@ public abstract class BaseResources extends AbstractResources {
 	}
 
 	@Override
-	public final Optional<String> getOptionalString(final String key, final String... arguments) throws ResourceConfigurationException {
+	public final Optional<String> getOptionalString(final String key, final Object... arguments) throws ResourceConfigurationException {
 		Optional<String> string = getOptionalDereferencedString(key); //get the dereferenced string
 		if(string.isPresent()) { //if there is a string
 			if(arguments.length > 0) { //if there are arguments, format the string

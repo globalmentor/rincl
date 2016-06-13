@@ -158,7 +158,7 @@ public interface Resources {
 	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
 	 * @see MessageFormat#format(Object)
 	 */
-	public default @Nonnull String getString(@Nonnull final String key, @Nonnull final String... arguments)
+	public default @Nonnull String getString(@Nonnull final String key, @Nonnull final Object... arguments)
 			throws MissingResourceException, ResourceConfigurationException {
 		return requireResource(getOptionalString(key, arguments), key);
 	}
@@ -179,7 +179,7 @@ public interface Resources {
 	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
 	 * @see MessageFormat#format(Object)
 	 */
-	public Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final String... arguments) throws ResourceConfigurationException;
+	public Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ResourceConfigurationException;
 
 	//TODO URI
 }

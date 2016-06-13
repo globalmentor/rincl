@@ -79,7 +79,7 @@ public final class EmptyResources extends AbstractResources {
 	}
 
 	@Override
-	public Optional<String> getOptionalString(String key, String... arguments) throws ResourceConfigurationException {
+	public Optional<String> getOptionalString(String key, Object... arguments) throws ResourceConfigurationException {
 		return getParentResources().flatMap(resources -> resources.getOptionalString(key, arguments));
 	}
 
