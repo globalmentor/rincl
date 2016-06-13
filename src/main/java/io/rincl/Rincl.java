@@ -25,13 +25,19 @@ import io.csar.*;
 /**
  * The Resource I18n Concern Library (Rincl) facilitates internationalization by providing access to localization {@link Resources} via {@link Csar}.
  * <p>
- * Applications wishing to use Rincl should first configure a {@link ResourceI18nConcern}. The easiest way to do this is to configure a global fallback concern
- * using {@link #setDefaultResourceI18nConcern(ResourceI18nConcern)} with the concern of choice, as in the following example:
+ * Rincl uses the Csar {@link ConcernProvider} mechanism, so that an application can have access to a globally configured default Rincl implementation simply by
+ * including that implementation's dependency. For example merely including the dependency
+ * <code>io.rincl:rincl-resourcebundle:<var>x</var>.<var>x</var>.<var>x</var></code> will automatically provide resources from resource bundle property file
+ * lookup. Classes desiring resource access may then then implement {@link Rincled} for simplified retrieval of {@link Resources}.
+ * </p>
+ * <p>
+ * More complex configuration may be done by manual configuration using using {@link Rincl#setDefaultResourceI18nConcern(ResourceI18nConcern)} with the concern
+ * of choice, as in the following example:
  * </p>
  * 
  * <pre>
  * {@code
- * Rincl.setDefaultResourceI18nConcern(ResourceBundleResourceI18nConcern.DEFAULT);
+ * Rincl.setDefaultResourceI18nConcern(new MyResourceI18nConcern());
  * }
  * </pre>
  * 
