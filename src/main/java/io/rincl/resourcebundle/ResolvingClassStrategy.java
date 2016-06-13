@@ -79,6 +79,6 @@ public interface ResolvingClassStrategy {
 	 * @param contextClass The class for which resolving classes should be determined.
 	 * @return The classes for resolving resources for the given context class.
 	 */
-	public @Nonnull Stream<Class<?>> resolvingClasses(Class<?> contextClass);
+	public @Nonnull Stream<Class<?>> resolvingClasses(@Nonnull Class<?> contextClass);
 
 }
