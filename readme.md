@@ -18,9 +18,11 @@ An application can easily integrate Rincl resource bundle support with just a fe
 
 1. Include the dependency `io.rincl:rincl-resourcebundle:x.x.x`. _This automatically includes the dependency `io.rincl:rincl:x.x.x` and registers support for resource bundles._
 2. (optional) Set the preferred locale using `Rincl.setLocale(Locale locale)`.
-3. Have `MyClass` implement `Rincled`.
+3. Have `MyClass` implement the mixin interface `Rincled`.
 4. Store resources in `MyClass.properties` or `MyClass_xx.properties`, etc. according to the desired locale.
 5. Inside `MyClass` call `getResources().getXXX(String resourceKey)` to retrieve the type of resource you desire.
+
+Note: If you do not want to implement `Rincled`, you can access resources for any class using `Rincl.getResourceI18nConcern(MyClass.class).getResources().getXXX(String resourceKey)`. 
 
 Other Rincl implementations in addition to resource bundles will be available in the future.
 
