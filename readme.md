@@ -2,11 +2,27 @@
 
 The Resource I18n Concern Library (Rincl) facilitates internationalization by providing access to localization resources via [Csar](http://csar.io).
 
-Rincl uses the Csar `ConcernProvider` mechanism, so that an application can have access to a globally configured default Rincl implementation simply by including that implementation's dependency. For example merely including the dependency `io.rincl:rincl-resourcebundle:x.x.x` will automatically provide resources from resource bundle property file lookup. Classes desiring resource access may then then implement `Rincled` for simplified retrieval of Resources. 
+Rincl uses the Csar `ConcernProvider` mechanism, so that an application can have access to a globally configured default Rincl implementation simply by including that implementation's dependency. For example merely including the dependency `io.rincl:rincl-resourcebundle:x.x.x` will automatically provide resources from resource bundle property file lookup. Classes desiring resource access may then then implement `Rincled` for simplified retrieval of `Resources`. 
 
 More complex configuration may be using `Rincl.setDefaultResourceI18nConcern(ResourceI18nConcern)` with the concern of choice, as in the following example:
 
-	Rincl.setDefaultResourceI18nConcern(new MyResourceI18nConcern());
+```java
+Rincl.setDefaultResourceI18nConcern(new MyResourceI18nConcern());
+```
+
+The `Rincl` class also provides methods for retrieving and setting the locale, with improvements over the native Java approach.
+
+## Quick Start
+
+An application can easily integrate Rincl resource bundle support with just a few steps:
+
+1. Include the dependency `io.rincl:rincl-resourcebundle:x.x.x`. _This automatically includes the dependency `io.rincl:rincl:x.x.x` and registers support for resource bundles._
+2. (optional) Set the preferred locale using `Rincl.setLocale(Locale locale)`.
+3. Have `MyClass` implement `Rincled`.
+4. Store resources in `MyClass.properties` or `MyClass_xx.properties`, etc. according to the desired locale.
+5. Inside `MyClass` call `getResources().getXXX(String resourceKey)` to retrieve the type of resource you desire.
+
+Other Rincl implementations in addition to resource bundles will be available in the future.
 
 ## Download
 
