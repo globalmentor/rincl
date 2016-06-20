@@ -63,6 +63,18 @@ public class ResourceBundleResourceI18ConcernTest {
 	}
 
 	/**
+	 * Happy path test of loading XML resources for {@link XmlFooBar}.
+	 * @see ResourceBundleResourceI18nConcern#DEFAULT
+	 * @see ResourceBundleResourceI18nConcern#getResources(Class)
+	 * @see FooBar
+	 */
+	@Test
+	public void testDefaultGetResourcesForXmlFooBar() {
+		final Resources resources = ResourceBundleResourceI18nConcern.DEFAULT.getResources(XmlFooBar.class);
+		assertThat(resources.getString("foo"), is("bar"));
+	}
+
+	/**
 	 * Tests loading resources for {@link Interface}.
 	 * @see ResourceBundleResourceI18nConcern#DEFAULT
 	 * @see ResourceBundleResourceI18nConcern#getResources(Class)
@@ -133,7 +145,6 @@ public class ResourceBundleResourceI18ConcernTest {
 	 */
 	@Test
 	public void testDefaultGetResourcesForBaseImpl() {
-		System.out.println("ready to test BaseImpl");
 		final Resources resources = ResourceBundleResourceI18nConcern.DEFAULT.getResources(BaseImpl.class);
 		assertThat(resources.getString("interface"), is("interface-value"));
 		assertThat(resources.getString("interfaceToOverride"), is("interfaceToOverride-abstractImpl"));
@@ -155,7 +166,6 @@ public class ResourceBundleResourceI18ConcernTest {
 	 */
 	@Test
 	public void testDefaultGetResourcesForImpl() {
-		System.out.println("ready to test Impl");
 		final Resources resources = ResourceBundleResourceI18nConcern.DEFAULT.getResources(Impl.class);
 		assertThat(resources.getString("interface"), is("interface-value"));
 		assertThat(resources.getString("interfaceToOverride"), is("interfaceToOverride-abstractImpl"));
