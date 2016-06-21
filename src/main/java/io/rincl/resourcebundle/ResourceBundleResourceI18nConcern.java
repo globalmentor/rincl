@@ -73,12 +73,24 @@ public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConce
 	}
 
 	/**
+	 * Retrieves a resource bundle loading control strategy to use for loading resources.
+	 * <p>
+	 * The default implementation returns an instance of {@link RinclResourceBundleControl}.
+	 * </p>
+	 * @return A strategy for controlling the loading of resource bundles.
+	 * @see RinclResourceBundleControl#INSTANCE
+	 */
+	protected @Nonnull ResourceBundle.Control getResourceBundleControl() {
+		return RinclResourceBundleControl.INSTANCE;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * This implementation returns a hierarchy of {@link ResourceBundleResources} implementations from the discovered resource bundles loaded via
-	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader)}; using the base names returned by the {@link #getBaseNameStrategy()}, the classes returned by
-	 * {@link #getResolvingClassStrategy()}, the locale returned by {@link Rincl#getLocale(Locale.Category)} for {@link Locale.Category#DISPLAY}, and the class
-	 * loader of each reference class.
+	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader, ResourceBundle.Control)}; using the base names returned by the {@link #getBaseNameStrategy()},
+	 * the classes returned by {@link #getResolvingClassStrategy()}, the locale returned by {@link Rincl#getLocale(Locale.Category)} for
+	 * {@link Locale.Category#DISPLAY}, the class loader of each reference class, and the resource bundle control returned by {@link #getResourceBundleControl()}.
 	 * </p>
 	 * <p>
 	 * If no appropriate resource bundle is found up the hierarchy, an {@link EmptyResources} instance will be returned.
@@ -88,6 +100,7 @@ public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConce
 	 * </p>
 	 * @see Rincl#getLocale(Locale.Category)
 	 * @see Locale.Category#DISPLAY
+	 * @see #getResourceBundleControl()
 	 */
 	@Override
 	public Resources getResources(final Class<?> contextClass) throws ResourceConfigurationException {
@@ -113,16 +126,18 @@ public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConce
 	/**
 	 * Retrieves a resource bundle for the given context class in the given locale.
 	 * <p>
-	 * This implementation calls {@link ResourceBundle#getBundle(String, Locale, ClassLoader)} using the base names returned by {@link #getBaseNameStrategy()} for
-	 * the reference class, the locale returned by {@link Rincl#getLocale()}, and the class loader of each reference class. Only the first base name that returns
-	 * a resource bundle will be used.
+	 * This implementation calls {@link ResourceBundle#getBundle(String, Locale, ClassLoader, ResourceBundle.Control)} using the base names returned by
+	 * {@link #getBaseNameStrategy()} for the reference class, the given locale, the class loader of the reference class, and the resource bundle control returned
+	 * by {@link #getResourceBundleControl()}. Only the first base name that returns a resource bundle will be used.
 	 * </p>
 	 * @param referenceClass The class with which these resources are related.
 	 * @param locale The locale to use for retrieving the resource bundles.
 	 * @return The resource bundle discovered for the given context class and locale.
 	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
+	 * @see #getResourceBundleControl()
 	 */
-	Optional<ResourceBundle> getResourceBundle(@Nonnull final Class<?> referenceClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
+	protected Optional<ResourceBundle> getResourceBundle(@Nonnull final Class<?> referenceClass, @Nonnull final Locale locale)
+			throws ResourceConfigurationException {
 		requireNonNull(locale);
 		final ClassLoader classLoader = referenceClass.getClassLoader();
 		//if this context class has no class loader, it's probably because we reached Object or some similar class,
@@ -130,7 +145,7 @@ public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConce
 		if(classLoader != null) {
 			for(final String baseName : (Iterable<String>)getBaseNameStrategy().baseNames(referenceClass)::iterator) {
 				try {
-					return Optional.of(ResourceBundle.getBundle(baseName, locale, classLoader));
+					return Optional.of(ResourceBundle.getBundle(baseName, locale, classLoader, getResourceBundleControl()));
 				} catch(final MissingResourceException missingResourceException) { //if we couldn't get the resource bundle
 					//keep searching
 				}
