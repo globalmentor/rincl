@@ -30,37 +30,32 @@ import org.junit.*;
  */
 public class XmlPropertiesResourceBundleLoaderTest {
 
-	/**
-	 * @see XmlPropertiesResourceBundleLoader#getFilenameExtensionSuffixes()
-	 * @see XmlPropertiesResourceBundleLoader#INSTANCE
-	 */
+	/** @see XmlPropertiesResourceBundleLoader#getFilenameExtensionSuffixes() */
 	@Test
 	public void testGetFilenameExtensionSuffixes() {
-		assertThat(XmlPropertiesResourceBundleLoader.INSTANCE.getFilenameExtensionSuffixes().collect(toSet()), containsInAnyOrder("properties.xml"));
+		assertThat(new XmlPropertiesResourceBundleLoader().getFilenameExtensionSuffixes().collect(toSet()), containsInAnyOrder("properties.xml"));
 	}
 
 	/**
 	 * @see XmlPropertiesResourceBundleLoader#load(InputStream)
-	 * @see XmlPropertiesResourceBundleLoader#INSTANCE
 	 * @throws IOException if there is an error loading the test resources file.
 	 */
 	@Test
 	public void testLoadXmlUtf8Bom() throws IOException {
 		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("test-utf8-bom.xml"))) {
-			final ResourceBundle resourceBundle = XmlPropertiesResourceBundleLoader.INSTANCE.load(inputStream);
+			final ResourceBundle resourceBundle = new XmlPropertiesResourceBundleLoader().load(inputStream);
 			assertThat(resourceBundle.getString("test"), is("touché"));
 		}
 	}
 
 	/**
 	 * @see XmlPropertiesResourceBundleLoader#load(InputStream)
-	 * @see XmlPropertiesResourceBundleLoader#INSTANCE
 	 * @throws IOException if there is an error loading the test resources file.
 	 */
 	@Test
 	public void testLoadXmlUtf8NoBom() throws IOException {
 		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("test-utf8-no-bom.xml"))) {
-			final ResourceBundle resourceBundle = XmlPropertiesResourceBundleLoader.INSTANCE.load(inputStream);
+			final ResourceBundle resourceBundle = new XmlPropertiesResourceBundleLoader().load(inputStream);
 			assertThat(resourceBundle.getString("test"), is("touché"));
 		}
 	}

@@ -33,13 +33,6 @@ import com.globalmentor.util.HashMapResourceBundle;
  */
 public class XmlPropertiesResourceBundleLoader implements ResourceBundleLoader {
 
-	/** The singleton instance of the class. */
-	public final static XmlPropertiesResourceBundleLoader INSTANCE = new XmlPropertiesResourceBundleLoader();
-
-	/** This class cannot be publicly instantiated. */
-	private XmlPropertiesResourceBundleLoader() {
-	}
-
 	/** The supported extension suffix. */
 	public static final String EXTENSION_SUFFIX = "properties.xml";
 

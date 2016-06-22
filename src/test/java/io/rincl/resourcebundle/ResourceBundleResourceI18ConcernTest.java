@@ -51,7 +51,7 @@ public class ResourceBundleResourceI18ConcernTest {
 	//ResourceBundleResourceI18nConcern.getResources(Class)
 
 	/**
-	 * Happy path test of loading resources for {@link FooBar}.
+	 * Happy path test of loading resources for {@link FooBar}, which uses a traditional properties file.
 	 * @see ResourceBundleResourceI18nConcern#DEFAULT
 	 * @see ResourceBundleResourceI18nConcern#getResources(Class)
 	 * @see FooBar
@@ -59,6 +59,18 @@ public class ResourceBundleResourceI18ConcernTest {
 	@Test
 	public void testDefaultGetResourcesForFooBar() {
 		final Resources resources = ResourceBundleResourceI18nConcern.DEFAULT.getResources(FooBar.class);
+		assertThat(resources.getString("foo"), is("bar"));
+	}
+
+	/**
+	 * Happy path test of loading resources for {@link XmlFooBar}, which uses an XML format properties file.
+	 * @see ResourceBundleResourceI18nConcern#DEFAULT
+	 * @see ResourceBundleResourceI18nConcern#getResources(Class)
+	 * @see FooBar
+	 */
+	@Test
+	public void testDefaultGetResourcesForXMlFooBar() {
+		final Resources resources = ResourceBundleResourceI18nConcern.DEFAULT.getResources(XmlFooBar.class);
 		assertThat(resources.getString("foo"), is("bar"));
 	}
 
