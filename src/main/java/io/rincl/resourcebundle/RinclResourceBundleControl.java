@@ -23,10 +23,13 @@ import static java.util.stream.StreamSupport.*;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.CharacterCodingException;
 import java.util.*;
 import java.util.stream.Stream;
 
 import javax.annotation.*;
+
+import com.globalmentor.util.PropertiesUtilities;
 
 /**
  * Custom resource bundle control implementation that provides custom resource bundle loading for Rincl.
@@ -56,6 +59,9 @@ import javax.annotation.*;
  */
 public class RinclResourceBundleControl extends ResourceBundle.Control {
 
+	/** The constant string <code>"java.properties"</code> identifying the traditional Java properties format. */
+	public static final String JAVA_PROPERTIES_FORMAT = FORMAT_PROPERTIES.iterator().next();
+
 	/**
 	 * Default instance of Rincl resource bundle control.
 	 * <p>
@@ -68,7 +74,7 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 	 */
 	public static final RinclResourceBundleControl DEFAULT;
 
-	static {
+	static { //initialization of DEFAULT must occur after JAVA_PROPERTIES_FORMAT has been defined
 		DEFAULT = new RinclResourceBundleControl(stream(ServiceLoader.load(ResourceBundleLoader.class).spliterator(), false));
 	}
 
@@ -82,11 +88,18 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 	 * loaders indicate the same filename extension suffix, the last resource bundle loader will replace the others for that format. Otherwise the formats will be
 	 * attempted in the order given, before the default Java supported formats are attempted.
 	 * </p>
+	 * <p>
+	 * A special resource bundle loader for handling UTF-8 encoded properties files is also registered (but can be overridden by one of the given resource bundle
+	 * loaders), with fallback to the default ISO-8859-1 properties file handling.
+	 * </p>
 	 * @param resourceBundleLoaders The resource bundle loaders
 	 */
 	public RinclResourceBundleControl(@Nonnull final Stream<ResourceBundleLoader> resourceBundleLoaders) {
 		//use a LinkedHashMap to remember the given order of resource bundle loaders
 		final Map<String, ResourceBundleLoader> resourceBundleLoadersMap = new LinkedHashMap<>();
+		//register special support for the traditional properties format in UTF-8
+		resourceBundleLoadersMap.put(JAVA_PROPERTIES_FORMAT, UtfPropertiesResourceBundleLoader.INSTANCE);
+		//register all the given resource bundle loaders, potentially overriding the properties format we installed
 		resourceBundleLoaders.forEach(resourceBundleLoader -> {
 			resourceBundleLoader.getFilenameExtensionSuffixes().forEach(format -> {
 				resourceBundleLoadersMap.put(format, resourceBundleLoader);
@@ -125,22 +138,35 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 		//see if we have a resource bundle registered for this format
 		final ResourceBundleLoader resourceBundleLoader = formatResourceBundleLoaders.get(requireNonNull(format));
 		if(resourceBundleLoader != null) {
-			assert resourceBundleLoader.getFilenameExtensionSuffixes().collect(toSet()).contains(format) : "Resource bundle loader incorrectly registered.";
-			final String bundleName = toBundleName(baseName, locale);
-			final String resourceName = toResourceName(bundleName, format);
-			final URL url = classLoader.getResource(resourceName);
-			if(url != null) {
-				final URLConnection connection = url.openConnection();
-				if(connection != null) {
-					if(reload) {
-						connection.setUseCaches(false);
+			final boolean isJavaProperties = JAVA_PROPERTIES_FORMAT.equals(format);
+			assert isJavaProperties //the "java.properties" format was registered specially
+					|| resourceBundleLoader.getFilenameExtensionSuffixes().collect(toSet()).contains(format) : "Resource bundle loader incorrectly registered.";
+			try {
+				final String bundleName = toBundleName(baseName, locale);
+				//normally we use the format as the extension, except for the special Java-recognized formats
+				final String suffix = isJavaProperties ? PropertiesUtilities.PROPERTIES_NAME_EXTENSION : format;
+				final String resourceName = toResourceName(bundleName, suffix);
+				final URL resourceURL = classLoader.getResource(resourceName);
+				if(resourceURL != null) {
+					final URLConnection connection = resourceURL.openConnection();
+					if(connection != null) {
+						if(reload) {
+							connection.setUseCaches(false);
+						}
+						try (final InputStream inputStream = new BufferedInputStream(connection.getInputStream())) {
+							return resourceBundleLoader.load(inputStream);
+						}
 					}
-					try (final InputStream inputStream = connection.getInputStream()) {
-						return resourceBundleLoader.load(inputStream);
-					}
+				}
+			} catch(final CharacterCodingException characterCodingException) {
+				//if the traditional properties format was requested,
+				//fall back from UTF-8 to the default handling (i.e. try again)
+				if(!isJavaProperties) {
+					throw characterCodingException;
 				}
 			}
 		}
+
 		//see if the default loading control supports the format
 		return super.newBundle(baseName, locale, format, classLoader, reload);
 	}

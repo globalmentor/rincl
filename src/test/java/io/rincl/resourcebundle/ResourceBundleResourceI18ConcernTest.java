@@ -35,10 +35,11 @@ public class ResourceBundleResourceI18ConcernTest {
 	private Locale defaultLocale, defaultDisplayLocale, defaultFormatLocale;
 
 	@Before
-	public void saveDefaultLocales() {
+	public void setTestLocale() {
 		defaultLocale = Locale.getDefault();
 		defaultDisplayLocale = Locale.getDefault(Category.DISPLAY);
 		defaultFormatLocale = Locale.getDefault(Category.FORMAT);
+		Locale.setDefault(Locale.ENGLISH);
 	}
 
 	@After

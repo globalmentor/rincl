@@ -25,37 +25,37 @@ import java.util.*;
 import org.junit.*;
 
 /**
- * Tests for {@link XmlPropertiesResourceBundleLoader}.
+ * Tests for {@link UtfPropertiesResourceBundleLoader}.
  * @author Garret Wilson
  */
-public class XmlPropertiesResourceBundleLoaderTest {
+public class UtfPropertiesResourceBundleLoaderTest {
 
-	/** @see XmlPropertiesResourceBundleLoader#getFilenameExtensionSuffixes() */
+	/** @see UtfPropertiesResourceBundleLoader#getFilenameExtensionSuffixes() */
 	@Test
 	public void testGetFilenameExtensionSuffixes() {
-		assertThat(new XmlPropertiesResourceBundleLoader().getFilenameExtensionSuffixes().collect(toSet()), containsInAnyOrder("properties.xml"));
+		assertThat(UtfPropertiesResourceBundleLoader.INSTANCE.getFilenameExtensionSuffixes().collect(toSet()), containsInAnyOrder("properties"));
 	}
 
 	/**
-	 * @see XmlPropertiesResourceBundleLoader#load(InputStream)
+	 * @see UtfPropertiesResourceBundleLoaderload(InputStream)
 	 * @throws IOException if there is an error loading the test resources file.
 	 */
 	@Test
-	public void testLoadXmlUtf8Bom() throws IOException {
-		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("test-utf-8-bom.properties.xml"))) {
-			final ResourceBundle resourceBundle = new XmlPropertiesResourceBundleLoader().load(inputStream);
+	public void testLoadPropertiesUtf8Bom() throws IOException {
+		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("test-utf-8-bom.properties"))) {
+			final ResourceBundle resourceBundle = UtfPropertiesResourceBundleLoader.INSTANCE.load(inputStream);
 			assertThat(resourceBundle.getString("test"), is("touché"));
 		}
 	}
 
 	/**
-	 * @see XmlPropertiesResourceBundleLoader#load(InputStream)
+	 * @see UtfPropertiesResourceBundleLoader#load(InputStream)
 	 * @throws IOException if there is an error loading the test resources file.
 	 */
 	@Test
-	public void testLoadXmlUtf8NoBom() throws IOException {
-		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("test-utf-8-no-bom.properties.xml"))) {
-			final ResourceBundle resourceBundle = new XmlPropertiesResourceBundleLoader().load(inputStream);
+	public void testLoadPropertiesUtf8NoBom() throws IOException {
+		try (final InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream("test-utf-8-no-bom.properties"))) {
+			final ResourceBundle resourceBundle = UtfPropertiesResourceBundleLoader.INSTANCE.load(inputStream);
 			assertThat(resourceBundle.getString("test"), is("touché"));
 		}
 	}

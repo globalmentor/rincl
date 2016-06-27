@@ -42,7 +42,7 @@ public class XmlPropertiesResourceBundleLoader implements ResourceBundleLoader {
 	}
 
 	@Override
-	public ResourceBundle load(InputStream inputStream) throws IOException {
+	public ResourceBundle load(final InputStream inputStream) throws IOException {
 		final Properties properties = new Properties();
 		properties.loadFromXML(inputStream);
 		return new HashMapResourceBundle(properties);

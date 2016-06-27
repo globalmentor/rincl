@@ -44,11 +44,15 @@ public interface ResourceBundleLoader {
 	/**
 	 * Loads a resource bundle from the given input stream.
 	 * <p>
+	 * The given input stream is guaranteed to support {@link InputStream#mark(int)} and {@link InputStream#reset()}.
+	 * </p>
+	 * <p>
 	 * The input stream should <em>not</em> be closed by this method.
 	 * </p>
 	 * @param inputStream The input stream from which the resource bundle will be loaded.
 	 * @return A new resource bundle, loaded from the given input stream.
 	 * @throws IOException if there is an error loading a resource bundle from the giving input stream.
+	 * @see InputStream#markSupported()
 	 */
 	public @Nonnull ResourceBundle load(@Nonnull final InputStream inputStream) throws IOException;
 
