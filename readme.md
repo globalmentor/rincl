@@ -30,6 +30,12 @@ Other Rincl implementations in addition to resource bundles will be available in
 
 Rincl is available in the Maven Central Repository in group [io.rincl](http://search.maven.org/#search|ga|1|g%3A%22io.rincl%22).
 
+## Issues
+
+Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
+
 ## Changelog
 
+- 0.7.0:
+	* [RINCL-5](https://globalmentor.atlassian.net/browse/RINCL-5): Add default empty resources for unconfigured uses.
 - 0.6.0: First release.
