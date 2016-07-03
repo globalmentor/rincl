@@ -16,7 +16,7 @@
 
 package io.rincl.resourcebundle;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 import java.util.*;
 
@@ -68,7 +68,7 @@ public class ResourceBundleResources extends AbstractStringResources {
 	public ResourceBundleResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources,
 			@Nonnull final ResourceBundle resourceBundle) {
 		super(contextClass, parentResources);
-		this.resourceBundle = checkInstance(resourceBundle);
+		this.resourceBundle = requireNonNull(resourceBundle);
 	}
 
 	/**
