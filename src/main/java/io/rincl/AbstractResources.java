@@ -16,7 +16,7 @@
 
 package io.rincl;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 import java.util.Optional;
 
@@ -49,8 +49,8 @@ public abstract class AbstractResources implements Resources {
 	 * @throws NullPointerException if the given context class and/or parent resources is <code>null</code>.
 	 */
 	public AbstractResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources) {
-		this.contextClass = checkInstance(contextClass);
-		this.parentResources = checkInstance(parentResources);
+		this.contextClass = requireNonNull(contextClass);
+		this.parentResources = requireNonNull(parentResources);
 	}
 
 }

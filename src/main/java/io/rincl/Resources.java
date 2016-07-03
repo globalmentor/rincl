@@ -16,7 +16,7 @@
 
 package io.rincl;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -53,7 +53,7 @@ public interface Resources {
 	 */
 	public default <T> T requireResource(@Nonnull final Optional<T> resource, @Nonnull final String key) throws MissingResourceException {
 		return resource.orElseThrow(() -> new MissingResourceException(String.format("Missing resource for key %s of class %s.", key, getContextClass().getName()),
-				getContextClass().getName(), checkInstance(key)));
+				getContextClass().getName(), requireNonNull(key)));
 	}
 
 	/**

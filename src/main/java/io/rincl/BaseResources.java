@@ -16,7 +16,7 @@
 
 package io.rincl;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -102,6 +102,6 @@ public abstract class BaseResources extends AbstractResources {
 	 * @throws ResourceConfigurationException if an expression is not in the correct format, or if no resource is associated with a key in an expression.
 	 */
 	protected @Nonnull String dereferenceString(@Nonnull final String string) {
-		return checkInstance(string); //TODO implement; allow for dereference strategy
+		return requireNonNull(string); //TODO implement; allow for dereference strategy
 	}
 }
