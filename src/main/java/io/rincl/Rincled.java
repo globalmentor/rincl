@@ -26,17 +26,16 @@ package io.rincl;
 public interface Rincled {
 
 	/**
-	 * Retrieves resources for the given class.
+	 * Retrieves resources for the class.
 	 * <p>
 	 * The class returned by {@link Object#getClass()} will be used as the context class.
 	 * </p>
-	 * @see Rincl#getResourceI18nConcern()
-	 * @see Object#getClass()
-	 * @see ResourceI18nConcern#getResources(Class)
 	 * @return Access to configured resources for the implementing class.
+	 * @see Rincl#getResources(Class)
+	 * @see Object#getClass()
 	 */
 	public default Resources getResources() throws ResourceConfigurationException {
-		return Rincl.getResourceI18nConcern().getResources(getClass());
+		return Rincl.getResources(getClass());
 	}
 
 }

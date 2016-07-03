@@ -21,6 +21,7 @@ import java.util.*;
 import javax.annotation.*;
 
 import io.csar.*;
+import io.rincl.Resources;
 
 /**
  * The Resource I18n Concern Library (Rincl) facilitates internationalization by providing access to localization {@link Resources} via {@link Csar}.
@@ -77,8 +78,27 @@ public class Rincl {
 	 * @see Csar#getConcern(Class)
 	 * @see EmptyResourceI18nConcern#INSTANCE
 	 */
-	public static ResourceI18nConcern getResourceI18nConcern() {
+	public @Nonnull static ResourceI18nConcern getResourceI18nConcern() {
 		return Csar.getConcern(ResourceI18nConcern.class).orElse(EmptyResourceI18nConcern.INSTANCE);
+	}
+
+	/**
+	 * Retrieves resources for the current context for the given context class.
+	 * <p>
+	 * The context class returned by {@link Resources#getContextClass()} may not necessarily be the context class provided here.
+	 * </p>
+	 * <p>
+	 * This is a convenience method that requests resources from the current context resource i18n concern.
+	 * </p>
+	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
+	 * @return Access to configured resources for the given context class in the current context.
+	 * @throws NullPointerException if the given context class is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @see #getResourceI18nConcern()
+	 * @see ResourceI18nConcern#getResources(Class)
+	 */
+	public @Nonnull static Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException {
+		return getResourceI18nConcern().getResources(contextClass);
 	}
 
 	/**

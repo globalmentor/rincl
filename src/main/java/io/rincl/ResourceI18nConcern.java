@@ -94,6 +94,6 @@ public interface ResourceI18nConcern extends Concern {
 	 * @throws NullPointerException if the given context class is <code>null</code>.
 	 * @throws ResourceConfigurationException if there is a configuration error.
 	 */
-	public Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException;
+	public @Nonnull Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException;
 
 }
