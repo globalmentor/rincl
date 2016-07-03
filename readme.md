@@ -37,5 +37,6 @@ Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
 ## Changelog
 
 - 0.7.0:
+	* [RINCL-6](https://globalmentor.atlassian.net/browse/RINCL-6): Add Rincl convenience method for retrieving resources statically.
 	* [RINCL-5](https://globalmentor.atlassian.net/browse/RINCL-5): Add default empty resources for unconfigured uses.
 - 0.6.0: First release.
