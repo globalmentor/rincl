@@ -79,7 +79,7 @@ public class Rincl {
 	 * @see EmptyResourceI18nConcern#INSTANCE
 	 */
 	public @Nonnull static ResourceI18nConcern getResourceI18nConcern() {
-		return Csar.getConcern(ResourceI18nConcern.class).orElse(EmptyResourceI18nConcern.INSTANCE);
+		return Csar.getOptionalConcern(ResourceI18nConcern.class).orElse(EmptyResourceI18nConcern.INSTANCE);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class Rincl {
 	 * @see Locale#getDefault(Locale.Category)
 	 */
 	public static Locale getLocale(@Nonnull Locale.Category category) {
-		return Csar.getConcern(ResourceI18nConcern.class) //get the registered concern
+		return Csar.getOptionalConcern(ResourceI18nConcern.class) //get the registered concern
 				.map(concern -> concern.getLocale(category)) //return its locale
 				.orElseGet(() -> Locale.getDefault(category)); //if there is no registered concern, return the default locale
 	}
@@ -146,7 +146,7 @@ public class Rincl {
 	 */
 	public static void setLocale(@Nonnull Locale.Category category, @Nonnull Locale locale) {
 		final boolean setDefault; //whether we should also update the JVM default locale
-		final Optional<ResourceI18nConcern> registeredResourceI18nConcern = Csar.getConcern(ResourceI18nConcern.class);
+		final Optional<ResourceI18nConcern> registeredResourceI18nConcern = Csar.getOptionalConcern(ResourceI18nConcern.class);
 		if(registeredResourceI18nConcern.isPresent()) {
 			final ResourceI18nConcern resourceI18nConcern = registeredResourceI18nConcern.get();
 			resourceI18nConcern.setLocale(category, locale); //set the context locale
@@ -183,7 +183,7 @@ public class Rincl {
 	 */
 	public static void setLocale(@Nonnull Locale locale) {
 		final boolean setDefault; //whether we should also update the JVM default locale
-		final Optional<ResourceI18nConcern> registeredResourceI18nConcern = Csar.getConcern(ResourceI18nConcern.class);
+		final Optional<ResourceI18nConcern> registeredResourceI18nConcern = Csar.getOptionalConcern(ResourceI18nConcern.class);
 		if(registeredResourceI18nConcern.isPresent()) {
 			final ResourceI18nConcern resourceI18nConcern = registeredResourceI18nConcern.get();
 			resourceI18nConcern.setLocale(locale); //set the context locale
