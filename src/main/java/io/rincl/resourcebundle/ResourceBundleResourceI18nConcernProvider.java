@@ -23,12 +23,11 @@ import io.csar.*;
 /**
  * Provides a default resource bundle-based concern for resource internationalization.
  * @author Garret Wilson
- * @see ResourceBundleResourceI18nConcern#DEFAULT
  */
 public class ResourceBundleResourceI18nConcernProvider implements ConcernProvider {
 
 	@Override
 	public Stream<Concern> concerns() {
-		return Stream.of(ResourceBundleResourceI18nConcern.DEFAULT);
+		return Stream.of(new ResourceBundleResourceI18nConcern());
 	}
 }

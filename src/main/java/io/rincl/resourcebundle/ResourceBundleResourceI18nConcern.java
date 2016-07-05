@@ -32,21 +32,12 @@ import io.rincl.*;
  * inheritance hierarchy of the context class is checked. If no resource bundle can be found, default resources are returned.
  * </p>
  * <p>
- * This library installs a global {@link ResourceBundleResourceI18nConcern#DEFAULT} implementation via the {@link ResourceBundleResourceI18nConcernProvider}.
+ * This library installs a global, default {@link ResourceBundleResourceI18nConcern} instance via the {@link ResourceBundleResourceI18nConcernProvider}.
  * </p>
  * @author Garret Wilson
  * @see ResourceBundleResources
  */
 public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConcern {
-
-	/**
-	 * Default implementation of resource bundle-based resources, searching for base names based upon class names up the hierarchy of the class.
-	 * @see RinclResourceBundleControl#DEFAULT
-	 * @see BaseNameStrategy#CLASS_BASE_NAME_STRATEGY
-	 * @see ResolvingClassStrategy#DEFAULT
-	 */
-	public static final ResourceBundleResourceI18nConcern DEFAULT = new ResourceBundleResourceI18nConcern(RinclResourceBundleControl.DEFAULT,
-			BaseNameStrategy.CLASS_BASE_NAME_STRATEGY, ResolvingClassStrategy.DEFAULT);
 
 	private final ResourceBundle.Control resourceBundleControl;
 
@@ -70,14 +61,57 @@ public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConce
 	}
 
 	/**
-	 * Base name and resolving class strategy.
+	 * Default constructor which searching for base names based upon class names up the hierarchy of the class.
+	 * @see RinclResourceBundleControl#DEFAULT
+	 * @see BaseNameStrategy#CLASS_BASE_NAME_STRATEGY
+	 * @see ResolvingClassStrategy#DEFAULT
+	 */
+	public ResourceBundleResourceI18nConcern() {
+		this(BaseNameStrategy.CLASS_BASE_NAME_STRATEGY);
+	}
+
+	/**
+	 * Base name strategy and resolving class strategy constructor.
+	 * @param baseNameStrategy The strategy for determining the base names to use for a reference class when searching for resource bundles.
+	 * @throws NullPointerException if the given base name strategy and/or resolving class strategy is <code>null</code>.
+	 * @see RinclResourceBundleControl#DEFAULT
+	 * @see ResolvingClassStrategy#DEFAULT
+	 */
+	public ResourceBundleResourceI18nConcern(@Nonnull final BaseNameStrategy baseNameStrategy) {
+		this(baseNameStrategy, ResolvingClassStrategy.DEFAULT);
+	}
+
+	/**
+	 * Base name strategy and resolving class strategy constructor.
+	 * @param resolvingClassStrategy Strategy for determining the parent class priority when creating resolving parent resources.
+	 * @throws NullPointerException if the given base name strategy and/or resolving class strategy is <code>null</code>.
+	 * @see RinclResourceBundleControl#DEFAULT
+	 * @see BaseNameStrategy#CLASS_BASE_NAME_STRATEGY
+	 */
+	public ResourceBundleResourceI18nConcern(@Nonnull final ResolvingClassStrategy resolvingClassStrategy) {
+		this(BaseNameStrategy.CLASS_BASE_NAME_STRATEGY, resolvingClassStrategy);
+	}
+
+	/**
+	 * Base name strategy and resolving class strategy constructor.
+	 * @param baseNameStrategy The strategy for determining the base names to use for a reference class when searching for resource bundles.
+	 * @param resolvingClassStrategy Strategy for determining the parent class priority when creating resolving parent resources.
+	 * @throws NullPointerException if the given base name strategy and/or resolving class strategy is <code>null</code>.
+	 * @see RinclResourceBundleControl#DEFAULT
+	 */
+	public ResourceBundleResourceI18nConcern(@Nonnull final BaseNameStrategy baseNameStrategy, @Nonnull final ResolvingClassStrategy resolvingClassStrategy) {
+		this(RinclResourceBundleControl.DEFAULT, baseNameStrategy, resolvingClassStrategy);
+	}
+
+	/**
+	 * Control, base name strategy, and resolving class strategy constructor.
 	 * @param resourceBundleControl A resource bundle loading control strategy to use for loading resources.
 	 * @param baseNameStrategy The strategy for determining the base names to use for a reference class when searching for resource bundles.
 	 * @param resolvingClassStrategy Strategy for determining the parent class priority when creating resolving parent resources.
 	 * @throws NullPointerException if the given resource bundle control, base name strategy and/or resolving class strategy is <code>null</code>.
 	 */
 	public ResourceBundleResourceI18nConcern(@Nonnull final ResourceBundle.Control resourceBundleControl, @Nonnull final BaseNameStrategy baseNameStrategy,
-			@Nonnull ResolvingClassStrategy resolvingClassStrategy) {
+			@Nonnull final ResolvingClassStrategy resolvingClassStrategy) {
 		this.resourceBundleControl = requireNonNull(resourceBundleControl);
 		this.baseNameStrategy = requireNonNull(baseNameStrategy);
 		this.resolvingClassStrategy = requireNonNull(resolvingClassStrategy);
