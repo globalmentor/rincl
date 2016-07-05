@@ -18,8 +18,7 @@ package io.rincl.resourcebundle;
 
 import java.util.stream.Stream;
 
-import io.csar.Concern;
-import io.csar.ConcernProvider;
+import io.csar.*;
 
 /**
  * Provides a default resource bundle-based concern for resource internationalization.
