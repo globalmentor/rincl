@@ -95,10 +95,17 @@ public class ResourceBundleResources extends AbstractStringResources {
 	 */
 	@Override
 	protected Optional<String> getOptionalStringImpl(String key) throws ResourceConfigurationException {
-		try {
-			return Optional.of(getResourceBundle().getString(key));
-		} catch(final MissingResourceException missingResourceException) { //if we couldn't get the resource bundle
+		final ResourceBundle resourceBundle = getResourceBundle();
+		//See if the resource bundle contains the key;
+		//otherwise, catching the exception and filling in the stack trace every time we need
+		//simply to delegate to the parent resources afterwards causes too much overhead.
+		if(!resourceBundle.containsKey(key)) {
 			return Optional.empty();
+		}
+		try {
+			return Optional.of(resourceBundle.getString(key));
+		} catch(final MissingResourceException missingResourceException) { //we don't expect this...
+			return Optional.empty(); //...but it may not be impossible
 		}
 	}
 
