@@ -1,5 +1,11 @@
 # Rincl ResourceBundle
 
+Rincl implementation based on Java resource bundles.
+
+## Download
+
+Rincl ResourceBundle is available in the [Maven Central Repository](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.rincl%22%20AND%20a%3A%22rincl-resourcebundle%22).
+
 ## Issues
 
 Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
