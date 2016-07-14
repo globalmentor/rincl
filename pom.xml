@@ -5,7 +5,7 @@
 
 	<groupId>io.rincl</groupId>
 	<artifactId>rincl</artifactId>
-	<version>0.7.0</version>
+	<version>0.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Resource I18n Concern Library (Rincl)</name>
@@ -70,7 +70,7 @@
 		<dependency>
 			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-core</artifactId>
-			<version>0.5.1</version>
+			<version>0.5.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
