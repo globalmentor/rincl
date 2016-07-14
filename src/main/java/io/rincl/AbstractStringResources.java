@@ -16,6 +16,8 @@
 
 package io.rincl;
 
+import static com.globalmentor.util.Optionals.*;
+
 import java.util.Optional;
 
 import javax.annotation.*;
@@ -58,9 +60,7 @@ public abstract class AbstractStringResources extends BaseResources {
 	 */
 	@Override
 	public Optional<Boolean> getOptionalBoolean(final String key) throws ResourceConfigurationException {
-		return getOptionalDereferencedString(key).map(Boolean::valueOf)
-				//delegate TODO switch to Optional.or() in Java 9: http://hg.openjdk.java.net/jdk9/dev/jdk/rev/423df075cf72
-				.map(Optional::of).orElseGet(() -> getParentResources().flatMap(resources -> resources.getOptionalBoolean(key)));
+		return or(getOptionalDereferencedString(key).map(Boolean::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalBoolean(key)));
 	}
 
 	/**
@@ -72,9 +72,7 @@ public abstract class AbstractStringResources extends BaseResources {
 	@Override
 	public Optional<Double> getOptionalDouble(final String key) throws ResourceConfigurationException {
 		try {
-			return getOptionalDereferencedString(key).map(Double::valueOf)
-					//delegate TODO switch to Optional.or() in Java 9: http://hg.openjdk.java.net/jdk9/dev/jdk/rev/423df075cf72
-					.map(Optional::of).orElseGet(() -> getParentResources().flatMap(resources -> resources.getOptionalDouble(key)));
+			return or(getOptionalDereferencedString(key).map(Double::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalDouble(key)));
 		} catch(final NumberFormatException numberFormatException) {
 			throw new ResourceConfigurationException(numberFormatException);
 		}
@@ -89,11 +87,10 @@ public abstract class AbstractStringResources extends BaseResources {
 	@Override
 	public Optional<Integer> getOptionalInt(final String key) throws ResourceConfigurationException {
 		try {
-			return getOptionalDereferencedString(key).map(Integer::valueOf)
-					//delegate TODO switch to Optional.or() in Java 9: http://hg.openjdk.java.net/jdk9/dev/jdk/rev/423df075cf72
-					.map(Optional::of).orElseGet(() -> getParentResources().flatMap(resources -> resources.getOptionalInt(key)));
+			return or(getOptionalDereferencedString(key).map(Integer::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalInt(key)));
 		} catch(final NumberFormatException numberFormatException) {
 			throw new ResourceConfigurationException(numberFormatException);
 		}
 	}
+
 }
