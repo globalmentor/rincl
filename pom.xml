@@ -5,7 +5,7 @@
 
 	<groupId>io.rincl</groupId>
 	<artifactId>rincl-resourcebundle</artifactId>
-	<version>0.7.0</version>
+	<version>0.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Rincl ResourceBundle</name>
@@ -60,13 +60,7 @@
 		<dependency>
 			<groupId>io.rincl</groupId>
 			<artifactId>rincl</artifactId>
-			<version>0.7.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-core</artifactId>
-			<version>0.5.1</version>
+			<version>0.7.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
