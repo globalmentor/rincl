@@ -18,6 +18,7 @@ package io.rincl;
 
 import static java.util.Objects.*;
 
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -181,5 +182,27 @@ public interface Resources {
 	 */
 	public Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ResourceConfigurationException;
 
-	//TODO URI
+	//URI
+
+	/**
+	 * Retrieves a URI resource.
+	 * @param key The resource key.
+	 * @return The value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws MissingResourceException if no resource is associated with the given key.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public default @Nonnull URI getUri(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
+		return requireResource(getOptionalUri(key), key);
+	}
+
+	/**
+	 * Retrieves a URI resource that may not be present.
+	 * @param key The resource key.
+	 * @return The optional value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public Optional<URI> getOptionalUri(@Nonnull final String key) throws ResourceConfigurationException;
+
 }

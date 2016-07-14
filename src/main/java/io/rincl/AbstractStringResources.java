@@ -18,6 +18,7 @@ package io.rincl;
 
 import static com.globalmentor.util.Optionals.*;
 
+import java.net.URI;
 import java.util.Optional;
 
 import javax.annotation.*;
@@ -90,6 +91,21 @@ public abstract class AbstractStringResources extends BaseResources {
 			return or(getOptionalDereferencedString(key).map(Integer::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalInt(key)));
 		} catch(final NumberFormatException numberFormatException) {
 			throw new ResourceConfigurationException(numberFormatException);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation parses the value using {@link URI#create(String)}.
+	 * </p>
+	 */
+	@Override
+	public Optional<URI> getOptionalUri(final String key) throws ResourceConfigurationException {
+		try {
+			return or(getOptionalDereferencedString(key).map(URI::create), () -> getParentResources().flatMap(resources -> resources.getOptionalUri(key)));
+		} catch(final IllegalArgumentException illegalArgumentException) {
+			throw new ResourceConfigurationException(illegalArgumentException);
 		}
 	}
 

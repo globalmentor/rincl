@@ -16,6 +16,7 @@
 
 package io.rincl;
 
+import java.net.URI;
 import java.util.Optional;
 
 import javax.annotation.*;
@@ -81,6 +82,11 @@ public final class EmptyResources extends AbstractResources {
 	@Override
 	public Optional<String> getOptionalString(String key, Object... arguments) throws ResourceConfigurationException {
 		return getParentResources().flatMap(resources -> resources.getOptionalString(key, arguments));
+	}
+
+	@Override
+	public Optional<URI> getOptionalUri(String key) throws ResourceConfigurationException {
+		return getParentResources().flatMap(resources -> resources.getOptionalUri(key));
 	}
 
 }
