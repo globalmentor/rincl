@@ -47,6 +47,14 @@ public class AbstractStringResourcesTest {
 		assertThat(resources.getOptionalInt("foo"), is(Optional.of(123)));
 	}
 
+	/** @see AbstractStringResources#getOptionalLong(String) */
+	@Test
+	public void testGetOptionalLong() {
+		final AbstractStringResources resources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
+		when(resources.getOptionalStringImpl("foo")).thenReturn(Optional.of("123456789"));
+		assertThat(resources.getOptionalLong("foo"), is(Optional.of(123456789L)));
+	}
+
 	/** @see AbstractStringResources#getOptionalUri(String) */
 	@Test
 	public void testGetOptionalUri() {

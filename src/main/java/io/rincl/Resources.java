@@ -138,6 +138,34 @@ public interface Resources {
 	 */
 	public Optional<Integer> getOptionalInt(@Nonnull final String key) throws ResourceConfigurationException;
 
+	//long
+
+	/**
+	 * Retrieves a long integer resource.
+	 * @param key The resource key.
+	 * @return The value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws MissingResourceException if no resource is associated with the given key.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public default @Nonnull int getLong(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
+		return requireResource(getOptionalLong(key), key).intValue();
+	}
+
+	/**
+	 * Retrieves a long integer resource that may not be present.
+	 * <p>
+	 * The default implementation delegates to {@link #getOptionalInt(String)}.
+	 * </p>
+	 * @param key The resource key.
+	 * @return The optional value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public default Optional<Long> getOptionalLong(@Nonnull final String key) throws ResourceConfigurationException {
+		return getOptionalInt(key).map(Integer::intValue).map(Long::valueOf); //this apparently uses auto-unboxing and autoboxing  
+	}
+
 	//TODO Path
 
 	//String

@@ -97,6 +97,21 @@ public abstract class AbstractStringResources extends BaseResources {
 	/**
 	 * {@inheritDoc}
 	 * <p>
+	 * This implementation parses the value using {@link Long#valueOf(long)}.
+	 * </p>
+	 */
+	@Override
+	public Optional<Long> getOptionalLong(final String key) throws ResourceConfigurationException {
+		try {
+			return or(getOptionalDereferencedString(key).map(Long::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalLong(key)));
+		} catch(final NumberFormatException numberFormatException) {
+			throw new ResourceConfigurationException(numberFormatException);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
 	 * This implementation parses the value using {@link URI#create(String)}.
 	 * </p>
 	 */
