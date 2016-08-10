@@ -78,7 +78,7 @@ public class ResourceBundleResources extends AbstractStringResources {
 	 * </p>
 	 */
 	@Override
-	public boolean hasResource(String key) throws ResourceConfigurationException {
+	public boolean hasResource(final String key) throws ResourceConfigurationException {
 		//check the resource bundle directly
 		if(getResourceBundle().containsKey(key)) {
 			return true;
@@ -90,11 +90,12 @@ public class ResourceBundleResources extends AbstractStringResources {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation delegates to {@link ResourceBundle#getString(String)}.
+	 * This implementation delegates to {@link ResourceBundle#getObject(String)}. If the returned object is a string, it is dereferenced.
 	 * </p>
+	 * @see #dereferenceString(String)
 	 */
 	@Override
-	protected Optional<String> getOptionalStringImpl(String key) throws ResourceConfigurationException {
+	public <T> Optional<T> getOptionalResource(final String key) throws ResourceConfigurationException {
 		final ResourceBundle resourceBundle = getResourceBundle();
 		//See if the resource bundle contains the key;
 		//otherwise, catching the exception and filling in the stack trace every time we need
@@ -103,7 +104,42 @@ public class ResourceBundleResources extends AbstractStringResources {
 			return Optional.empty();
 		}
 		try {
-			return Optional.of(resourceBundle.getString(key));
+			Object object = resourceBundle.getObject(key); //get the object
+			if(object instanceof String) { //if the object is a string, dereference it
+				object = dereferenceString((String)object);
+			}
+			@SuppressWarnings("unchecked")
+			final T typedObject = (T)object;
+			return Optional.of(typedObject);
+		} catch(final MissingResourceException missingResourceException) { //we don't expect this...
+			return Optional.empty(); //...but it may not be impossible
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation delegates to {@link ResourceBundle#getObject(String)}.
+	 * </p>
+	 * @throws ResourceConfigurationException if the requested resource is not an instance of {@link String}.
+	 */
+	@Override
+	protected Optional<String> getOptionalStringImpl(final String key) throws ResourceConfigurationException {
+		final ResourceBundle resourceBundle = getResourceBundle();
+		//See if the resource bundle contains the key;
+		//otherwise, catching the exception and filling in the stack trace every time we need
+		//simply to delegate to the parent resources afterwards causes too much overhead.
+		if(!resourceBundle.containsKey(key)) {
+			return Optional.empty();
+		}
+		try {
+			//ResourceBundle.getString(String) merely delegates to the ResourceBundle.getObject(String) version,
+			//so we'll do the same---but throw a better exception if the resource is not a string
+			final Object object = resourceBundle.getObject(key); //get the object
+			if(!(object instanceof String)) {
+				throw new ResourceConfigurationException(String.format("Resource with key %s is not a string.", key));
+			}
+			return Optional.of((String)object);
 		} catch(final MissingResourceException missingResourceException) { //we don't expect this...
 			return Optional.empty(); //...but it may not be impossible
 		}
