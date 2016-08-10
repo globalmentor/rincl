@@ -31,6 +31,14 @@ import org.junit.*;
  */
 public class AbstractStringResourcesTest {
 
+	/** @see AbstractStringResources#getOptionalResource(String) */
+	@Test
+	public void testGetOptionalObject() {
+		final AbstractStringResources resources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
+		when(resources.getOptionalStringImpl("foo")).thenReturn(Optional.of("abc123"));
+		assertThat(resources.getOptionalResource("foo"), is(Optional.of("abc123")));
+	}
+
 	/** @see AbstractStringResources#getOptionalDouble(String) */
 	@Test
 	public void testGetOptionalDouble() {

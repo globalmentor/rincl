@@ -69,6 +69,29 @@ public interface Resources {
 	 */
 	public boolean hasResource(@Nonnull final String key) throws ResourceConfigurationException;
 
+	/**
+	 * Retrieves a general resource.
+	 * @param <T> The type of resource expected.
+	 * @param key The resource key.
+	 * @return The value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws MissingResourceException if no resource is associated with the given key.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public default @Nonnull <T> T getResource(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
+		return requireResource(getOptionalResource(key), key);
+	}
+
+	/**
+	 * Retrieves a general resource that may not be present.
+	 * @param <T> The type of resource expected.
+	 * @param key The resource key.
+	 * @return The optional value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public <T> Optional<T> getOptionalResource(@Nonnull final String key) throws ResourceConfigurationException;
+
 	//boolean
 
 	/**

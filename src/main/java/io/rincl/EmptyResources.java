@@ -65,6 +65,11 @@ public final class EmptyResources extends AbstractResources {
 	}
 
 	@Override
+	public <T> Optional<T> getOptionalResource(String key) throws ResourceConfigurationException {
+		return getParentResources().flatMap(resources -> resources.getOptionalResource(key));
+	}
+
+	@Override
 	public Optional<Double> getOptionalDouble(String key) throws ResourceConfigurationException {
 		return getParentResources().flatMap(resources -> resources.getOptionalDouble(key));
 	}

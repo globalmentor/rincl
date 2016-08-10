@@ -56,6 +56,19 @@ public abstract class AbstractStringResources extends BaseResources {
 	/**
 	 * {@inheritDoc}
 	 * <p>
+	 * This implementation delegates to {@link #getOptionalDereferencedString(String)}.
+	 * </p>
+	 */
+	@Override
+	public <T> Optional<T> getOptionalResource(final String key) throws ResourceConfigurationException {
+		@SuppressWarnings("unchecked")
+		final Optional<T> optionalObject = (Optional<T>)getOptionalDereferencedString(key); //use the dereferenced string as the object
+		return or(optionalObject, () -> getParentResources().flatMap(resources -> resources.getOptionalResource(key)));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
 	 * This implementation parses the value using {@link Boolean#valueOf(String)}.
 	 * </p>
 	 */
