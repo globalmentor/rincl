@@ -19,6 +19,7 @@ package io.rincl;
 import static java.util.Objects.*;
 
 import java.net.URI;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -189,7 +190,48 @@ public interface Resources {
 		return getOptionalInt(key).map(Integer::intValue).map(Long::valueOf); //this apparently uses auto-unboxing and autoboxing  
 	}
 
-	//TODO Path
+	//Path
+
+	/**
+	 * Retrieves a path resource.
+	 * <p>
+	 * The path will be resolved using {@link #resolvePath(Path)}.
+	 * </p>
+	 * @param key The resource key.
+	 * @return The value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws MissingResourceException if no resource is associated with the given key.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public default @Nonnull Path getPath(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
+		return requireResource(getOptionalPath(key), key);
+	}
+
+	/**
+	 * Retrieves a path resource that may not be present.
+	 * <p>
+	 * The path will be resolved using {@link #resolvePath(Path)}.
+	 * </p>
+	 * @param key The resource key.
+	 * @return The optional value of the resource associated with the given key.
+	 * @throws NullPointerException if the given key is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 */
+	public Optional<Path> getOptionalPath(@Nonnull final String key) throws ResourceConfigurationException;
+
+	/**
+	 * Resolves the given path as appropriate. Absolute paths should not be modified. Relative paths may be resolved to some standard or configured absolute path,
+	 * depending on the implementation. A common base path may be configured separately, stored elsewhere in the resources, or encoded in the path string itself
+	 * for example.
+	 * <p>
+	 * The default implementation merely returns the given path.
+	 * </p>
+	 * @param path The path to resolve.
+	 * @return A resolved form of the path if appropriate.
+	 */
+	public default Path resolvePath(@Nonnull final Path path) {
+		return requireNonNull(path);
+	}
 
 	//String
 

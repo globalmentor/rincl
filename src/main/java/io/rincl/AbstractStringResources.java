@@ -19,6 +19,7 @@ package io.rincl;
 import static com.globalmentor.util.Optionals.*;
 
 import java.net.URI;
+import java.nio.file.*;
 import java.util.Optional;
 
 import javax.annotation.*;
@@ -119,6 +120,22 @@ public abstract class AbstractStringResources extends BaseResources {
 			return or(getOptionalDereferencedString(key).map(Long::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalLong(key)));
 		} catch(final NumberFormatException numberFormatException) {
 			throw new ResourceConfigurationException(numberFormatException);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation parses the value using {@link URI#create(String)} and then resolves the path using {@link #resolvePath(Path)}.
+	 * </p>
+	 */
+	@Override
+	public Optional<Path> getOptionalPath(final String key) throws ResourceConfigurationException {
+		try {
+			return or(getOptionalDereferencedString(key).map(Paths::get).map(this::resolvePath),
+					() -> getParentResources().flatMap(resources -> resources.getOptionalPath(key)));
+		} catch(final IllegalArgumentException illegalArgumentException) {
+			throw new ResourceConfigurationException(illegalArgumentException);
 		}
 	}
 

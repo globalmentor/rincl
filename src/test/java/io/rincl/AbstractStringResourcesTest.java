@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.net.URI;
+import java.nio.file.*;
 import java.util.Optional;
 
 import org.junit.*;
@@ -61,6 +62,15 @@ public class AbstractStringResourcesTest {
 		final AbstractStringResources resources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
 		when(resources.getOptionalStringImpl("foo")).thenReturn(Optional.of("123456789"));
 		assertThat(resources.getOptionalLong("foo"), is(Optional.of(123456789L)));
+	}
+
+	/** @see AbstractStringResources#getOptionalPath(String) */
+	@Test
+	public void testGetOptionalPath() {
+		final Path userFooBarPath = Paths.get(System.getProperty("user.home")).resolve("foo").resolve("bar");
+		final AbstractStringResources resources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
+		when(resources.getOptionalStringImpl("foo")).thenReturn(Optional.of(userFooBarPath.toString()));
+		assertThat(resources.getOptionalPath("foo"), is(Optional.of(userFooBarPath)));
 	}
 
 	/** @see AbstractStringResources#getOptionalUri(String) */
