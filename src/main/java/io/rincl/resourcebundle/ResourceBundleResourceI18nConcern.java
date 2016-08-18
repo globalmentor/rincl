@@ -136,13 +136,12 @@ public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConce
 	 * @see #getResourceBundleControl()
 	 */
 	@Override
-	public Resources getResources(final Class<?> contextClass) throws ResourceConfigurationException {
+	public Resources getResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
 		//start with the (optional) resolving parent resources
 		Optional<Resources> resources = getParentResources(contextClass);
 		//get a list of the resolving classes to use
 		final List<Class<?>> resolvingClassList = getResolvingClassStrategy().resolvingClasses(contextClass).collect(Collectors.toList());
 		if(!resolvingClassList.isEmpty()) { //no need to get the locale or create an iterator if the list is empty
-			final Locale locale = Rincl.getLocale(Locale.Category.DISPLAY);
 			//look at the resolving classes in reverse order, so that we can connect parent resources correctly
 			final ListIterator<Class<?>> resolvingClassListIterator = resolvingClassList.listIterator(resolvingClassList.size());
 			do { //we know there is at least one resource bundle

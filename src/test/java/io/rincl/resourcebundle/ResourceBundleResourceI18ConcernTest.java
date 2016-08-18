@@ -63,6 +63,18 @@ public class ResourceBundleResourceI18ConcernTest {
 	}
 
 	/**
+	 * Test of loading resources for {@link FooBar} for various locales.
+	 * @see ResourceBundleResourceI18nConcern#getResources(Class, Locale)
+	 * @see FooBar
+	 */
+	@Test
+	public void testDefaultGetLocaleResourcesForFooBar() {
+		assertThat(new ResourceBundleResourceI18nConcern().getResources(FooBar.class, new Locale("en")).getString("teacup"), is("teacup"));
+		assertThat(new ResourceBundleResourceI18nConcern().getResources(FooBar.class, new Locale("pt")).getString("teacup"), is("chávena"));
+		assertThat(new ResourceBundleResourceI18nConcern().getResources(FooBar.class, new Locale("pt", "BR")).getString("teacup"), is("xícara"));
+	}
+
+	/**
 	 * Happy path test of loading resources for {@link XmlFooBar}, which uses an XML format properties file.
 	 * @see ResourceBundleResourceI18nConcern#getResources(Class)
 	 * @see FooBar
