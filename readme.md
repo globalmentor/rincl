@@ -38,7 +38,8 @@ Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
 
 - 0.7.1:
 	* [RINCL-9](https://globalmentor.atlassian.net/browse/RINCL-9): Support additional resource types.
+	* [RINCL-10](https://globalmentor.atlassian.net/browse/RINCL-10): Add support to request messages from a specific locale.
 - 0.7.0:
-	* [RINCL-6](https://globalmentor.atlassian.net/browse/RINCL-6): Add Rincl convenience method for retrieving resources statically.
 	* [RINCL-5](https://globalmentor.atlassian.net/browse/RINCL-5): Add default empty resources for unconfigured uses.
+	* [RINCL-6](https://globalmentor.atlassian.net/browse/RINCL-6): Add Rincl convenience method for retrieving resources statically.
 - 0.6.0: First release.
