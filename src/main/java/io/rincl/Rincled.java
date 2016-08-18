@@ -31,30 +31,22 @@ public interface Rincled {
 
 	/**
 	 * Retrieves resources for the class.
-	 * <p>
-	 * The class returned by {@link Object#getClass()} will be used as the context class.
-	 * </p>
 	 * @return Access to configured resources for the implementing class.
-	 * @see Rincl#getResources(Class)
-	 * @see Object#getClass()
+	 * @see Rincl#getResources(Object)
 	 */
 	public default Resources getResources() throws ResourceConfigurationException {
-		return Rincl.getResources(getClass());
+		return Rincl.getResources(this);
 	}
 
 	/**
 	 * Retrieves resources related to a specified locale for the class.
-	 * <p>
-	 * The class returned by {@link Object#getClass()} will be used as the context class.
-	 * </p>
 	 * @param locale The locale for which resources should be returned.
 	 * @return Access to configured resources for the implementing class.
 	 * @throws NullPointerException if the given locale is <code>null</code>.
-	 * @see Rincl#getResources(Class, Locale)
-	 * @see Object#getClass()
+	 * @see Rincl#getResources(Object, Locale)
 	 */
 	public default Resources getResources(@Nonnull final Locale locale) throws ResourceConfigurationException {
-		return Rincl.getResources(getClass(), locale);
+		return Rincl.getResources(this, locale);
 	}
 
 }
