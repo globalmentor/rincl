@@ -54,7 +54,7 @@ public class AbstractResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new AbstractResourceI18nConcern() {
 			@Override
-			public Resources getResources(Class<?> contextClass) throws ResourceConfigurationException {
+			public Resources getResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -77,7 +77,7 @@ public class AbstractResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new AbstractResourceI18nConcern() {
 			@Override
-			public Resources getResources(Class<?> contextClass) throws ResourceConfigurationException {
+			public Resources getResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -102,7 +102,7 @@ public class AbstractResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new AbstractResourceI18nConcern() {
 			@Override
-			public Resources getResources(Class<?> contextClass) throws ResourceConfigurationException {
+			public Resources getResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -127,7 +127,7 @@ public class AbstractResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new AbstractResourceI18nConcern() {
 			@Override
-			public Resources getResources(Class<?> contextClass) throws ResourceConfigurationException {
+			public Resources getResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
 			}
 		};

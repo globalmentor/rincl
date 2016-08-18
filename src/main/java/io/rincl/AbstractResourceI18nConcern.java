@@ -61,7 +61,7 @@ public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern
 	/**
 	 * Retrieves parent resources for the given context.
 	 * <p>
-	 * This method should be used by subclass {@link #getResources(Class)} implementations to determine the parent resources to use.
+	 * This method should be used by subclass {@link #getResources(Class, Locale)} implementations to determine the parent resources to use.
 	 * </p>
 	 * <p>
 	 * The default implementation returns an empty optional.

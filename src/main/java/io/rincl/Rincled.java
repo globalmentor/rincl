@@ -16,6 +16,10 @@
 
 package io.rincl;
 
+import java.util.Locale;
+
+import javax.annotation.*;
+
 /**
  * Mixin interface to provide quick-and-easy resources i18n support to a class.
  * <p>
@@ -36,6 +40,21 @@ public interface Rincled {
 	 */
 	public default Resources getResources() throws ResourceConfigurationException {
 		return Rincl.getResources(getClass());
+	}
+
+	/**
+	 * Retrieves resources related to a specified locale for the class.
+	 * <p>
+	 * The class returned by {@link Object#getClass()} will be used as the context class.
+	 * </p>
+	 * @param locale The locale for which resources should be returned.
+	 * @return Access to configured resources for the implementing class.
+	 * @throws NullPointerException if the given locale is <code>null</code>.
+	 * @see Rincl#getResources(Class, Locale)
+	 * @see Object#getClass()
+	 */
+	public default Resources getResources(@Nonnull final Locale locale) throws ResourceConfigurationException {
+		return Rincl.getResources(getClass(), locale);
 	}
 
 }

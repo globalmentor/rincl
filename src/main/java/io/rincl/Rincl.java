@@ -102,6 +102,26 @@ public class Rincl {
 	}
 
 	/**
+	 * Retrieves resources related to a specified locale for the current context for the given context class.
+	 * <p>
+	 * The context class returned by {@link Resources#getContextClass()} may not necessarily be the context class provided here.
+	 * </p>
+	 * <p>
+	 * This is a convenience method that requests resources from the current context resource i18n concern.
+	 * </p>
+	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
+	 * @param locale The locale for which resources should be returned for the given context class.
+	 * @return Access to configured resources for the given context class in the current context.
+	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @see #getResourceI18nConcern()
+	 * @see ResourceI18nConcern#getResources(Class)
+	 */
+	public @Nonnull static Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
+		return getResourceI18nConcern().getResources(contextClass, locale);
+	}
+
+	/**
 	 * Retrieves the configured locale for the given category in the current context.
 	 * <p>
 	 * If no category has been configured for the concern context, or there is no configured {@link ResourceI18nConcern}, this method delegates to

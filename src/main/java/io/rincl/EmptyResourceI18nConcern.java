@@ -74,7 +74,7 @@ public class EmptyResourceI18nConcern implements ResourceI18nConcern {
 	 * @see EmptyResources
 	 */
 	@Override
-	public Resources getResources(final Class<?> contextClass) throws ResourceConfigurationException {
+	public Resources getResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
 		return new EmptyResources(contextClass);
 	}
 
