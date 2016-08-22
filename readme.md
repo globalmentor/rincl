@@ -12,6 +12,8 @@ Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
 
 ## Changelog
 
+- 0.7.1:
+	* [RINCL-4](https://globalmentor.atlassian.net/browse/RINCL-4): Standard way for providing parent/fallback resources.
 - 0.7.0:
 	* [RINCL-8](https://globalmentor.atlassian.net/browse/RINCL-8): Removed `ResourceBundleResourceI18nConcern` singleton instance and provided convenience constructors.
 	* [RINCL-7](https://globalmentor.atlassian.net/browse/RINCL-7): Make parent resource resolution more efficient by not relying on try/catch.
