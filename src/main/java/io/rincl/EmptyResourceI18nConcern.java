@@ -18,6 +18,7 @@ package io.rincl;
 
 import java.util.Locale;
 import java.util.Locale.Category;
+import java.util.Optional;
 
 /**
  * Resource internationalization concern that returns an empty set of resources.
@@ -68,14 +69,11 @@ public class EmptyResourceI18nConcern implements ResourceI18nConcern {
 	 * <p>
 	 * This implementation returns an instance of {@link EmptyResources}.
 	 * </p>
-	 * <p>
-	 * TODO implement resources caching
-	 * </p>
-	 * @see EmptyResources
+	 * @see Optional#empty()
 	 */
 	@Override
-	public Resources getResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
-		return new EmptyResources(contextClass);
+	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
+		return Optional.empty();
 	}
 
 }

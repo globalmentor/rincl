@@ -31,7 +31,7 @@ import io.csar.*;
  * @author Garret Wilson
  * @see Csar
  */
-public interface ResourceI18nConcern extends Concern {
+public interface ResourceI18nConcern extends Concern, ResourcesFactory {
 
 	@Override
 	public default Class<ResourceI18nConcern> getConcernType() {
@@ -106,27 +106,6 @@ public interface ResourceI18nConcern extends Concern {
 	}
 
 	/**
-	 * Retrieves resources related to a specified locale for the given context.
-	 * <p>
-	 * The context class returned by {@link Resources#getContextClass()} may not necessarily reflect the class of the context provided here.
-	 * </p>
-	 * <p>
-	 * The default implementation delegates to {@link #getResources(Object, Locale)} providing the class of the given instance. Implementations of this interface
-	 * should if at all possible implement the class-based resource lookup method variations and leave these default delegating method implementations so as to
-	 * provide the most flexibility to consumers.
-	 * </p>
-	 * @param context The context with which these resources are related; usually the object requesting the resource.
-	 * @param locale The locale for which resources should be returned for the given context.
-	 * @return Access to configured resources for the given context.
-	 * @throws NullPointerException if the given context and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
-	 * @see #getResources(Class, Locale)
-	 */
-	public default @Nonnull Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ResourceConfigurationException {
-		return getResources(context.getClass(), locale);
-	}
-
-	/**
 	 * Retrieves resources for the given context class.
 	 * <p>
 	 * The context class returned by {@link Resources#getContextClass()} may not necessarily be the context class provided here.
@@ -143,18 +122,5 @@ public interface ResourceI18nConcern extends Concern {
 	public default @Nonnull Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException {
 		return getResources(contextClass, getLocale(Locale.Category.DISPLAY));
 	}
-
-	/**
-	 * Retrieves resources related to a specified locale for the given context class.
-	 * <p>
-	 * The context class returned by {@link Resources#getContextClass()} may not necessarily be the context class provided here.
-	 * </p>
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param locale The locale for which resources should be returned for the given context class.
-	 * @return Access to configured resources for the given context class.
-	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
-	 */
-	public @Nonnull Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ResourceConfigurationException;
 
 }

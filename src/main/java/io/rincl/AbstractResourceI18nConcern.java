@@ -16,6 +16,8 @@
 
 package io.rincl;
 
+import static java.util.Objects.*;
+
 import java.util.*;
 
 import javax.annotation.*;
@@ -37,9 +39,21 @@ public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern
 		return locales[category.ordinal()].orElse(Locale.getDefault(category));
 	}
 
-	/** Default constructor. */
-	public AbstractResourceI18nConcern() {
+	private final ResourcesFactory parentResourcesFactory;
+
+	/** @return The strategy for creating parent resources for a particular context and locale. */
+	protected ResourcesFactory getParentResourcesFactory() {
+		return parentResourcesFactory;
+	}
+
+	/**
+	 * Constructor.
+	 * @param parentResourcesFactory The strategy for creating parent resources for a particular context and locale.
+	 * @throws NullPointerException if the given parent resources factory is <code>null</code>.
+	 */
+	public AbstractResourceI18nConcern(@Nonnull final ResourcesFactory parentResourcesFactory) {
 		Arrays.fill(locales, Optional.empty());
+		this.parentResourcesFactory = requireNonNull(parentResourcesFactory);
 	}
 
 	/**
@@ -56,23 +70,6 @@ public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern
 	@Override
 	public void setLocale(@Nonnull Locale.Category category, @Nonnull Locale locale) {
 		locales[category.ordinal()] = Optional.of(locale);
-	}
-
-	/**
-	 * Retrieves parent resources for the given context.
-	 * <p>
-	 * This method should be used by subclass {@link #getResources(Class, Locale)} implementations to determine the parent resources to use.
-	 * </p>
-	 * <p>
-	 * The default implementation returns an empty optional.
-	 * </p>
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @return The resources for fallback resource resolution.
-	 * @throws NullPointerException if the given context class is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
-	 */
-	protected Optional<Resources> getParentResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException {
-		return Optional.empty();
 	}
 
 }
