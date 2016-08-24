@@ -5,7 +5,7 @@
 
 	<groupId>io.rincl</groupId>
 	<artifactId>rincl-resourcebundle</artifactId>
-	<version>0.7.1-SNAPSHOT</version>
+	<version>0.7.1</version>
 	<packaging>jar</packaging>
 
 	<name>Rincl ResourceBundle</name>
@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>io.rincl</groupId>
 			<artifactId>rincl</artifactId>
-			<version>0.7.1-SNAPSHOT</version>
+			<version>0.7.1</version>
 		</dependency>
 
 		<dependency>
