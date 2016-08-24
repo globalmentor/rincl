@@ -53,7 +53,7 @@ public abstract class BaseResources extends AbstractResources {
 				string = Optional.of(new MessageFormat(string.get(), Rincl.getLocale(Locale.Category.FORMAT)).format(arguments));
 			}
 		} else { //if there is no string, delegate to the parent resources
-			string = getParentResources().flatMap(resources -> resources.getOptionalString(key));
+			string = getParentResources().flatMap(resources -> resources.getOptionalString(key, arguments));
 		}
 		return string;
 	}

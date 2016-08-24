@@ -73,6 +73,15 @@ public class AbstractStringResourcesTest {
 		assertThat(resources.getOptionalPath("foo"), is(Optional.of(userFooBarPath)));
 	}
 
+	/** @see AbstractStringResources#getOptionalString(String, Object...) */
+	@Test
+	public void testGetOptionalString() {
+		final AbstractStringResources resources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
+		when(resources.getOptionalStringImpl("foo")).thenReturn(Optional.of("foo {0}"));
+		assertThat(resources.getOptionalString("foo"), is(Optional.of("foo {0}")));
+		assertThat(resources.getOptionalString("foo", "bar"), is(Optional.of("foo bar")));
+	}
+
 	/** @see AbstractStringResources#getOptionalUri(String) */
 	@Test
 	public void testGetOptionalUri() {
