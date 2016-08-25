@@ -29,7 +29,7 @@ import javax.annotation.*;
  * </p>
  * @author Garret Wilson
  */
-public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern {
+public abstract class BaseResourceI18nConcern implements ResourceI18nConcern {
 
 	@SuppressWarnings("unchecked")
 	private final Optional<Locale>[] locales = new Optional[Locale.Category.values().length];
@@ -51,7 +51,7 @@ public abstract class AbstractResourceI18nConcern implements ResourceI18nConcern
 	 * @param parentResourcesFactory The strategy for creating parent resources for a particular context and locale.
 	 * @throws NullPointerException if the given parent resources factory is <code>null</code>.
 	 */
-	public AbstractResourceI18nConcern(@Nonnull final ResourcesFactory parentResourcesFactory) {
+	public BaseResourceI18nConcern(@Nonnull final ResourcesFactory parentResourcesFactory) {
 		Arrays.fill(locales, Optional.empty());
 		this.parentResourcesFactory = requireNonNull(parentResourcesFactory);
 	}

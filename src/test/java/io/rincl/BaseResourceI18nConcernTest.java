@@ -26,10 +26,10 @@ import java.util.Locale.Category;
 import org.junit.*;
 
 /**
- * Test base implemented methods of {@link AbstractResourceI18nConcern}.
+ * Test base implemented methods of {@link BaseResourceI18nConcern}.
  * @author Garret Wilson
  */
-public class AbstractResourceI18nConcernTest {
+public class BaseResourceI18nConcernTest {
 
 	private Locale defaultLocale, defaultDisplayLocale, defaultFormatLocale;
 
@@ -47,13 +47,13 @@ public class AbstractResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, defaultFormatLocale);
 	}
 
-	/** @see AbstractResourceI18nConcern#getLocale(Category) */
+	/** @see BaseResourceI18nConcern#getLocale(Category) */
 	@Test
 	public void testNoLocaleSetReturnsJVMDefault() {
 		Locale.setDefault(Locale.ENGLISH);
 		Locale.setDefault(Category.DISPLAY, Locale.GERMAN);
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
-		final ResourceI18nConcern concern = new AbstractResourceI18nConcern(ResourcesFactory.NONE) {
+		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
 			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
@@ -68,15 +68,15 @@ public class AbstractResourceI18nConcernTest {
 	}
 
 	/**
-	 * @see AbstractResourceI18nConcern#getLocale(Category)
-	 * @see AbstractResourceI18nConcern#setLocale(Category, Locale)
+	 * @see BaseResourceI18nConcern#getLocale(Category)
+	 * @see BaseResourceI18nConcern#setLocale(Category, Locale)
 	 */
 	@Test
 	public void testSetDisplayLocale() {
 		Locale.setDefault(Locale.ENGLISH);
 		Locale.setDefault(Category.DISPLAY, Locale.GERMAN);
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
-		final ResourceI18nConcern concern = new AbstractResourceI18nConcern(ResourcesFactory.NONE) {
+		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
 			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
@@ -93,15 +93,15 @@ public class AbstractResourceI18nConcernTest {
 	}
 
 	/**
-	 * @see AbstractResourceI18nConcern#getLocale(Category)
-	 * @see AbstractResourceI18nConcern#setLocale(Category, Locale)
+	 * @see BaseResourceI18nConcern#getLocale(Category)
+	 * @see BaseResourceI18nConcern#setLocale(Category, Locale)
 	 */
 	@Test
 	public void testSetFormatLocale() {
 		Locale.setDefault(Locale.ENGLISH);
 		Locale.setDefault(Category.DISPLAY, Locale.GERMAN);
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
-		final ResourceI18nConcern concern = new AbstractResourceI18nConcern(ResourcesFactory.NONE) {
+		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
 			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
@@ -118,15 +118,15 @@ public class AbstractResourceI18nConcernTest {
 	}
 
 	/**
-	 * @see AbstractResourceI18nConcern#getLocale(Category)
-	 * @see AbstractResourceI18nConcern#setLocale(Locale)
+	 * @see BaseResourceI18nConcern#getLocale(Category)
+	 * @see BaseResourceI18nConcern#setLocale(Locale)
 	 */
 	@Test
 	public void testSetLocale() {
 		Locale.setDefault(Locale.ENGLISH);
 		Locale.setDefault(Category.DISPLAY, Locale.GERMAN);
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
-		final ResourceI18nConcern concern = new AbstractResourceI18nConcern(ResourcesFactory.NONE) {
+		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
 			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				throw new AssertionError();
@@ -144,7 +144,7 @@ public class AbstractResourceI18nConcernTest {
 
 	/**
 	 * Tests fallback to parent resources from resources factory.
-	 * @see AbstractResourceI18nConcern#getParentResourcesFactory()
+	 * @see BaseResourceI18nConcern#getParentResourcesFactory()
 	 * @see EmptyResources
 	 */
 	@Test
@@ -152,7 +152,7 @@ public class AbstractResourceI18nConcernTest {
 		final AbstractStringResources parentResources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
 		when(parentResources.getOptionalStringImpl("foo")).thenReturn(Optional.of("bar"));
 		final ResourcesFactory parentResourcesFactory = (contextClass, locale) -> Optional.of(parentResources);
-		final ResourceI18nConcern concern = new AbstractResourceI18nConcern(parentResourcesFactory) {
+		final ResourceI18nConcern concern = new BaseResourceI18nConcern(parentResourcesFactory) {
 			@Override
 			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
 				return Optional.of(new EmptyResources(contextClass, getParentResourcesFactory().getResources(contextClass, locale)));
