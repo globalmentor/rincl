@@ -37,7 +37,7 @@ import io.rincl.*;
  * @author Garret Wilson
  * @see ResourceBundleResources
  */
-public class ResourceBundleResourceI18nConcern extends AbstractResourceI18nConcern {
+public class ResourceBundleResourceI18nConcern extends BaseResourceI18nConcern {
 
 	private final ResourceBundle.Control resourceBundleControl;
 
