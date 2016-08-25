@@ -16,8 +16,6 @@
 
 package io.rincl;
 
-import static java.util.Objects.*;
-
 import java.util.*;
 
 import javax.annotation.*;
@@ -29,7 +27,7 @@ import javax.annotation.*;
  * </p>
  * @author Garret Wilson
  */
-public abstract class BaseResourceI18nConcern implements ResourceI18nConcern {
+public abstract class BaseResourceI18nConcern extends AbstractResourceI18nConcern {
 
 	@SuppressWarnings("unchecked")
 	private final Optional<Locale>[] locales = new Optional[Locale.Category.values().length];
@@ -39,21 +37,14 @@ public abstract class BaseResourceI18nConcern implements ResourceI18nConcern {
 		return locales[category.ordinal()].orElse(Locale.getDefault(category));
 	}
 
-	private final ResourcesFactory parentResourcesFactory;
-
-	/** @return The strategy for creating parent resources for a particular context and locale. */
-	protected ResourcesFactory getParentResourcesFactory() {
-		return parentResourcesFactory;
-	}
-
 	/**
 	 * Constructor.
 	 * @param parentResourcesFactory The strategy for creating parent resources for a particular context and locale.
 	 * @throws NullPointerException if the given parent resources factory is <code>null</code>.
 	 */
 	public BaseResourceI18nConcern(@Nonnull final ResourcesFactory parentResourcesFactory) {
+		super(parentResourcesFactory);
 		Arrays.fill(locales, Optional.empty());
-		this.parentResourcesFactory = requireNonNull(parentResourcesFactory);
 	}
 
 	/**
