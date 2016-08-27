@@ -28,8 +28,13 @@ import io.rincl.*;
 /**
  * Resources factory that returns resources backed by a {@link ResourceBundle}.
  * <p>
- * This class creates resource access to a resource bundle determined by the base name of relative to the context class. If no such resource bundle exists, the
- * inheritance hierarchy of the context class is checked. If no resource bundle can be found, default resources are returned.
+ * This class creates resource access to a resource bundle determined by the base name of relative to the context class, based upon the {@link BaseNameStrategy}
+ * used. If no such resource bundle exists, the inheritance hierarchy of the context class is checked based upon the {@link ResolvingClassStrategy} used. If no
+ * resource bundle can be found, default resources are returned based upon the parent {@link ResourcesFactory}.
+ * </p>
+ * <p>
+ * To create factory that loads resources only from a single named resource bundle, use the {@link BaseNameStrategy#forBaseNames(String...)} base name strategy,
+ * indicating the base name of the resources file, coupled with the {@link ResolvingClassStrategy#NO_ANCESTORS} resolving class strategy.
  * </p>
  * @author Garret Wilson
  * @see ResourceBundleResources
