@@ -30,7 +30,7 @@ import org.junit.*;
  */
 public class BaseResourcesTest {
 
-	/** @see AbstractStringResources#getOptionalString(String, Object...) */
+	/** @see BaseResources#getOptionalString(String, Object...) */
 	@Test
 	public void testGetOptionalString() {
 		//test direct resources access

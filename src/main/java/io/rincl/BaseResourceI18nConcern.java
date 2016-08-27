@@ -17,6 +17,7 @@
 package io.rincl;
 
 import java.util.*;
+import java.util.Locale.Category;
 
 import javax.annotation.*;
 
@@ -29,13 +30,7 @@ import javax.annotation.*;
  */
 public abstract class BaseResourceI18nConcern extends AbstractResourceI18nConcern {
 
-	@SuppressWarnings("unchecked")
-	private final Optional<Locale>[] locales = new Optional[Locale.Category.values().length];
-
-	@Override
-	public Locale getLocale(@Nonnull Locale.Category category) {
-		return locales[category.ordinal()].orElse(Locale.getDefault(category));
-	}
+	private final LocaleSelection localeSelection = new LocaleSelection();
 
 	/**
 	 * Constructor.
@@ -44,23 +39,16 @@ public abstract class BaseResourceI18nConcern extends AbstractResourceI18nConcer
 	 */
 	public BaseResourceI18nConcern(@Nonnull final ResourcesFactory parentResourcesFactory) {
 		super(parentResourcesFactory);
-		Arrays.fill(locales, Optional.empty());
 	}
 
-	/**
-	 * Configures the locale for this concern instance for the given locale category. Future calls to {@link #getLocale(Locale.Category)} will return the value
-	 * set here.
-	 * <p>
-	 * This method does not modify the default JVM locale.
-	 * </p>
-	 * @param category The category for which the locale should be set..
-	 * @param locale The new locale value.
-	 * @throws NullPointerException if the given category and/or new locale is <code>null</code>.
-	 * @see #getLocale(Locale.Category)
-	 */
 	@Override
-	public void setLocale(@Nonnull Locale.Category category, @Nonnull Locale locale) {
-		locales[category.ordinal()] = Optional.of(locale);
+	public Locale getLocale(final Category category) {
+		return localeSelection.getLocale(category);
+	}
+
+	@Override
+	public void setLocale(final Category category, final Locale locale) {
+		localeSelection.setLocale(category, locale);
 	}
 
 }
