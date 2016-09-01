@@ -84,10 +84,59 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 	 */
 	public static ResourceBundleResourcesFactory forFixedContext(@Nonnull Class<?> fixedContextClass, final boolean resolveAncestors,
 			@Nonnull final String... baseNames) {
+		return forFixedContext(ResourcesFactory.NONE, fixedContextClass, resolveAncestors, baseNames);
+	}
+
+	/**
+	 * Creates a resources factory that invariably returns a resource bundle for a particular class, with no parent class resolution.
+	 * <p>
+	 * If one or more explicit base names are given, they will be used <em>instead of</em> the class name when determining a resource bundle.
+	 * </p>
+	 * <p>
+	 * This is a convenience method that uses the correct combination of base name strategy and resolving class strategy, combined with
+	 * {@link ResolvingClassStrategy#forFixedContext(Class)}, depending on the arguments given.
+	 * </p>
+	 * @param parentResourcesFactory The strategy for creating parent resources for a particular context and locale.
+	 * @param fixedContextClass The class for which <em>all</em> resolving classes should be determined.
+	 * @param baseNames Explicit base name(s) to use for resource bundle loading <em>instead of</em> the class name.
+	 * @return A new resource bundle resources factory fixed for a specific class context.
+	 * @see BaseNameStrategy#forClassNameThenBaseNames(String...)
+	 * @see BaseNameStrategy#forBaseNames(String...)
+	 * @see ResolvingClassStrategy#DEFAULT
+	 * @see ResolvingClassStrategy#NO_ANCESTORS
+	 * @see ResolvingClassStrategy#forFixedContext(Class)
+	 */
+	public static ResourceBundleResourcesFactory forFixedContext(@Nonnull final ResourcesFactory parentResourcesFactory, @Nonnull Class<?> fixedContextClass,
+			@Nonnull final String... baseNames) {
+		return forFixedContext(parentResourcesFactory, fixedContextClass, false, baseNames);
+	}
+
+	/**
+	 * Creates a resources factory that invariably returns a resource bundle for a particular class.
+	 * <p>
+	 * If one or more explicit base names are given, they will be used <em>instead of</em> the class name when determining a resource bundle.
+	 * </p>
+	 * <p>
+	 * This is a convenience method that uses the correct combination of base name strategy and resolving class strategy, combined with
+	 * {@link ResolvingClassStrategy#forFixedContext(Class)}, depending on the arguments given.
+	 * </p>
+	 * @param parentResourcesFactory The strategy for creating parent resources for a particular context and locale.
+	 * @param fixedContextClass The class for which <em>all</em> resolving classes should be determined.
+	 * @param resolveAncestors Whether ancestors of the fixed context class will be searched as well when resolving resources.
+	 * @param baseNames Explicit base name(s) to use for resource bundle loading <em>instead of</em> the class name.
+	 * @return A new resource bundle resources factory fixed for a specific class context.
+	 * @see BaseNameStrategy#forClassNameThenBaseNames(String...)
+	 * @see BaseNameStrategy#forBaseNames(String...)
+	 * @see ResolvingClassStrategy#DEFAULT
+	 * @see ResolvingClassStrategy#NO_ANCESTORS
+	 * @see ResolvingClassStrategy#forFixedContext(Class)
+	 */
+	public static ResourceBundleResourcesFactory forFixedContext(@Nonnull final ResourcesFactory parentResourcesFactory, @Nonnull Class<?> fixedContextClass,
+			final boolean resolveAncestors, @Nonnull final String... baseNames) {
 		final BaseNameStrategy baseNameStrategy = baseNames.length > 0 ? BaseNameStrategy.forBaseNames(baseNames)
 				: BaseNameStrategy.forClassNameThenBaseNames(baseNames);
 		final ResolvingClassStrategy resolvingClassStrategy = resolveAncestors ? ResolvingClassStrategy.DEFAULT : ResolvingClassStrategy.NO_ANCESTORS;
-		return new ResourceBundleResourcesFactory(baseNameStrategy, resolvingClassStrategy.forFixedContext(fixedContextClass));
+		return new ResourceBundleResourcesFactory(parentResourcesFactory, baseNameStrategy, resolvingClassStrategy.forFixedContext(fixedContextClass));
 	}
 
 	private final ResourcesFactory parentResourcesFactory;
