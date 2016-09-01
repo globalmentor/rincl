@@ -12,6 +12,8 @@ Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
 
 ## Changelog
 
+- 0.7.2:
+	* [RINCL-15](https://globalmentor.atlassian.net/browse/RINCL-15): Improve fallback configuration for resource bundles.
 - 0.7.1:
 	* [RINCL-4](https://globalmentor.atlassian.net/browse/RINCL-4): Standard way for providing parent/fallback resources.
 - 0.7.0:
