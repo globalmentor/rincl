@@ -16,6 +16,8 @@
 
 package io.rincl.resourcebundle;
 
+import static java.util.Objects.*;
+
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -70,6 +72,23 @@ public interface ResolvingClassStrategy {
 
 	/** A resolving class strategy that only resolves resources for the class itself and no parent classes. */
 	public static final ResolvingClassStrategy NO_ANCESTORS = Stream::of;
+
+	/**
+	 * Creates a resolving class strategy using the same resolution logic of this one, but that always resolved relative to some fixed context class.
+	 * @param fixedContextClass The class for which <em>all</em> resolving classes should be determined.
+	 * @return A modified version of this resolving class strategy that fixes the context class to that given.
+	 * @throws NullPointerException
+	 */
+	public default ResolvingClassStrategy forFixedContext(@Nonnull Class<?> fixedContextClass) {
+		requireNonNull(fixedContextClass);
+		final ResolvingClassStrategy resolvingClassStrategy = this; //use the current strategy for the resolving logic
+		return new ResolvingClassStrategy() {
+			@Override
+			public Stream<Class<?>> resolvingClasses(final Class<?> contextClass) {
+				return resolvingClassStrategy.resolvingClasses(fixedContextClass); //ignore the given context class
+			}
+		};
+	}
 
 	/**
 	 * Determines the priority of resource classes when determining parent resources.
