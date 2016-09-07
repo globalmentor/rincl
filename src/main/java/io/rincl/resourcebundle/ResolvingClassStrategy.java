@@ -77,7 +77,7 @@ public interface ResolvingClassStrategy {
 	 * Creates a resolving class strategy using the same resolution logic of this one, but that always resolved relative to some fixed context class.
 	 * @param fixedContextClass The class for which <em>all</em> resolving classes should be determined.
 	 * @return A modified version of this resolving class strategy that fixes the context class to that given.
-	 * @throws NullPointerException
+	 * @throws NullPointerException if the given context class is <code>null</code>.
 	 */
 	public default ResolvingClassStrategy forFixedContext(@Nonnull Class<?> fixedContextClass) {
 		requireNonNull(fixedContextClass);
