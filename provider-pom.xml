@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.rincl</groupId>
-	<artifactId>rincl-resourcebundle</artifactId>
+	<artifactId>rincl-resourcebundle-provider</artifactId>
 	<version>0.7.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Rincl ResourceBundle</name>
-	<description>Rincl implementation based on Java resource bundles.</description>
+	<name>Rincl ResourceBundle Provider</name>
+	<description>Csar provider for Rincl implementation based on Java resource bundles.</description>
 	<url>https://rincl.io/</url>
 	<inceptionYear>2016</inceptionYear>
 
@@ -50,29 +50,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>io.rincl</groupId>
-			<artifactId>rincl</artifactId>
+			<artifactId>rincl-resourcebundle</artifactId>
 			<version>0.7.2-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
-			<version>1.3</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -80,9 +60,9 @@
 		<resources>
 			<resource>
 				<directory>${basedir}/src/main/resources</directory>
-				<excludes>
-					<exclude>META-INF/services/io.csar.ConcernProvider</exclude>
-				</excludes>
+				<includes>
+					<include>META-INF/services/io.csar.ConcernProvider</include>
+				</includes>
 			</resource>
 		</resources>
 
@@ -92,8 +72,17 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<skipMain>true</skipMain>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 
@@ -127,37 +116,6 @@
 			<id>release</id>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.0</version>
-						<executions>
-							<execution>
-								<id>package-sources</id>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.3</version>
-						<configuration>
-							<quiet>true</quiet>
-						</configuration>
-						<executions>
-							<execution>
-								<id>package-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
