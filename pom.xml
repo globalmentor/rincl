@@ -63,9 +63,11 @@
 			<version>0.7.0</version>
 		</dependency>
 
-		<!-- TODO bring in optional support for ICU4j MessageFormat <dependency> 
-			<groupId>com.ibm.icu</groupId> <artifactId>icu4j</artifactId> <version>57.1</version> 
-			</dependency> -->
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<version>57.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
