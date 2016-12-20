@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package io.rincl.resourcebundle;
+package io.rincl.resourcebundle.provider;
 
 import java.util.stream.Stream;
 
 import io.csar.*;
+import io.rincl.resourcebundle.ResourceBundleResourceI18nConcern;
 
 /**
  * Provides a default resource bundle-based concern for resource internationalization.
