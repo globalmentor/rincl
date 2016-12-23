@@ -29,9 +29,6 @@ import io.rincl.*;
  * This class creates resource access to a resource bundle determined by the base name of relative to the context class. If no such resource bundle exists, the
  * inheritance hierarchy of the context class is checked. If no resource bundle can be found, default resources are returned.
  * </p>
- * <p>
- * This library installs a global, default {@link ResourceBundleResourceI18nConcern} instance via the {@link ResourceBundleResourceI18nConcernProvider}.
- * </p>
  * @author Garret Wilson
  * @see ResourceBundleResources
  */
