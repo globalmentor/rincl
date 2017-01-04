@@ -10,7 +10,7 @@ To automatically register Rincl Wicket with Csar as the resource i18n concern pr
 
 ## Issues
 
-Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
+Issues tracked by [JIRA](https://globalmentor.atlassian.net/projects/RINCL).
 
 ## Changelog
 
