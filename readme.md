@@ -32,7 +32,7 @@ Rincl is available in the Maven Central Repository in group [io.rincl](http://se
 
 ## Issues
 
-Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
+Issues tracked by [JIRA](https://globalmentor.atlassian.net/projects/RINCL).
 
 ## Changelog
 
