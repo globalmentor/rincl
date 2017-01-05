@@ -14,4 +14,5 @@ Issues tracked by [JIRA](https://globalmentor.atlassian.net/browse/RINCL).
 
 ## Changelog
 
-- 0.?.?: First release.
+- 0.8.0: 
+		* [RINCL-17](https://globalmentor.atlassian.net/browse/RINCL-17) First release; Deleted Csar concern provider for `rincl-wicket` on this project and created `rincl-wicket-provider`.
