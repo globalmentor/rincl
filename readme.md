@@ -6,7 +6,7 @@ This artifact only supplies a Rincl implementation. To have this implementation 
 
 ## Download
 
-Rincl ResourceBundle is available in the [Maven Central Repository](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.rincl%22%20AND%20a%3A%22rincl-resourcebundle%22).
+Rincl ResourceBundle is available in the [Maven Central Repository](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.rincl%22%20AND%20a%3A%22rincl-resourcebundle%22).
 
 ## Issues
 
