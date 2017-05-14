@@ -28,7 +28,7 @@ Other Rincl implementations in addition to resource bundles will be available in
 
 ## Download
 
-Rincl is available in the Maven Central Repository in group [io.rincl](http://search.maven.org/#search|ga|1|g%3A%22io.rincl%22).
+Rincl is available in the Maven Central Repository in group [io.rincl](https://search.maven.org/#search|ga|1|g%3A%22io.rincl%22).
 
 ## Issues
 
