@@ -1,6 +1,6 @@
 # Rincl
 
-The _Resource I18n Concern Library_ ([**Rincl**](http://rincl.io/)) facilitates internationalization by providing access to localization resources via [Csar](http://csar.io).
+The _Resource I18n Concern Library_ ([**Rincl**](https://rincl.io/)) facilitates internationalization by providing access to localization resources via [Csar](https://csar.io).
 
 Rincl uses the Csar `ConcernProvider` mechanism, so that an application can have access to a globally configured default Rincl implementation simply by including that implementation's dependency. For example merely including the dependency `io.rincl:rincl-resourcebundle-provider:x.x.x` will automatically provide resources from resource bundle property file lookup. Classes desiring resource access may then then implement `Rincled` for simplified retrieval of `Resources`. 
 
