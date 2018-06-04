@@ -30,9 +30,6 @@ import io.rincl.*;
 /**
  * Resource internationalization concern that returns resources from a Wicket {@link Localizer}, with fallback to resources backed by a {@link ResourceBundle}.
  * <p>
- * This library installs a global, default {@link WicketResourceI18nConcern} instance via the {@link WicketResourceI18nConcernProvider}.
- * </p>
- * <p>
  * This implementation uses the Wicket session locale and thus does not distinguish between {@link Category}. Because of limits in Wicket's locale storage, the
  * locale category will therefore be ignored when retrieving or setting a locale.
  * </p>
