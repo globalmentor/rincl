@@ -30,7 +30,7 @@ import org.junit.*;
  */
 public class ResourcesTest {
 
-	/** @see AbstractStringResources#getOptionalLong(String) */
+	/** @see Resources#getOptionalLong(String) */
 	@Test
 	public void testGetOptionalLong() {
 		final Resources resources = mock(Resources.class, CALLS_REAL_METHODS);

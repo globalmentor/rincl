@@ -28,12 +28,12 @@ import io.rincl.Resources;
  * <p>
  * Rincl uses the Csar {@link ConcernProvider} mechanism, so that an application can have access to a globally configured default Rincl implementation simply by
  * including that implementation's dependency. For example merely including the dependency
- * <code>io.rincl:rincl-resourcebundle:<var>x</var>.<var>x</var>.<var>x</var></code> will automatically provide resources from resource bundle property file
- * lookup. Classes desiring resource access may then then implement {@link Rincled} for simplified retrieval of {@link Resources}.
+ * <code>io.rincl:rincl-resourcebundle-provider:<var>x</var>.<var>x</var>.<var>x</var></code> will automatically provide resources from resource bundle property
+ * file lookup. Classes desiring resource access may then then implement {@link Rincled} for simplified retrieval of {@link Resources}.
  * </p>
  * <p>
- * More complex configuration may be done by manual configuration using using {@link Rincl#setDefaultResourceI18nConcern(ResourceI18nConcern)} with the concern
- * of choice, as in the following example:
+ * More complex configuration may be done by manual configuration using {@link Rincl#setDefaultResourceI18nConcern(ResourceI18nConcern)} with the concern of
+ * choice, as in the following example:
  * </p>
  * 
  * <pre>
@@ -71,14 +71,13 @@ public class Rincl {
 	 * Returns the configured resource i18n concern for the current context.
 	 * <p>
 	 * If no resource i18n concern is registered for the current context, and no default resource i18n concern concern is registered, a resource i18n concern will
-	 * be return that provides empty resources.
+	 * be returned that provides empty resources.
 	 * </p>
 	 * @return The configured resource i18n concern for the current context.
-	 * @throws ConcernNotFoundException if no resource i18n concern is configured.
 	 * @see Csar#getConcern(Class)
 	 * @see EmptyResourceI18nConcern#INSTANCE
 	 */
-	public @Nonnull static ResourceI18nConcern getResourceI18nConcern() {
+	public static @Nonnull ResourceI18nConcern getResourceI18nConcern() {
 		return Csar.getOptionalConcern(ResourceI18nConcern.class).orElse(EmptyResourceI18nConcern.INSTANCE);
 	}
 
@@ -97,7 +96,7 @@ public class Rincl {
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Object)
 	 */
-	public @Nonnull static Resources getResources(@Nonnull final Object context) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Object context) throws ResourceConfigurationException {
 		return getResourceI18nConcern().getResources(context);
 	}
 
@@ -117,7 +116,7 @@ public class Rincl {
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Object, Locale)
 	 */
-	public @Nonnull static Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ResourceConfigurationException {
 		return getResourceI18nConcern().getResources(context, locale);
 	}
 
@@ -136,7 +135,7 @@ public class Rincl {
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Class)
 	 */
-	public @Nonnull static Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException {
 		return getResourceI18nConcern().getResources(contextClass);
 	}
 
@@ -156,7 +155,7 @@ public class Rincl {
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Class)
 	 */
-	public @Nonnull static Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
 		return getResourceI18nConcern().getResources(contextClass, locale);
 	}
 

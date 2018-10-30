@@ -43,9 +43,10 @@ public interface Rincled {
 	 * @param locale The locale for which resources should be returned.
 	 * @return Access to configured resources for the implementing class.
 	 * @throws NullPointerException if the given locale is <code>null</code>.
+	 * @throws ResourceConfigurationException if there is a configuration error.
 	 * @see Rincl#getResources(Object, Locale)
 	 */
-	public default Resources getResources(@Nonnull final Locale locale) throws ResourceConfigurationException {
+	public default @Nonnull Resources getResources(@Nonnull final Locale locale) throws ResourceConfigurationException {
 		return Rincl.getResources(this, locale);
 	}
 
