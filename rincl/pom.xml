@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>io.rincl</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>rincl-parent</artifactId>
 		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 
