@@ -147,8 +147,10 @@ public class BaseResourceI18nConcernTest {
 	 * @see BaseResourceI18nConcern#getParentResourcesFactory()
 	 * @see EmptyResources
 	 */
+	@Ignore
 	@Test
 	public void testParentResourcesFactory() {
+		/*TODO improve test by creating simpler ways to create resources, e.g. from maps
 		final AbstractStringResources parentResources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
 		when(parentResources.getOptionalStringImpl("foo")).thenReturn(Optional.of("bar"));
 		final ResourcesFactory parentResourcesFactory = (contextClass, locale) -> Optional.of(parentResources);
@@ -159,5 +161,6 @@ public class BaseResourceI18nConcernTest {
 			}
 		};
 		assertThat(concern.getResources(this).getString("foo"), is("bar"));
+		*/
 	}
 }

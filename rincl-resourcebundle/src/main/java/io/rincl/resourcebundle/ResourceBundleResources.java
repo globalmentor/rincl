@@ -22,6 +22,7 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import io.confound.config.ConfigurationException;
 import io.rincl.*;
 
 /**
@@ -78,53 +79,55 @@ public class ResourceBundleResources extends AbstractStringResources {
 	 * </p>
 	 */
 	@Override
-	public boolean hasResource(final String key) throws ResourceConfigurationException {
+	public boolean hasConfigurationValue(String key) throws ConfigurationException {
 		//check the resource bundle directly
 		if(getResourceBundle().containsKey(key)) {
 			return true;
 		}
 		//if the resource bundle doesn't have the resource, delegate the parent resources if any
-		return getParentResources().map(parentResources -> parentResources.hasResource(key)).orElse(false);
+		return getParentResources().map(parentResources -> parentResources.hasConfigurationValue(key)).orElse(false);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This implementation delegates to {@link ResourceBundle#getObject(String)}. If the returned object is a string, it is dereferenced.
-	 * </p>
+	 * @implSpec This implementation delegates to {@link ResourceBundle#getObject(String)}. If the returned object is a string, it is dereferenced.
+	 * @implNote This implementation performs much of the same functionality as {@link #findConfigurationValueImpl(String)}, but is written to retrieve objects
+	 *           directly from the resource bundle. With this implementation this method must perform its own fallback to any parent, as it does not rely on
+	 *           {@link #findConfigurationValue(String)}.
+	 * @implNote This implementation is somewhat incongruent with other "object" retrieval methods, all of which assume there the value is stored as a string to
+	 *           be converted, making no allowance for retrieving the object directly.
 	 * @see #dereferenceString(String)
 	 */
 	@Override
-	public <T> Optional<T> getOptionalResource(final String key) throws ResourceConfigurationException {
+	public <T> Optional<T> getOptionalObject(final String key) throws ConfigurationException {
+		final String normalizedKey = normalizeKey(key);
 		final ResourceBundle resourceBundle = getResourceBundle();
 		//See if the resource bundle contains the key;
 		//otherwise, catching the exception and filling in the stack trace every time we need
 		//simply to delegate to the parent resources afterwards causes too much overhead.
-		if(!resourceBundle.containsKey(key)) {
-			return Optional.empty();
-		}
-		try {
-			Object object = resourceBundle.getObject(key); //get the object
-			if(object instanceof String) { //if the object is a string, dereference it
-				object = dereferenceString((String)object);
+		if(resourceBundle.containsKey(normalizedKey)) {
+			try {
+				Object object = resourceBundle.getObject(normalizedKey); //get the object
+				if(object instanceof String) { //if the object is a string, dereference it
+					object = dereferenceString((String)object);
+				}
+				@SuppressWarnings("unchecked")
+				final T typedObject = (T)object;
+				return Optional.of(typedObject);
+			} catch(final MissingResourceException missingResourceException) { //we don't expect this (because we checked up front)...
+				//...but it may not be impossible, and perhaps means the resource has been removed; this is benign, so just fall back as normal (below)
 			}
-			@SuppressWarnings("unchecked")
-			final T typedObject = (T)object;
-			return Optional.of(typedObject);
-		} catch(final MissingResourceException missingResourceException) { //we don't expect this...
-			return Optional.empty(); //...but it may not be impossible
 		}
+		return getParentResources().flatMap(resources -> resources.getOptionalObject(key));
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This implementation delegates to {@link ResourceBundle#getObject(String)}.
-	 * </p>
+	 * @implSpec This implementation delegates to {@link ResourceBundle#getObject(String)}.
 	 * @throws ResourceConfigurationException if the requested resource is not an instance of {@link String}.
 	 */
 	@Override
-	protected Optional<String> getOptionalStringImpl(final String key) throws ResourceConfigurationException {
+	protected Optional<String> findConfigurationValueImpl(final String key) throws ConfigurationException {
 		final ResourceBundle resourceBundle = getResourceBundle();
 		//See if the resource bundle contains the key;
 		//otherwise, catching the exception and filling in the stack trace every time we need

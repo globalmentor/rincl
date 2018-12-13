@@ -151,7 +151,7 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * If a Wicket {@link Component} is supplied as the context, this version passes it along to the reosources.
+	 * If a Wicket {@link Component} is supplied as the context, this version passes it along to the resources.
 	 * </p>
 	 */
 	@Override

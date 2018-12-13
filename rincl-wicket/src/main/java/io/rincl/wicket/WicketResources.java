@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Localizer;
+import org.apache.wicket.model.IModel;
 
+import io.confound.config.ConfigurationException;
 import io.rincl.*;
 
 /**
@@ -153,12 +155,12 @@ public class WicketResources extends AbstractStringResources {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation delegates to {@link Localizer#getStringIgnoreSettings(String, Component, org.apache.wicket.model.IModel, Locale, String, String)}.
+	 * This implementation delegates to {@link Localizer#getStringIgnoreSettings(String, Component, IModel, Locale, String, String)}.
 	 * </p>
 	 * @throws ResourceConfigurationException if the requested resource is not an instance of {@link String}.
 	 */
 	@Override
-	protected Optional<String> getOptionalStringImpl(final String key) throws ResourceConfigurationException {
+	protected Optional<String> findConfigurationValueImpl(String key) throws ConfigurationException {
 		return Optional.ofNullable(getLocalizer().getStringIgnoreSettings(requireNonNull(key), getContextComponent().orElse(null), null, getLocale(), null, null));
 	}
 

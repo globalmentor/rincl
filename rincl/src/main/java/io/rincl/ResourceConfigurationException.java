@@ -18,15 +18,17 @@ package io.rincl;
 
 import javax.annotation.Nullable;
 
-import com.globalmentor.model.ConfigurationException;
+import io.confound.config.ConfigurationException;
 
 /**
  * An unchecked configuration exception indicating that resources are not correctly configured, e.g. a value is stored in an invalid format.
  * @author Garret Wilson
+ * @deprecated Consider switching to just using {@link ConfigurationException} from Confound.
  */
+@Deprecated
 public class ResourceConfigurationException extends ConfigurationException {
 
-	private static final long serialVersionUID = 7119517783329277760L;
+	private static final long serialVersionUID = 8L;
 
 	/**
 	 * Message constructor.

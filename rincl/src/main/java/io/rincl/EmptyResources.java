@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import javax.annotation.*;
 
+import io.confound.config.ConfigurationException;
+
 /**
  * An implementation of resources that contains no definitions.
  * <p>
@@ -61,13 +63,13 @@ public final class EmptyResources extends AbstractResources {
 	}
 
 	@Override
-	public boolean hasResource(String key) throws ResourceConfigurationException {
+	public boolean hasConfigurationValue(String key) throws ConfigurationException {
 		return false;
 	}
 
 	@Override
-	public <T> Optional<T> getOptionalResource(String key) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalResource(key));
+	public <T> Optional<T> getOptionalObject(String key) throws ConfigurationException {
+		return getParentResources().flatMap(resources -> resources.getOptionalObject(key));
 	}
 
 	@Override
@@ -88,6 +90,11 @@ public final class EmptyResources extends AbstractResources {
 	@Override
 	public Optional<Long> getOptionalLong(String key) throws ResourceConfigurationException {
 		return getParentResources().flatMap(resources -> resources.getOptionalLong(key));
+	}
+
+	@Override
+	public Optional<String> getOptionalString(String key) throws ConfigurationException {
+		return getParentResources().flatMap(resources -> resources.getOptionalString(key));
 	}
 
 	@Override

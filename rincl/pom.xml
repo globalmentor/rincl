@@ -20,6 +20,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>io.confound</groupId>
+			<artifactId>config</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
 		</dependency>
