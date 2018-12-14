@@ -340,6 +340,11 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 		//which uses the bootstrap class loader; skip it and go on (we may be out of super classes anyway)
 		if(classLoader != null) {
 			for(final String baseName : (Iterable<String>)getBaseNameStrategy().baseNames(referenceClass)::iterator) {
+
+				//In the future, instead of going through ResourceBundle using a custom control,
+				//we may decide to do the lookup ourselves and then load a Configuration loaded using an installed ConfigurationFileFormat,
+				//returning it wrapped in a ConfigurationResources decorator.
+
 				try {
 					return Optional.of(ResourceBundle.getBundle(baseName, locale, classLoader, getResourceBundleControl()));
 				} catch(final MissingResourceException missingResourceException) { //if we couldn't get the resource bundle

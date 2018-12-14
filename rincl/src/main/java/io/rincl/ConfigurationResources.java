@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 2018 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,15 @@ package io.rincl;
 
 import static java.util.Objects.*;
 
-import java.util.Optional;
+import javax.annotation.Nonnull;
 
-import javax.annotation.*;
-
-import io.confound.config.EmptyConfiguration;
+import io.confound.config.*;
 
 /**
- * An implementation of resources that contains no definitions.
- * <p>
- * This implementation will automatically delegate to the parent resources, if any.
- * </p>
+ * Resources that wrap an existing Configuration instance.
  * @author Garret Wilson
  */
-public final class EmptyResources extends EmptyConfiguration implements Resources {
+public class ConfigurationResources extends AbstractConfigurationDecorator implements Resources {
 
 	private final Class<?> contextClass;
 
@@ -41,17 +36,14 @@ public final class EmptyResources extends EmptyConfiguration implements Resource
 	}
 
 	/**
-	 * Context class constructor.
+	 * Context class and wrapped configuration constructor.
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @throws NullPointerException if the given context class is <code>null</code>.
+	 * @param configuration The configuration to decorate.
+	 * @throws NullPointerException if the given context class and/or configuration is <code>null</code>.
 	 */
-	public EmptyResources(@Nonnull final Class<?> contextClass) {
+	public ConfigurationResources(@Nonnull final Class<?> contextClass, @Nonnull final Configuration configuration) {
+		super(configuration);
 		this.contextClass = requireNonNull(contextClass);
-	}
-
-	@Override
-	public Optional<String> getOptionalString(final String key, final Object... arguments) throws ResourceConfigurationException {
-		return Optional.empty();
 	}
 
 }

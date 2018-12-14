@@ -18,10 +18,6 @@ package io.rincl;
 
 import static java.util.Objects.*;
 
-import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.Optional;
-
 import javax.annotation.*;
 
 import io.confound.config.*;
@@ -65,23 +61,5 @@ public abstract class AbstractStringResources extends AbstractStringConfiguratio
 		return getOptionalStringImpl(key).isPresent();
 	}
 	*/
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation formats the value, if any, retrieved from {@link #findConfigurationValue(String)}.
-	 * @see #findConfigurationValue(String)
-	 */
-	@Override
-	public final Optional<String> getOptionalString(final String key, final Object... arguments) throws ResourceConfigurationException { //TODO add tests, maybe in subclass
-		Optional<String> string = findConfigurationValue(normalizeKey(key)); //get the dereferenced string
-		if(string.isPresent()) { //if there is a string
-			if(arguments.length > 0) { //if there are arguments, format the string
-				//TODO improve source of MessageFormat; maybe use ThreadLocal
-				//TODO switch to using ICU4J
-				string = Optional.of(new MessageFormat(string.get(), Rincl.getLocale(Locale.Category.FORMAT)).format(arguments));
-			}
-		}
-		return string;
-	}
 
 }

@@ -107,14 +107,27 @@ public interface Resources extends Configuration {
 	 * If arguments are provided, the string if present will be considered a template and formatted applying the given arguments. Formatting takes place after
 	 * replacement of all internal resource references. The {@link MessageFormat} formatting rules will be used.
 	 * </p>
+	 * @apiNote This method should normally not be overridden or decorated.
+	 * @implSpec This implementation formats the value, if any, retrieved from {@link #getOptionalString(String)}.
 	 * @param key The resource key.
 	 * @param arguments The arguments for formatting, if any.
 	 * @return The optional value of the resource associated with the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
 	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * @see #getOptionalString(String)
 	 * @see MessageFormat#format(Object)
 	 */
-	public Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ResourceConfigurationException;
+	public default Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ResourceConfigurationException { //TODO add tests
+		Optional<String> string = getOptionalString(key); //get the dereferenced string
+		if(string.isPresent()) { //if there is a string
+			if(arguments.length > 0) { //if there are arguments, format the string
+				//TODO improve source of MessageFormat; maybe use ThreadLocal
+				//TODO switch to using ICU4J
+				string = Optional.of(new MessageFormat(string.get(), Rincl.getLocale(Locale.Category.FORMAT)).format(arguments));
+			}
+		}
+		return string;
+	}
 
 	/**
 	 * Return resources equivalent to these resources but that will fall back to optional parent resources if a value is not present. These resources will remain
