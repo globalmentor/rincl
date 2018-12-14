@@ -124,7 +124,7 @@ public interface Resources extends Configuration {
 	 * @throws NullPointerException if the given optional fallback resources is <code>null</code>.
 	 */
 	public default Resources withFallbackResources(@Nonnull final Optional<Resources> fallbackResources) {
-		return fallbackResources.isPresent() ? withFallbackResources(fallbackResources.get()) : this;
+		return fallbackResources.map(this::withFallbackResources).orElse(this);
 	}
 
 	/**
