@@ -39,63 +39,31 @@ public class ResourceBundleResources extends AbstractStringResources {
 	}
 
 	/**
-	 * Context class constructor.
+	 * Context class and resource bundle constructor.
 	 * @param contextClass The context with which these resources are related; usually the class the instance of which is requesting the resource.
 	 * @param resourceBundle The resource bundle for which this object is an adaptor.
 	 * @throws NullPointerException if the given context class and/or resource bundle is <code>null</code>.
 	 */
 	public ResourceBundleResources(@Nonnull final Class<?> contextClass, @Nonnull final ResourceBundle resourceBundle) {
-		this(contextClass, Optional.empty(), resourceBundle);
-	}
-
-	/**
-	 * Context class and parent resources constructor.
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @param resourceBundle The resource bundle for which this object is an adaptor.
-	 * @throws NullPointerException if the given context class, parent resources, and/or resource bundle is <code>null</code>.
-	 */
-	public ResourceBundleResources(@Nonnull final Class<?> contextClass, @Nonnull final Resources parentResources, @Nonnull final ResourceBundle resourceBundle) {
-		this(contextClass, Optional.of(parentResources), resourceBundle);
-	}
-
-	/**
-	 * Context class constructor.
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup, or <code>null</code> if there is no parent resources.
-	 * @param resourceBundle The resource bundle for which this object is an adaptor.
-	 * @throws NullPointerException if the given context class, parent resources, and/or resource bundle is <code>null</code>.
-	 */
-	public ResourceBundleResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources,
-			@Nonnull final ResourceBundle resourceBundle) {
-		super(contextClass, parentResources);
+		super(contextClass);
 		this.resourceBundle = requireNonNull(resourceBundle);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This implementation checks the resource bundle directly using {@link ResourceBundle#containsKey(String)}.
-	 * </p>
+	 * @implSpec This implementation checks the resource bundle directly using {@link ResourceBundle#containsKey(String)}.
 	 */
 	@Override
-	public boolean hasConfigurationValue(String key) throws ConfigurationException {
-		//check the resource bundle directly
-		if(getResourceBundle().containsKey(key)) {
-			return true;
-		}
-		//if the resource bundle doesn't have the resource, delegate the parent resources if any
-		return getParentResources().map(parentResources -> parentResources.hasConfigurationValue(key)).orElse(false);
+	protected boolean hasConfigurationValueImpl(String key) throws ConfigurationException {
+		return getResourceBundle().containsKey(key); //check the resource bundle directly
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This implementation delegates to {@link ResourceBundle#getObject(String)}. If the returned object is a string, it is dereferenced.
 	 * @implNote This implementation performs much of the same functionality as {@link #findConfigurationValueImpl(String)}, but is written to retrieve objects
-	 *           directly from the resource bundle. With this implementation this method must perform its own fallback to any parent, as it does not rely on
-	 *           {@link #findConfigurationValue(String)}.
-	 * @implNote This implementation is somewhat incongruent with other "object" retrieval methods, all of which assume there the value is stored as a string to
-	 *           be converted, making no allowance for retrieving the object directly.
+	 *           directly from the resource bundle. This implementation is therefore somewhat incongruent with other "object" retrieval methods, all of which
+	 *           assume there the value is stored as a string to be converted, making no allowance for retrieving the object directly.
 	 * @see #dereferenceString(String)
 	 */
 	@Override
@@ -118,7 +86,7 @@ public class ResourceBundleResources extends AbstractStringResources {
 				//...but it may not be impossible, and perhaps means the resource has been removed; this is benign, so just fall back as normal (below)
 			}
 		}
-		return getParentResources().flatMap(resources -> resources.getOptionalObject(key));
+		return Optional.empty();
 	}
 
 	/**

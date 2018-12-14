@@ -18,8 +18,6 @@ package io.rincl;
 
 import static java.util.Objects.*;
 
-import java.net.URI;
-import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Optional;
@@ -35,20 +33,9 @@ import io.confound.config.*;
  * retrieves all values as stored in string format accessed via {@link #findConfigurationValueImpl(String)}, and afterwards dereferenced using
  * {@link #dereferenceString(String)}.
  * </p>
- * <p>
- * In addition this class overrides the {@link Optional}-returning access methods of {@link AbstractStringConfiguration} and, if no value is present, delegates
- * to {@link #getParentResources()} in order to implement fallback.
- * </p>
  * @author Garret Wilson
  */
 public abstract class AbstractStringResources extends AbstractStringConfiguration implements Resources {
-
-	private final Optional<Resources> parentResources;
-
-	@Override
-	public Optional<Resources> getParentResources() {
-		return parentResources;
-	}
 
 	private final Class<?> contextClass;
 
@@ -60,12 +47,10 @@ public abstract class AbstractStringResources extends AbstractStringConfiguratio
 	/**
 	 * Context class constructor.
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @throws NullPointerException if the given context class and/or parent resources is <code>null</code>.
+	 * @throws NullPointerException if the given context class is <code>null</code>.
 	 */
-	public AbstractStringResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources) {
+	public AbstractStringResources(@Nonnull final Class<?> contextClass) {
 		this.contextClass = requireNonNull(contextClass);
-		this.parentResources = requireNonNull(parentResources);
 	}
 
 	/**
@@ -83,69 +68,6 @@ public abstract class AbstractStringResources extends AbstractStringConfiguratio
 
 	/**
 	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public <P> Optional<P> getOptionalObject(String key) throws ConfigurationException {
-		return or(super.getOptionalObject(key), () -> getParentResources().flatMap(resources -> resources.getOptionalObject(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public Optional<Boolean> getOptionalBoolean(final String key) throws ResourceConfigurationException {
-		return or(super.getOptionalBoolean(key), () -> getParentResources().flatMap(resources -> resources.getOptionalBoolean(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public Optional<Double> getOptionalDouble(final String key) throws ResourceConfigurationException {
-		return or(super.getOptionalDouble(key), () -> getParentResources().flatMap(resources -> resources.getOptionalDouble(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public Optional<Integer> getOptionalInt(final String key) throws ResourceConfigurationException {
-		return or(super.getOptionalInt(key), () -> getParentResources().flatMap(resources -> resources.getOptionalInt(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public Optional<Long> getOptionalLong(final String key) throws ResourceConfigurationException {
-		return or(super.getOptionalLong(key), () -> getParentResources().flatMap(resources -> resources.getOptionalLong(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public Optional<Path> getOptionalPath(final String key) throws ResourceConfigurationException {
-		return or(super.getOptionalPath(key), () -> getParentResources().flatMap(resources -> resources.getOptionalPath(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public final Optional<String> getOptionalString(String key) throws ConfigurationException {
-		return or(super.getOptionalString(key), () -> getParentResources().flatMap(resources -> resources.getOptionalString(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
 	 * @implSpec This implementation formats the value, if any, retrieved from {@link #findConfigurationValue(String)}.
 	 * @see #findConfigurationValue(String)
 	 */
@@ -158,19 +80,8 @@ public abstract class AbstractStringResources extends AbstractStringConfiguratio
 				//TODO switch to using ICU4J
 				string = Optional.of(new MessageFormat(string.get(), Rincl.getLocale(Locale.Category.FORMAT)).format(arguments));
 			}
-		} else { //if there is no string, delegate to the parent resources
-			string = getParentResources().flatMap(resources -> resources.getOptionalString(key, arguments));
 		}
 		return string;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation falls back to {@link #getParentResources()}, if any, if the requested value is not present.
-	 */
-	@Override
-	public Optional<URI> getOptionalUri(final String key) throws ResourceConfigurationException {
-		return or(super.getOptionalUri(key), () -> getParentResources().flatMap(resources -> resources.getOptionalUri(key)));
 	}
 
 }

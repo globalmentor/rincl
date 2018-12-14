@@ -19,7 +19,6 @@ package io.rincl.resourcebundle;
 import static java.util.Objects.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -305,22 +304,19 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 	 */
 	@Override
 	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
-		//start with the (optional) resolving parent resources
-		Optional<Resources> resources = getParentResourcesFactory().getOptionalResources(contextClass, locale);
-		//get a list of the resolving classes to use
-		final List<Class<?>> resolvingClassList = getResolvingClassStrategy().resolvingClasses(contextClass).collect(Collectors.toList());
-		if(!resolvingClassList.isEmpty()) { //no need to get the locale or create an iterator if the list is empty
-			//look at the resolving classes in reverse order, so that we can connect parent resources correctly
-			final ListIterator<Class<?>> resolvingClassListIterator = resolvingClassList.listIterator(resolvingClassList.size());
-			do { //we know there is at least one resource bundle
-				final Class<?> resolvingClass = resolvingClassListIterator.previous();
-				final Optional<ResourceBundle> resourceBundle = getResourceBundle(resolvingClass, locale);
-				if(resourceBundle.isPresent()) {
-					resources = Optional.of(new ResourceBundleResources(resolvingClass, resources, resourceBundle.get()));
-				}
-			} while(resolvingClassListIterator.hasPrevious());
+		Resources resources = null; //at first we don't know if we'll find any resources
+		//get a list of the resolving classes to use, and for each one try to get a resource bundle
+		for(final Class<?> resolvingClass : (Iterable<Class<?>>)() -> getResolvingClassStrategy().resolvingClasses(contextClass).iterator()) {
+			final Optional<ResourceBundle> resourceBundle = getResourceBundle(resolvingClass, locale);
+			if(resourceBundle.isPresent()) { //chain the resources if there is a resource bundle present
+				final Resources resolvingResources = new ResourceBundleResources(resolvingClass, resourceBundle.get());
+				resources = resources == null ? resolvingResources : resources.withFallbackResources(resolvingResources);
+			}
 		}
-		return resources;
+		final Optional<Resources> parentResources = getParentResourcesFactory().getOptionalResources(contextClass, locale);
+		//if there are no resources for the class and its hierarchy, we use the parent resources (if any) as is
+		//otherwise, if there are parent resources, add them as a fallback
+		return resources == null ? parentResources : Optional.of(resources.withFallbackResources(parentResources));
 	}
 
 	/**

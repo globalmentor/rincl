@@ -18,22 +18,14 @@ package io.rincl;
 
 import static java.util.Objects.*;
 
-import java.util.Optional;
-
 import javax.annotation.*;
 
 /**
  * Abstract implementation of access to i18n resources.
  * @author Garret Wilson
  */
+@Deprecated
 public abstract class AbstractResources implements Resources {
-
-	private final Optional<Resources> parentResources;
-
-	@Override
-	public Optional<Resources> getParentResources() {
-		return parentResources;
-	}
 
 	private final Class<?> contextClass;
 
@@ -43,14 +35,12 @@ public abstract class AbstractResources implements Resources {
 	}
 
 	/**
-	 * Context class and parent resources constructor.
+	 * Context class constructor.
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @throws NullPointerException if the given context class and/or parent resources is <code>null</code>.
+	 * @throws NullPointerException if the given context class is <code>null</code>.
 	 */
-	public AbstractResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources) {
+	public AbstractResources(@Nonnull final Class<?> contextClass) {
 		this.contextClass = requireNonNull(contextClass);
-		this.parentResources = requireNonNull(parentResources);
 	}
 
 }

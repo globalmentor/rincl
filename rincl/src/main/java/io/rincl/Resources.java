@@ -16,8 +16,6 @@
 
 package io.rincl;
 
-import static java.util.Objects.*;
-
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -27,16 +25,9 @@ import io.confound.config.Configuration;
 
 /**
  * Access to i18n resources.
- * <p>
- * Each resource lookup method such as {@link #getString(String, Object...)} is expected to attempt to look up resources in the {@link #getParentResources()}
- * (if any) if the resource is not found in this resources instance.
- * </p>
  * @author Garret Wilson
  */
 public interface Resources extends Configuration {
-
-	/** @return The parent resources for fallback lookup. */
-	public Optional<Resources> getParentResources();
 
 	/** @return The context with which these resources are related; usually the class of the object requesting the resource. */
 	public @Nonnull Class<?> getContextClass();
@@ -124,5 +115,27 @@ public interface Resources extends Configuration {
 	 * @see MessageFormat#format(Object)
 	 */
 	public Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ResourceConfigurationException;
+
+	/**
+	 * Return resources equivalent to these resources but that will fall back to optional parent resources if a value is not present. These resources will remain
+	 * unmodified.
+	 * @param fallbackResources The optional fallback resources.
+	 * @return A version of these resources that uses fallback lookup or, if no fallback is present, these resources.
+	 * @throws NullPointerException if the given optional fallback resources is <code>null</code>.
+	 */
+	public default Resources withFallbackResources(@Nonnull final Optional<Resources> fallbackResources) {
+		return fallbackResources.isPresent() ? withFallbackResources(fallbackResources.get()) : this;
+	}
+
+	/**
+	 * Returns resources equivalent to these resources but that will fall back to a specified parent resources if a value is not present. These resources will
+	 * remain unmodified.
+	 * @param fallbackResources The fallback resources.
+	 * @return A version of these resources that uses fallback lookup.
+	 * @throws NullPointerException if the given fallback resources is <code>null</code>.
+	 */
+	public default Resources withFallbackResources(@Nonnull final Resources fallbackResources) {
+		return new ChildResourcesDecorator(this, fallbackResources);
+	}
 
 }

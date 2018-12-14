@@ -16,13 +16,13 @@
 
 package io.rincl;
 
-import java.net.URI;
-import java.nio.file.Path;
+import static java.util.Objects.*;
+
 import java.util.Optional;
 
 import javax.annotation.*;
 
-import io.confound.config.ConfigurationException;
+import io.confound.config.EmptyConfiguration;
 
 /**
  * An implementation of resources that contains no definitions.
@@ -31,7 +31,14 @@ import io.confound.config.ConfigurationException;
  * </p>
  * @author Garret Wilson
  */
-public final class EmptyResources extends AbstractResources {
+public final class EmptyResources extends EmptyConfiguration implements Resources {
+
+	private final Class<?> contextClass;
+
+	@Override
+	public Class<?> getContextClass() {
+		return contextClass;
+	}
 
 	/**
 	 * Context class constructor.
@@ -39,77 +46,12 @@ public final class EmptyResources extends AbstractResources {
 	 * @throws NullPointerException if the given context class is <code>null</code>.
 	 */
 	public EmptyResources(@Nonnull final Class<?> contextClass) {
-		this(contextClass, Optional.empty());
-	}
-
-	/**
-	 * Context class and parent resources constructor.
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @throws NullPointerException if the given context class and/or parent resources is <code>null</code>.
-	 */
-	public EmptyResources(@Nonnull final Class<?> contextClass, @Nonnull final Resources parentResources) {
-		this(contextClass, Optional.of(parentResources));
-	}
-
-	/**
-	 * Context class and optional parent resources constructor.
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @throws NullPointerException if the given context class and/or parent resources is <code>null</code>.
-	 */
-	public EmptyResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources) {
-		super(contextClass, parentResources);
-	}
-
-	@Override
-	public boolean hasConfigurationValue(String key) throws ConfigurationException {
-		return false;
-	}
-
-	@Override
-	public <T> Optional<T> getOptionalObject(String key) throws ConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalObject(key));
-	}
-
-	@Override
-	public Optional<Double> getOptionalDouble(String key) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalDouble(key));
-	}
-
-	@Override
-	public Optional<Boolean> getOptionalBoolean(String key) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalBoolean(key));
-	}
-
-	@Override
-	public Optional<Integer> getOptionalInt(String key) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalInt(key));
-	}
-
-	@Override
-	public Optional<Long> getOptionalLong(String key) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalLong(key));
-	}
-
-	@Override
-	public Optional<String> getOptionalString(String key) throws ConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalString(key));
+		this.contextClass = requireNonNull(contextClass);
 	}
 
 	@Override
 	public Optional<String> getOptionalString(String key, Object... arguments) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalString(key, arguments));
-	}
-
-	@Override
-	public Optional<Path> getOptionalPath(String key) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalPath(key));
-	}
-
-	@Override
-	public Optional<URI> getOptionalUri(String key) throws ResourceConfigurationException {
-		return getParentResources().flatMap(resources -> resources.getOptionalUri(key));
+		return Optional.empty();
 	}
 
 }
