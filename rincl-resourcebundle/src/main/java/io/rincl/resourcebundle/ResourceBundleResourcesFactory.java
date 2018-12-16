@@ -311,13 +311,13 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 			final Optional<ResourceBundle> resourceBundle = getResourceBundle(resolvingClass, locale);
 			if(resourceBundle.isPresent()) { //chain the resources if there is a resource bundle present
 				final Resources resolvingResources = new ResourceBundleResources(resolvingClass, resourceBundle.get());
-				resources = resources == null ? resolvingResources : resources.withFallbackResources(resolvingResources);
+				resources = resources == null ? resolvingResources : resources.withFallback(resolvingResources);
 			}
 		}
 		final Optional<Resources> parentResources = getParentResourcesFactory().getOptionalResources(contextClass, locale);
 		//if there are no resources for the class and its hierarchy, we use the parent resources (if any) as is
 		//otherwise, if there are parent resources, add them as a fallback
-		return resources == null ? parentResources : Optional.of(resources.withFallbackResources(parentResources));
+		return resources == null ? parentResources : Optional.of(Resources.withFallback(resources, parentResources));
 	}
 
 	/**

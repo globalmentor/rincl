@@ -157,7 +157,7 @@ public class BaseResourceI18nConcernTest {
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(parentResourcesFactory) {
 			@Override
 			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
-				return Optional.of(new EmptyResources(contextClass).withFallbackResources(getParentResourcesFactory().getResources(contextClass, locale)));
+				return Optional.of(new EmptyResources(contextClass).withFallback(getParentResourcesFactory().getResources(contextClass, locale)));
 			}
 		};
 		assertThat(concern.getResources(this).getString("foo"), is("bar"));

@@ -116,25 +116,27 @@ public interface Resources extends Configuration {
 	}
 
 	/**
-	 * Return resources equivalent to these resources but that will fall back to optional parent resources if a value is not present. These resources will remain
-	 * unmodified.
-	 * @param fallbackResources The optional fallback resources.
-	 * @return A version of these resources that uses fallback lookup or, if no fallback is present, these resources.
-	 * @throws NullPointerException if the given optional fallback resources is <code>null</code>.
-	 */
-	public default Resources withFallbackResources(@Nonnull final Optional<Resources> fallbackResources) {
-		return fallbackResources.map(this::withFallbackResources).orElse(this);
-	}
-
-	/**
 	 * Returns resources equivalent to these resources but that will fall back to a specified parent resources if a value is not present. These resources will
 	 * remain unmodified.
 	 * @param fallbackResources The fallback resources.
 	 * @return A version of these resources that uses fallback lookup.
 	 * @throws NullPointerException if the given fallback resources is <code>null</code>.
 	 */
-	public default Resources withFallbackResources(@Nonnull final Resources fallbackResources) {
+	public default Resources withFallback(@Nonnull final Resources fallbackResources) {
 		return new ChildResourcesDecorator(this, fallbackResources);
+	}
+
+	/**
+	 * Utility method that return resources equivalent to the given resources but that will fall back to optional parent resources if a value is not present. The
+	 * given resources will remain
+	 * @param resources The resource to optionally be given a fallback.
+	 * @param fallbackResources The optional fallback resources.
+	 * @return A version of the resources that uses fallback lookup or, if no fallback is present, the given resources.
+	 * @throws NullPointerException if the given resources and/or optional fallback resources is <code>null</code>.
+	 * @see #withFallback(Resources)
+	 */
+	public static Resources withFallback(@Nonnull final Resources resources, @Nonnull final Optional<Resources> fallbackResources) {
+		return fallbackResources.map(resources::withFallback).orElse(resources);
 	}
 
 }
