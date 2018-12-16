@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import io.rincl.ResourceConfigurationException;
+import io.confound.config.ConfigurationException;
 
 /**
  * Strategy for determining the base names to use for a reference class when searching for resource bundles.
@@ -68,7 +68,7 @@ public interface BaseNameStrategy {
 	 * @param referenceClass The class being reference at a single hierarchy for which base names will be returned when searching for resource bundles.
 	 * @return Access to configured resources for the given context class.
 	 * @throws NullPointerException if the given context class is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 */
-	public Stream<String> baseNames(@Nonnull final Class<?> referenceClass) throws ResourceConfigurationException;
+	public Stream<String> baseNames(@Nonnull final Class<?> referenceClass) throws ConfigurationException;
 }

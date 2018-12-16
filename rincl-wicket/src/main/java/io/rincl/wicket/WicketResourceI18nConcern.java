@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.wicket.*;
 
+import io.confound.config.ConfigurationException;
 import io.rincl.*;
 
 /**
@@ -141,7 +142,7 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 	 * </p>
 	 */
 	@Override
-	public Resources getResources(final Object context) throws ResourceConfigurationException {
+	public Resources getResources(final Object context) throws ConfigurationException {
 		if(context instanceof Component) { //if a Wicket Component is supplied, use its locale
 			return getResources(context, ((Component)context).getLocale()); //return resources using the component's locale
 		}
@@ -155,7 +156,7 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 	 * </p>
 	 */
 	@Override
-	public Optional<Resources> getOptionalResources(final Object context, final Locale locale) throws ResourceConfigurationException {
+	public Optional<Resources> getOptionalResources(final Object context, final Locale locale) throws ConfigurationException {
 		if(context instanceof Component) { //if a Wicket Component is supplied, pass it to the resources
 			return Optional.of(new WicketResources((Component)context, getLocalizer(), locale)
 					.withFallbackResources(getParentResourcesFactory().getOptionalResources(context, locale)));
@@ -164,7 +165,7 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 	}
 
 	@Override
-	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
+	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
 		return Optional.of(new WicketResources(contextClass, getLocalizer(), locale)
 				.withFallbackResources(getParentResourcesFactory().getOptionalResources(contextClass, locale)));
 	}

@@ -20,6 +20,7 @@ import java.util.*;
 
 import javax.annotation.*;
 
+import io.confound.config.ConfigurationException;
 import io.csar.*;
 import io.rincl.Resources;
 
@@ -92,11 +93,11 @@ public class Rincl {
 	 * @param context The context with which these resources are related; usually the object requesting the resource.
 	 * @return Access to configured resources for the given context.
 	 * @throws NullPointerException if the given context is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Object)
 	 */
-	public static @Nonnull Resources getResources(@Nonnull final Object context) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Object context) throws ConfigurationException {
 		return getResourceI18nConcern().getResources(context);
 	}
 
@@ -112,11 +113,11 @@ public class Rincl {
 	 * @param locale The locale for which resources should be returned for the given context.
 	 * @return Access to configured resources for the given context.
 	 * @throws NullPointerException if the given context and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Object, Locale)
 	 */
-	public static @Nonnull Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ConfigurationException {
 		return getResourceI18nConcern().getResources(context, locale);
 	}
 
@@ -131,11 +132,11 @@ public class Rincl {
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
 	 * @return Access to configured resources for the given context class.
 	 * @throws NullPointerException if the given context class is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Class)
 	 */
-	public static @Nonnull Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Class<?> contextClass) throws ConfigurationException {
 		return getResourceI18nConcern().getResources(contextClass);
 	}
 
@@ -151,11 +152,11 @@ public class Rincl {
 	 * @param locale The locale for which resources should be returned for the given context class.
 	 * @return Access to configured resources for the given context class.
 	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResourceI18nConcern()
 	 * @see ResourceI18nConcern#getResources(Class)
 	 */
-	public static @Nonnull Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
+	public static @Nonnull Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ConfigurationException {
 		return getResourceI18nConcern().getResources(contextClass, locale);
 	}
 

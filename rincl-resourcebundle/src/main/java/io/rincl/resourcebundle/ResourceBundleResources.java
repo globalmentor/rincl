@@ -92,7 +92,7 @@ public class ResourceBundleResources extends AbstractStringResources {
 	/**
 	 * {@inheritDoc}
 	 * @implSpec This implementation delegates to {@link ResourceBundle#getObject(String)}.
-	 * @throws ResourceConfigurationException if the requested resource is not an instance of {@link String}.
+	 * @throws ConfigurationException if the requested resource is not an instance of {@link String}.
 	 */
 	@Override
 	protected Optional<String> findConfigurationValueImpl(final String key) throws ConfigurationException {
@@ -108,7 +108,7 @@ public class ResourceBundleResources extends AbstractStringResources {
 			//so we'll do the same---but throw a better exception if the resource is not a string
 			final Object object = resourceBundle.getObject(key); //get the object
 			if(!(object instanceof String)) {
-				throw new ResourceConfigurationException(String.format("Resource with key %s is not a string.", key));
+				throw new ConfigurationException(String.format("Resource with key %s is not a string.", key));
 			}
 			return Optional.of((String)object);
 		} catch(final MissingResourceException missingResourceException) { //we don't expect this...

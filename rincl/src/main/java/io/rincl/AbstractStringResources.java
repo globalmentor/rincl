@@ -49,17 +49,4 @@ public abstract class AbstractStringResources extends AbstractStringConfiguratio
 		this.contextClass = requireNonNull(contextClass);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation delegates to {@link #getOptionalStringImpl(String)}.
-	 * </p>
-	 */
-	/*TODO delete
-	@Override
-	public boolean hasResource(@Nonnull final String key) throws ResourceConfigurationException {
-		return getOptionalStringImpl(key).isPresent();
-	}
-	*/
-
 }

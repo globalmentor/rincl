@@ -104,7 +104,7 @@ public class WicketResources extends AbstractStringResources {
 	 * <p>
 	 * This implementation delegates to {@link Localizer#getStringIgnoreSettings(String, Component, IModel, Locale, String, String)}.
 	 * </p>
-	 * @throws ResourceConfigurationException if the requested resource is not an instance of {@link String}.
+	 * @throws ConfigurationException if the requested resource is not an instance of {@link String}.
 	 */
 	@Override
 	protected Optional<String> findConfigurationValueImpl(String key) throws ConfigurationException {

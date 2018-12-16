@@ -20,6 +20,8 @@ import java.util.*;
 
 import javax.annotation.*;
 
+import io.confound.config.ConfigurationException;
+
 /**
  * Creates resources for a given context and locale.
  * @author Garret Wilson
@@ -45,10 +47,10 @@ public interface ResourcesFactory {
 	 * @param locale The locale for which resources should be returned for the given context.
 	 * @return Access to configured resources for the given context.
 	 * @throws NullPointerException if the given context and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResources(Class, Locale)
 	 */
-	public default @Nonnull Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ResourceConfigurationException {
+	public default @Nonnull Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ConfigurationException {
 		return getOptionalResources(context, locale).orElseGet(() -> new EmptyResources(context.getClass()));
 	}
 
@@ -64,9 +66,9 @@ public interface ResourcesFactory {
 	 * @param locale The locale for which resources should be returned for the given context class.
 	 * @return Access to configured resources for the given context class.
 	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 */
-	public default @Nonnull Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ResourceConfigurationException {
+	public default @Nonnull Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ConfigurationException {
 		return getOptionalResources(contextClass, locale).orElseGet(() -> new EmptyResources(contextClass));
 	}
 
@@ -84,11 +86,10 @@ public interface ResourcesFactory {
 	 * @param locale The locale for which resources should be returned for the given context.
 	 * @return Access to configured resources for the given context.
 	 * @throws NullPointerException if the given context and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResources(Class, Locale)
 	 */
-	public default @Nonnull Optional<Resources> getOptionalResources(@Nonnull final Object context, @Nonnull final Locale locale)
-			throws ResourceConfigurationException {
+	public default @Nonnull Optional<Resources> getOptionalResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ConfigurationException {
 		return getOptionalResources(context.getClass(), locale);
 	}
 
@@ -101,9 +102,8 @@ public interface ResourcesFactory {
 	 * @param locale The locale for which resources should be returned for the given context class.
 	 * @return Access to configured resources for the given context class.
 	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 */
-	public @Nonnull Optional<Resources> getOptionalResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale)
-			throws ResourceConfigurationException;
+	public @Nonnull Optional<Resources> getOptionalResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ConfigurationException;
 
 }

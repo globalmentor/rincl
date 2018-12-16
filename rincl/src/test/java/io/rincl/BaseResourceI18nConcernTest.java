@@ -25,6 +25,8 @@ import java.util.Locale.Category;
 
 import org.junit.*;
 
+import io.confound.config.ConfigurationException;
+
 /**
  * Test base implemented methods of {@link BaseResourceI18nConcern}.
  * @author Garret Wilson
@@ -55,7 +57,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -78,7 +80,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -103,7 +105,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -128,7 +130,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -156,7 +158,7 @@ public class BaseResourceI18nConcernTest {
 		final ResourcesFactory parentResourcesFactory = (contextClass, locale) -> Optional.of(parentResources);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(parentResourcesFactory) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				return Optional.of(new EmptyResources(contextClass, getParentResourcesFactory().getResources(contextClass, locale)));
 			}
 		};

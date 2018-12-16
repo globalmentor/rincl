@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import javax.annotation.*;
 
+import io.confound.config.ConfigurationException;
 import io.confound.config.EmptyConfiguration;
 
 /**
@@ -50,7 +51,7 @@ public final class EmptyResources extends EmptyConfiguration implements Resource
 	}
 
 	@Override
-	public Optional<String> getOptionalString(final String key, final Object... arguments) throws ResourceConfigurationException {
+	public Optional<String> getOptionalString(final String key, final Object... arguments) throws ConfigurationException {
 		return Optional.empty();
 	}
 

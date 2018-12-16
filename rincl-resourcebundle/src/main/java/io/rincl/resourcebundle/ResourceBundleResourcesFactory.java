@@ -22,6 +22,7 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import io.confound.config.ConfigurationException;
 import io.rincl.*;
 
 /**
@@ -303,7 +304,7 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 	 * @see #getResourceBundleControl()
 	 */
 	@Override
-	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
+	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
 		Resources resources = null; //at first we don't know if we'll find any resources
 		//get a list of the resolving classes to use, and for each one try to get a resource bundle
 		for(final Class<?> resolvingClass : (Iterable<Class<?>>)() -> getResolvingClassStrategy().resolvingClasses(contextClass).iterator()) {
@@ -332,8 +333,7 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
 	 * @see #getResourceBundleControl()
 	 */
-	protected Optional<ResourceBundle> getResourceBundle(@Nonnull final Class<?> referenceClass, @Nonnull final Locale locale)
-			throws ResourceConfigurationException {
+	protected Optional<ResourceBundle> getResourceBundle(@Nonnull final Class<?> referenceClass, @Nonnull final Locale locale) throws ConfigurationException {
 		requireNonNull(locale);
 		final ClassLoader classLoader = referenceClass.getClassLoader();
 		//if this context class has no class loader, it's probably because we reached Object or some similar class,

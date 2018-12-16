@@ -16,18 +16,29 @@
 
 package io.rincl;
 
+import static java.util.Objects.*;
+
 import java.text.MessageFormat;
 import java.util.*;
 
 import javax.annotation.*;
 
 import io.confound.config.Configuration;
+import io.confound.config.ConfigurationException;
 
 /**
  * Access to i18n resources.
+ * @implSpec For those methods that throw an exception if a resource is missing, the implementations in this interface throw a
+ *           {@link MissingResourceKeyException}.
  * @author Garret Wilson
+ * @see MissingResourceKeyException
  */
 public interface Resources extends Configuration {
+
+	@Override
+	public default MissingResourceKeyException createMissingConfigurationKeyException(@Nonnull final String key) {
+		return new MissingResourceKeyException(String.format("Missing resource for key %s.", key), requireNonNull(key));
+	}
 
 	/** @return The context with which these resources are related; usually the class of the object requesting the resource. */
 	public @Nonnull Class<?> getContextClass();
@@ -35,44 +46,17 @@ public interface Resources extends Configuration {
 	/**
 	 * Determines whether a resource of some type exists for the given resource key.
 	 * <p>
-	 * This method searches the parent resources hierarchy if no resource is available in this instance.
+	 * This method should normally not be overridden or decorated.
 	 * </p>
+	 * @implSpec The default implementation delegates to {@link #hasConfigurationValue(String)}.
 	 * @param key The resource key.
 	 * @return <code>true</code> if a resource of type type could be retrieved from these resources using the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * @throws ConfigurationException if there is a resource value stored in an invalid format.
 	 */
-	@Deprecated
-	public default boolean hasResource(@Nonnull final String key) throws ResourceConfigurationException {
+	public default boolean hasResource(@Nonnull final String key) throws ConfigurationException {
 		return hasConfigurationValue(key);
 	}
-
-	/**
-	 * Retrieves a general resource.
-	 * @param <T> The type of resource expected.
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	//	@Deprecated
-	//	public default @Nonnull <T> T getResource(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-	//		return requireResource(getOptionalResource(key), key);
-	//	}
-
-	/**
-	 * Retrieves a general resource that may not be present.
-	 * @param <T> The type of resource expected.
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	//	@Deprecated
-	//	public default <T> Optional<T> getOptionalResource(@Nonnull final String key) throws ResourceConfigurationException {
-	//		return getOptionalObject(key);
-	//	}
 
 	//String
 
@@ -89,12 +73,12 @@ public interface Resources extends Configuration {
 	 * @param arguments The arguments for formatting, if any.
 	 * @return The value of the resource associated with the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * @throws MissingResourceKeyException if no resource is associated with the given key.
+	 * @throws ConfigurationException if there is a resource value stored in an invalid format.
 	 * @see MessageFormat#format(Object)
 	 */
 	public default @Nonnull String getString(@Nonnull final String key, @Nonnull final Object... arguments)
-			throws MissingResourceException, ResourceConfigurationException {
+			throws MissingResourceKeyException, ConfigurationException {
 		return requireConfiguration(getOptionalString(key, arguments), key);
 	}
 
@@ -107,17 +91,19 @@ public interface Resources extends Configuration {
 	 * If arguments are provided, the string if present will be considered a template and formatted applying the given arguments. Formatting takes place after
 	 * replacement of all internal resource references. The {@link MessageFormat} formatting rules will be used.
 	 * </p>
-	 * @apiNote This method should normally not be overridden or decorated.
+	 * <p>
+	 * This method should normally not be overridden or decorated.
+	 * </p>
 	 * @implSpec This implementation formats the value, if any, retrieved from {@link #getOptionalString(String)}.
 	 * @param key The resource key.
 	 * @param arguments The arguments for formatting, if any.
 	 * @return The optional value of the resource associated with the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * @throws ConfigurationException if there is a resource value stored in an invalid format.
 	 * @see #getOptionalString(String)
 	 * @see MessageFormat#format(Object)
 	 */
-	public default Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ResourceConfigurationException { //TODO add tests
+	public default Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ConfigurationException { //TODO add tests
 		Optional<String> string = getOptionalString(key); //get the dereferenced string
 		if(string.isPresent()) { //if there is a string
 			if(arguments.length > 0) { //if there are arguments, format the string
