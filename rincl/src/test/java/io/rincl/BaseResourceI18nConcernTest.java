@@ -18,12 +18,13 @@ package io.rincl;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
 
 import java.util.*;
 import java.util.Locale.Category;
 
 import org.junit.*;
+
+import io.confound.config.*;
 
 /**
  * Test base implemented methods of {@link BaseResourceI18nConcern}.
@@ -55,7 +56,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -78,7 +79,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -103,7 +104,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -128,7 +129,7 @@ public class BaseResourceI18nConcernTest {
 		Locale.setDefault(Category.FORMAT, Locale.FRENCH);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(ResourcesFactory.NONE) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
 				throw new AssertionError();
 			}
 		};
@@ -149,13 +150,14 @@ public class BaseResourceI18nConcernTest {
 	 */
 	@Test
 	public void testParentResourcesFactory() {
-		final AbstractStringResources parentResources = mock(AbstractStringResources.class, CALLS_REAL_METHODS);
-		when(parentResources.getOptionalStringImpl("foo")).thenReturn(Optional.of("bar"));
+		final Map<String, String> parentResourcesMap = new HashMap<>();
+		parentResourcesMap.put("foo", "bar");
+		final Resources parentResources = new ConfigurationResources(getClass(), new StringMapConfiguration(parentResourcesMap));
 		final ResourcesFactory parentResourcesFactory = (contextClass, locale) -> Optional.of(parentResources);
 		final ResourceI18nConcern concern = new BaseResourceI18nConcern(parentResourcesFactory) {
 			@Override
-			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ResourceConfigurationException {
-				return Optional.of(new EmptyResources(contextClass, getParentResourcesFactory().getResources(contextClass, locale)));
+			public Optional<Resources> getOptionalResources(Class<?> contextClass, Locale locale) throws ConfigurationException {
+				return Optional.of(new EmptyResources(contextClass).withFallback(getParentResourcesFactory().getResources(contextClass, locale)));
 			}
 		};
 		assertThat(concern.getResources(this).getString("foo"), is("bar"));

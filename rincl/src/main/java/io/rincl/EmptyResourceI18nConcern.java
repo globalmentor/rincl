@@ -17,8 +17,9 @@
 package io.rincl;
 
 import java.util.Locale;
-import java.util.Locale.Category;
 import java.util.Optional;
+
+import io.confound.config.ConfigurationException;
 
 /**
  * Resource internationalization concern that returns an empty set of resources.
@@ -49,7 +50,7 @@ public class EmptyResourceI18nConcern implements ResourceI18nConcern {
 	 * </p>
 	 */
 	@Override
-	public Locale getLocale(final Category category) {
+	public Locale getLocale(final Locale.Category category) {
 		return Locale.getDefault(category);
 	}
 
@@ -60,7 +61,7 @@ public class EmptyResourceI18nConcern implements ResourceI18nConcern {
 	 * </p>
 	 */
 	@Override
-	public void setLocale(final Category category, final Locale locale) {
+	public void setLocale(final Locale.Category category, final Locale locale) {
 		Locale.setDefault(category, locale);
 	}
 
@@ -72,7 +73,7 @@ public class EmptyResourceI18nConcern implements ResourceI18nConcern {
 	 * @see Optional#empty()
 	 */
 	@Override
-	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ResourceConfigurationException {
+	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
 		return Optional.empty();
 	}
 

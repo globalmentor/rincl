@@ -20,6 +20,8 @@ import java.util.Locale;
 
 import javax.annotation.*;
 
+import io.confound.config.ConfigurationException;
+
 /**
  * Mixin interface to provide quick-and-easy resources i18n support to a class.
  * <p>
@@ -34,7 +36,7 @@ public interface Rincled {
 	 * @return Access to configured resources for the implementing class.
 	 * @see Rincl#getResources(Object)
 	 */
-	public default Resources getResources() throws ResourceConfigurationException {
+	public default Resources getResources() throws ConfigurationException {
 		return Rincl.getResources(this);
 	}
 
@@ -43,10 +45,10 @@ public interface Rincled {
 	 * @param locale The locale for which resources should be returned.
 	 * @return Access to configured resources for the implementing class.
 	 * @throws NullPointerException if the given locale is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see Rincl#getResources(Object, Locale)
 	 */
-	public default @Nonnull Resources getResources(@Nonnull final Locale locale) throws ResourceConfigurationException {
+	public default @Nonnull Resources getResources(@Nonnull final Locale locale) throws ConfigurationException {
 		return Rincl.getResources(this, locale);
 	}
 

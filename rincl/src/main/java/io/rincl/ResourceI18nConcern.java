@@ -20,6 +20,7 @@ import java.util.*;
 
 import javax.annotation.*;
 
+import io.confound.config.ConfigurationException;
 import io.csar.*;
 
 /**
@@ -51,11 +52,11 @@ public interface ResourceI18nConcern extends Concern, LocaleSelectable, Resource
 	 * @param context The context with which these resources are related; usually the object requesting the resource.
 	 * @return Access to configured resources for the given context.
 	 * @throws NullPointerException if the given context is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResources(Class)
 	 * @see #getResources(Object, Locale)
 	 */
-	public default @Nonnull Resources getResources(@Nonnull final Object context) throws ResourceConfigurationException {
+	public default @Nonnull Resources getResources(@Nonnull final Object context) throws ConfigurationException {
 		return getResources(context, getLocale(Locale.Category.DISPLAY));
 	}
 
@@ -70,10 +71,10 @@ public interface ResourceI18nConcern extends Concern, LocaleSelectable, Resource
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
 	 * @return Access to configured resources for the given context class.
 	 * @throws NullPointerException if the given context class is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a configuration error.
+	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResources(Class, Locale)
 	 */
-	public default @Nonnull Resources getResources(@Nonnull final Class<?> contextClass) throws ResourceConfigurationException {
+	public default @Nonnull Resources getResources(@Nonnull final Class<?> contextClass) throws ConfigurationException {
 		return getResources(contextClass, getLocale(Locale.Category.DISPLAY));
 	}
 

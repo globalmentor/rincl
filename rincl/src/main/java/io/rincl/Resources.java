@@ -18,219 +18,44 @@ package io.rincl;
 
 import static java.util.Objects.*;
 
-import java.net.URI;
-import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.*;
 
 import javax.annotation.*;
 
+import io.confound.config.Configuration;
+import io.confound.config.ConfigurationException;
+
 /**
  * Access to i18n resources.
- * <p>
- * Each resource lookup method such as {@link #getString(String, Object...)} is expected to attempt to look up resources in the {@link #getParentResources()}
- * (if any) if the resource is not found in this resources instance.
- * </p>
+ * @implSpec For those methods that throw an exception if a resource is missing, the implementations in this interface throw a
+ *           {@link MissingResourceKeyException}.
  * @author Garret Wilson
+ * @see MissingResourceKeyException
  */
-public interface Resources {
+public interface Resources extends Configuration {
 
-	/** @return The parent resources for fallback lookup. */
-	public Optional<Resources> getParentResources();
+	@Override
+	public default MissingResourceKeyException createMissingConfigurationKeyException(@Nonnull final String key) {
+		return new MissingResourceKeyException(String.format("Missing resource for key %s.", key), requireNonNull(key));
+	}
 
 	/** @return The context with which these resources are related; usually the class of the object requesting the resource. */
 	public @Nonnull Class<?> getContextClass();
 
 	/**
-	 * Retrieves a required resource from an {@link Optional}, throwing a {@link MissingResourceException} if the resource not present.
-	 * <p>
-	 * This method is primarily used to check the result of a resource lookup call for the non-optional convenience resource lookup versions.
-	 * </p>
-	 * @param <T> The type of resource to check.
-	 * @param resource The retrieved resource.
-	 * @param key The resource key.
-	 * @return The retrieved resource.
-	 * @throws MissingResourceException if the given resource is not present.
-	 * @see Optional#isPresent()
-	 */
-	public default <T> T requireResource(@Nonnull final Optional<T> resource, @Nonnull final String key) throws MissingResourceException {
-		return resource.orElseThrow(() -> new MissingResourceException(String.format("Missing resource for key %s of class %s.", key, getContextClass().getName()),
-				getContextClass().getName(), requireNonNull(key)));
-	}
-
-	/**
 	 * Determines whether a resource of some type exists for the given resource key.
 	 * <p>
-	 * This method searches the parent resources hierarchy if no resource is available in this instance.
+	 * This method should normally not be overridden or decorated.
 	 * </p>
+	 * @implSpec The default implementation delegates to {@link #hasConfigurationValue(String)}.
 	 * @param key The resource key.
 	 * @return <code>true</code> if a resource of type type could be retrieved from these resources using the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * @throws ConfigurationException if there is a resource value stored in an invalid format.
 	 */
-	public boolean hasResource(@Nonnull final String key) throws ResourceConfigurationException;
-
-	/**
-	 * Retrieves a general resource.
-	 * @param <T> The type of resource expected.
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default @Nonnull <T> T getResource(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalResource(key), key);
-	}
-
-	/**
-	 * Retrieves a general resource that may not be present.
-	 * @param <T> The type of resource expected.
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public <T> Optional<T> getOptionalResource(@Nonnull final String key) throws ResourceConfigurationException;
-
-	//boolean
-
-	/**
-	 * Retrieves a Boolean resource.
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default @Nonnull boolean getBoolean(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalBoolean(key), key).booleanValue();
-	}
-
-	/**
-	 * Retrieves a Boolean resource that may not be present.
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public Optional<Boolean> getOptionalBoolean(@Nonnull final String key) throws ResourceConfigurationException;
-
-	//double
-
-	/**
-	 * Retrieves a floating point resource.
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default @Nonnull double getDouble(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalDouble(key), key).doubleValue();
-	}
-
-	/**
-	 * Retrieves a floating point resource that may not be present.
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public Optional<Double> getOptionalDouble(@Nonnull final String key) throws ResourceConfigurationException;
-
-	//int
-
-	/**
-	 * Retrieves an integer resource.
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default @Nonnull int getInt(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalInt(key), key).intValue();
-	}
-
-	/**
-	 * Retrieves an integer resource that may not be present.
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public Optional<Integer> getOptionalInt(@Nonnull final String key) throws ResourceConfigurationException;
-
-	//long
-
-	/**
-	 * Retrieves a long integer resource.
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default @Nonnull int getLong(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalLong(key), key).intValue();
-	}
-
-	/**
-	 * Retrieves a long integer resource that may not be present.
-	 * <p>
-	 * The default implementation delegates to {@link #getOptionalInt(String)}.
-	 * </p>
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default Optional<Long> getOptionalLong(@Nonnull final String key) throws ResourceConfigurationException {
-		return getOptionalInt(key).map(Integer::intValue).map(Long::valueOf); //this apparently uses auto-unboxing and autoboxing  
-	}
-
-	//Path
-
-	/**
-	 * Retrieves a path resource.
-	 * <p>
-	 * The path will be resolved using {@link #resolvePath(Path)}.
-	 * </p>
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default @Nonnull Path getPath(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalPath(key), key);
-	}
-
-	/**
-	 * Retrieves a path resource that may not be present.
-	 * <p>
-	 * The path will be resolved using {@link #resolvePath(Path)}.
-	 * </p>
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public Optional<Path> getOptionalPath(@Nonnull final String key) throws ResourceConfigurationException;
-
-	/**
-	 * Resolves the given path as appropriate. Absolute paths should not be modified. Relative paths may be resolved to some standard or configured absolute path,
-	 * depending on the implementation. A common base path may be configured separately, stored elsewhere in the resources, or encoded in the path string itself
-	 * for example.
-	 * <p>
-	 * The default implementation merely returns the given path.
-	 * </p>
-	 * @param path The path to resolve.
-	 * @return A resolved form of the path if appropriate.
-	 */
-	public default Path resolvePath(@Nonnull final Path path) {
-		return requireNonNull(path);
+	public default boolean hasResource(@Nonnull final String key) throws ConfigurationException {
+		return hasConfigurationValue(key);
 	}
 
 	//String
@@ -248,13 +73,13 @@ public interface Resources {
 	 * @param arguments The arguments for formatting, if any.
 	 * @return The value of the resource associated with the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * @throws MissingResourceKeyException if no resource is associated with the given key.
+	 * @throws ConfigurationException if there is a resource value stored in an invalid format.
 	 * @see MessageFormat#format(Object)
 	 */
 	public default @Nonnull String getString(@Nonnull final String key, @Nonnull final Object... arguments)
-			throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalString(key, arguments), key);
+			throws MissingResourceKeyException, ConfigurationException {
+		return requireConfiguration(getOptionalString(key, arguments), key);
 	}
 
 	/**
@@ -266,36 +91,52 @@ public interface Resources {
 	 * If arguments are provided, the string if present will be considered a template and formatted applying the given arguments. Formatting takes place after
 	 * replacement of all internal resource references. The {@link MessageFormat} formatting rules will be used.
 	 * </p>
+	 * <p>
+	 * This method should normally not be overridden or decorated.
+	 * </p>
+	 * @implSpec This implementation formats the value, if any, retrieved from {@link #getOptionalString(String)}.
 	 * @param key The resource key.
 	 * @param arguments The arguments for formatting, if any.
 	 * @return The optional value of the resource associated with the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * @throws ConfigurationException if there is a resource value stored in an invalid format.
+	 * @see #getOptionalString(String)
 	 * @see MessageFormat#format(Object)
 	 */
-	public Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ResourceConfigurationException;
-
-	//URI
-
-	/**
-	 * Retrieves a URI resource.
-	 * @param key The resource key.
-	 * @return The value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws MissingResourceException if no resource is associated with the given key.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
-	 */
-	public default @Nonnull URI getUri(@Nonnull final String key) throws MissingResourceException, ResourceConfigurationException {
-		return requireResource(getOptionalUri(key), key);
+	public default Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ConfigurationException { //TODO add tests
+		Optional<String> string = getOptionalString(key); //get the dereferenced string
+		if(string.isPresent()) { //if there is a string
+			if(arguments.length > 0) { //if there are arguments, format the string
+				//TODO improve source of MessageFormat; maybe use ThreadLocal
+				//TODO switch to using ICU4J
+				string = Optional.of(new MessageFormat(string.get(), Rincl.getLocale(Locale.Category.FORMAT)).format(arguments));
+			}
+		}
+		return string;
 	}
 
 	/**
-	 * Retrieves a URI resource that may not be present.
-	 * @param key The resource key.
-	 * @return The optional value of the resource associated with the given key.
-	 * @throws NullPointerException if the given key is <code>null</code>.
-	 * @throws ResourceConfigurationException if there is a resource value stored in an invalid format.
+	 * Returns resources equivalent to these resources but that will fall back to a specified parent resources if a value is not present. These resources will
+	 * remain unmodified.
+	 * @param fallbackResources The fallback resources.
+	 * @return A version of these resources that uses fallback lookup.
+	 * @throws NullPointerException if the given fallback resources is <code>null</code>.
 	 */
-	public Optional<URI> getOptionalUri(@Nonnull final String key) throws ResourceConfigurationException;
+	public default Resources withFallback(@Nonnull final Resources fallbackResources) {
+		return new ChildResourcesDecorator(this, fallbackResources);
+	}
+
+	/**
+	 * Utility method that return resources equivalent to the given resources but that will fall back to optional parent resources if a value is not present. The
+	 * given resources will remain
+	 * @param resources The resource to optionally be given a fallback.
+	 * @param fallbackResources The optional fallback resources.
+	 * @return A version of the resources that uses fallback lookup or, if no fallback is present, the given resources.
+	 * @throws NullPointerException if the given resources and/or optional fallback resources is <code>null</code>.
+	 * @see #withFallback(Resources)
+	 */
+	public static Resources withFallback(@Nonnull final Resources resources, @Nonnull final Optional<Resources> fallbackResources) {
+		return fallbackResources.map(resources::withFallback).orElse(resources);
+	}
 
 }

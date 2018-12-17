@@ -20,11 +20,13 @@ import static java.util.Objects.*;
 
 import java.util.*;
 
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Localizer;
+import org.apache.wicket.model.IModel;
 
+import io.confound.config.ConfigurationException;
 import io.rincl.*;
 
 /**
@@ -67,33 +69,7 @@ public class WicketResources extends AbstractStringResources {
 	 * @throws NullPointerException if the given context component, localizer, and/or locale is <code>null</code>.
 	 */
 	public WicketResources(@Nonnull final Component contextComponent, @Nonnull final Localizer localizer, @Nonnull final Locale locale) {
-		this(contextComponent, Optional.empty(), localizer, locale);
-	}
-
-	/**
-	 * Context component and parent resources constructor.
-	 * @param contextComponent The component with which these resources are related; usually the component which is requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @param localizer The Wicket localizer serving as the source of resources for which this object is an adapter.
-	 * @param locale The locale these resources are for.
-	 * @throws NullPointerException if the given context component, parent resources, localizer, and/or locale is <code>null</code>.
-	 */
-	public WicketResources(@Nonnull final Component contextComponent, @Nonnull final Resources parentResources, @Nonnull final Localizer localizer,
-			@Nonnull final Locale locale) {
-		this(contextComponent, Optional.of(parentResources), localizer, locale);
-	}
-
-	/**
-	 * Context component constructor.
-	 * @param contextComponent The component with which these resources are related; usually the component which is requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup, or <code>null</code> if there is no parent resources.
-	 * @param localizer The Wicket localizer serving as the source of resources for which this object is an adapter.
-	 * @param locale The locale these resources are for.
-	 * @throws NullPointerException if the given context component, parent resources, localizer, and/or locale is <code>null</code>.
-	 */
-	public WicketResources(@Nonnull final Component contextComponent, @Nonnull final Optional<Resources> parentResources, @Nonnull final Localizer localizer,
-			@Nonnull final Locale locale) {
-		this(Optional.of(contextComponent), contextComponent.getClass(), parentResources, localizer, locale);
+		this(Optional.of(contextComponent), contextComponent.getClass(), localizer, locale);
 	}
 
 	/**
@@ -104,47 +80,20 @@ public class WicketResources extends AbstractStringResources {
 	 * @throws NullPointerException if the given context class, localizer, and/or locale is <code>null</code>.
 	 */
 	public WicketResources(@Nonnull final Class<?> contextClass, @Nonnull final Localizer localizer, @Nonnull final Locale locale) {
-		this(contextClass, Optional.empty(), localizer, locale);
-	}
-
-	/**
-	 * Context class and parent resources constructor.
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @param localizer The Wicket localizer serving as the source of resources for which this object is an adapter.
-	 * @param locale The locale these resources are for.
-	 * @throws NullPointerException if the given context class, parent resources, localizer, and/or locale is <code>null</code>.
-	 */
-	public WicketResources(@Nonnull final Class<?> contextClass, @Nonnull final Resources parentResources, @Nonnull final Localizer localizer,
-			@Nonnull final Locale locale) {
-		this(contextClass, Optional.of(parentResources), localizer, locale);
-	}
-
-	/**
-	 * Context class constructor.
-	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup, or <code>null</code> if there is no parent resources.
-	 * @param localizer The Wicket localizer serving as the source of resources for which this object is an adapter.
-	 * @param locale The locale these resources are for.
-	 * @throws NullPointerException if the given context class, parent resources, localizer, and/or locale is <code>null</code>.
-	 */
-	public WicketResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources, @Nonnull final Localizer localizer,
-			@Nonnull final Locale locale) {
-		this(Optional.empty(), contextClass, parentResources, localizer, locale);
+		this(Optional.empty(), contextClass, localizer, locale);
 	}
 
 	/**
 	 * Context component and context class constructor.
 	 * @param contextComponent The component with which these resources are related; usually the component which is requesting the resource.
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup, or <code>null</code> if there is no parent resources.
 	 * @param localizer The Wicket localizer serving as the source of resources for which this object is an adapter.
 	 * @param locale The locale these resources are for.
-	 * @throws NullPointerException if the given context component, context class, parent resources, localizer, and/or locale is <code>null</code>.
+	 * @throws NullPointerException if the given context component, context class, localizer, and/or locale is <code>null</code>.
 	 */
-	protected WicketResources(@Nonnull final Optional<Component> contextComponent, @Nonnull final Class<?> contextClass,
-			@Nonnull final Optional<Resources> parentResources, @Nonnull final Localizer localizer, @Nonnull final Locale locale) {
-		super(contextClass, parentResources);
+	protected WicketResources(@Nonnull final Optional<Component> contextComponent, @Nonnull final Class<?> contextClass, @Nonnull final Localizer localizer,
+			@Nonnull final Locale locale) {
+		super(contextClass);
 		this.localizer = requireNonNull(localizer);
 		this.locale = requireNonNull(locale);
 		this.contextComponent = requireNonNull(contextComponent);
@@ -153,12 +102,12 @@ public class WicketResources extends AbstractStringResources {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation delegates to {@link Localizer#getStringIgnoreSettings(String, Component, org.apache.wicket.model.IModel, Locale, String, String)}.
+	 * This implementation delegates to {@link Localizer#getStringIgnoreSettings(String, Component, IModel, Locale, String, String)}.
 	 * </p>
-	 * @throws ResourceConfigurationException if the requested resource is not an instance of {@link String}.
+	 * @throws ConfigurationException if the requested resource is not an instance of {@link String}.
 	 */
 	@Override
-	protected Optional<String> getOptionalStringImpl(final String key) throws ResourceConfigurationException {
+	protected Optional<String> findConfigurationValueImpl(String key) throws ConfigurationException {
 		return Optional.ofNullable(getLocalizer().getStringIgnoreSettings(requireNonNull(key), getContextComponent().orElse(null), null, getLocale(), null, null));
 	}
 

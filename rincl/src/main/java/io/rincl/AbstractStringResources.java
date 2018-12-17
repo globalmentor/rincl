@@ -16,142 +16,37 @@
 
 package io.rincl;
 
-import static com.globalmentor.util.Optionals.*;
-
-import java.net.URI;
-import java.nio.file.*;
-import java.util.Optional;
+import static java.util.Objects.*;
 
 import javax.annotation.*;
+
+import io.confound.config.*;
 
 /**
  * Abstract implementation of access to i18n resources for which the underlying storage is based on strings.
  * <p>
- * This class retrieves all resources as stored in string format based upon {@link #getOptionalStringImpl(String)}.
+ * As with the parent class, an implementing subclass must override {@link #findConfigurationValueImpl(String)} for local raw string retrieval. This class
+ * retrieves all values as stored in string format accessed via {@link #findConfigurationValueImpl(String)}, and afterwards dereferenced using
+ * {@link #dereferenceString(String)}.
  * </p>
  * @author Garret Wilson
  */
-public abstract class AbstractStringResources extends BaseResources {
+public abstract class AbstractStringResources extends AbstractStringConfiguration implements Resources {
+
+	private final Class<?> contextClass;
+
+	@Override
+	public Class<?> getContextClass() {
+		return contextClass;
+	}
 
 	/**
 	 * Context class constructor.
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @throws NullPointerException if the given context class and/or parent resources is <code>null</code>.
+	 * @throws NullPointerException if the given context class is <code>null</code>.
 	 */
-	public AbstractStringResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources) {
-		super(contextClass, parentResources);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation delegates to {@link #getOptionalStringImpl(String)}.
-	 * </p>
-	 */
-	@Override
-	public boolean hasResource(@Nonnull final String key) throws ResourceConfigurationException {
-		return getOptionalStringImpl(key).isPresent();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation delegates to {@link #getOptionalDereferencedString(String)}.
-	 * </p>
-	 */
-	@Override
-	public <T> Optional<T> getOptionalResource(final String key) throws ResourceConfigurationException {
-		@SuppressWarnings("unchecked")
-		final Optional<T> optionalObject = (Optional<T>)getOptionalDereferencedString(key); //use the dereferenced string as the object
-		return or(optionalObject, () -> getParentResources().flatMap(resources -> resources.getOptionalResource(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation parses the value using {@link Boolean#valueOf(String)}.
-	 * </p>
-	 */
-	@Override
-	public Optional<Boolean> getOptionalBoolean(final String key) throws ResourceConfigurationException {
-		return or(getOptionalDereferencedString(key).map(Boolean::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalBoolean(key)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation parses the value using {@link Double#valueOf(String)}.
-	 * </p>
-	 */
-	@Override
-	public Optional<Double> getOptionalDouble(final String key) throws ResourceConfigurationException {
-		try {
-			return or(getOptionalDereferencedString(key).map(Double::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalDouble(key)));
-		} catch(final NumberFormatException numberFormatException) {
-			throw new ResourceConfigurationException(numberFormatException);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation parses the value using {@link Integer#valueOf(String)}.
-	 * </p>
-	 */
-	@Override
-	public Optional<Integer> getOptionalInt(final String key) throws ResourceConfigurationException {
-		try {
-			return or(getOptionalDereferencedString(key).map(Integer::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalInt(key)));
-		} catch(final NumberFormatException numberFormatException) {
-			throw new ResourceConfigurationException(numberFormatException);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation parses the value using {@link Long#valueOf(long)}.
-	 * </p>
-	 */
-	@Override
-	public Optional<Long> getOptionalLong(final String key) throws ResourceConfigurationException {
-		try {
-			return or(getOptionalDereferencedString(key).map(Long::valueOf), () -> getParentResources().flatMap(resources -> resources.getOptionalLong(key)));
-		} catch(final NumberFormatException numberFormatException) {
-			throw new ResourceConfigurationException(numberFormatException);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation parses the value using {@link URI#create(String)} and then resolves the path using {@link #resolvePath(Path)}.
-	 * </p>
-	 */
-	@Override
-	public Optional<Path> getOptionalPath(final String key) throws ResourceConfigurationException {
-		try {
-			return or(getOptionalDereferencedString(key).map(Paths::get).map(this::resolvePath),
-					() -> getParentResources().flatMap(resources -> resources.getOptionalPath(key)));
-		} catch(final IllegalArgumentException illegalArgumentException) {
-			throw new ResourceConfigurationException(illegalArgumentException);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation parses the value using {@link URI#create(String)}.
-	 * </p>
-	 */
-	@Override
-	public Optional<URI> getOptionalUri(final String key) throws ResourceConfigurationException {
-		try {
-			return or(getOptionalDereferencedString(key).map(URI::create), () -> getParentResources().flatMap(resources -> resources.getOptionalUri(key)));
-		} catch(final IllegalArgumentException illegalArgumentException) {
-			throw new ResourceConfigurationException(illegalArgumentException);
-		}
+	public AbstractStringResources(@Nonnull final Class<?> contextClass) {
+		this.contextClass = requireNonNull(contextClass);
 	}
 
 }

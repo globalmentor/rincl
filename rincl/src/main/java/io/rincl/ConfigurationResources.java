@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 GlobalMentor, Inc. <http://www.globalmentor.com/>
+ * Copyright © 2018 GlobalMentor, Inc. <http://www.globalmentor.com/>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,15 @@ package io.rincl;
 
 import static java.util.Objects.*;
 
-import java.util.Optional;
+import javax.annotation.Nonnull;
 
-import javax.annotation.*;
+import io.confound.config.*;
 
 /**
- * Abstract implementation of access to i18n resources.
+ * Resources that wrap an existing Configuration instance.
  * @author Garret Wilson
  */
-public abstract class AbstractResources implements Resources {
-
-	private final Optional<Resources> parentResources;
-
-	@Override
-	public Optional<Resources> getParentResources() {
-		return parentResources;
-	}
+public class ConfigurationResources extends AbstractConfigurationDecorator implements Resources {
 
 	private final Class<?> contextClass;
 
@@ -43,14 +36,14 @@ public abstract class AbstractResources implements Resources {
 	}
 
 	/**
-	 * Context class and parent resources constructor.
+	 * Context class and wrapped configuration constructor.
 	 * @param contextClass The context with which these resources are related; usually the class of the object requesting the resource.
-	 * @param parentResources The parent resources for fallback lookup.
-	 * @throws NullPointerException if the given context class and/or parent resources is <code>null</code>.
+	 * @param configuration The configuration to decorate.
+	 * @throws NullPointerException if the given context class and/or configuration is <code>null</code>.
 	 */
-	public AbstractResources(@Nonnull final Class<?> contextClass, @Nonnull final Optional<Resources> parentResources) {
+	public ConfigurationResources(@Nonnull final Class<?> contextClass, @Nonnull final Configuration configuration) {
+		super(configuration);
 		this.contextClass = requireNonNull(contextClass);
-		this.parentResources = requireNonNull(parentResources);
 	}
 
 }
