@@ -79,7 +79,7 @@ public interface Resources extends Configuration {
 	 */
 	public default @Nonnull String getString(@Nonnull final String key, @Nonnull final Object... arguments)
 			throws MissingResourceKeyException, ConfigurationException {
-		return requireConfiguration(getOptionalString(key, arguments), key);
+		return requireConfiguration(findString(key, arguments), key);
 	}
 
 	/**
@@ -94,17 +94,17 @@ public interface Resources extends Configuration {
 	 * <p>
 	 * This method should normally not be overridden or decorated.
 	 * </p>
-	 * @implSpec This implementation formats the value, if any, retrieved from {@link #getOptionalString(String)}.
+	 * @implSpec This implementation formats the value, if any, retrieved from {@link #findString(String)}.
 	 * @param key The resource key.
 	 * @param arguments The arguments for formatting, if any.
 	 * @return The optional value of the resource associated with the given key.
 	 * @throws NullPointerException if the given key is <code>null</code>.
 	 * @throws ConfigurationException if there is a resource value stored in an invalid format.
-	 * @see #getOptionalString(String)
+	 * @see #findString(String)
 	 * @see MessageFormat#format(Object)
 	 */
-	public default Optional<String> getOptionalString(@Nonnull final String key, @Nonnull final Object... arguments) throws ConfigurationException { //TODO add tests
-		Optional<String> string = getOptionalString(key); //get the dereferenced string
+	public default Optional<String> findString(@Nonnull final String key, @Nonnull final Object... arguments) throws ConfigurationException { //TODO add tests
+		Optional<String> string = findString(key); //get the dereferenced string
 		if(string.isPresent()) { //if there is a string
 			if(arguments.length > 0) { //if there are arguments, format the string
 				//TODO improve source of MessageFormat; maybe use ThreadLocal

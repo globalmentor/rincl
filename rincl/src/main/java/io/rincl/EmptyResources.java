@@ -51,7 +51,7 @@ public final class EmptyResources extends EmptyConfiguration implements Resource
 	}
 
 	@Override
-	public Optional<String> getOptionalString(final String key, final Object... arguments) throws ConfigurationException {
+	public Optional<String> findString(final String key, final Object... arguments) throws ConfigurationException {
 		return Optional.empty();
 	}
 

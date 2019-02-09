@@ -20,7 +20,8 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 import org.junit.*;
 
@@ -30,13 +31,13 @@ import org.junit.*;
  */
 public class ResourcesTest {
 
-	/** @see Resources#getOptionalLong(String) */
+	/** @see Resources#findLong(String) */
 	@Test
-	public void testGetOptionalLong() {
+	public void testFindLong() {
 		final Resources resources = mock(Resources.class, CALLS_REAL_METHODS);
-		when(resources.getOptionalInt("foo")).thenReturn(Optional.of(123));
+		when(resources.findInt("foo")).thenReturn(OptionalInt.of(123));
 		//the default version delegates to the int version
-		assertThat(resources.getOptionalLong("foo"), is(Optional.of(123L)));
+		assertThat(resources.findLong("foo"), is(OptionalLong.of(123L)));
 	}
 
 }

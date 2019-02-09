@@ -156,18 +156,18 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 	 * </p>
 	 */
 	@Override
-	public Optional<Resources> getOptionalResources(final Object context, final Locale locale) throws ConfigurationException {
+	public Optional<Resources> findResources(final Object context, final Locale locale) throws ConfigurationException {
 		if(context instanceof Component) { //if a Wicket Component is supplied, pass it to the resources
 			return Optional.of(Resources.withFallback(new WicketResources((Component)context, getLocalizer(), locale),
-					getParentResourcesFactory().getOptionalResources(context, locale)));
+					getParentResourcesFactory().findResources(context, locale)));
 		}
-		return super.getOptionalResources(context, locale); //otherwise retrieve the resources normally
+		return super.findResources(context, locale); //otherwise retrieve the resources normally
 	}
 
 	@Override
-	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
+	public Optional<Resources> findResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
 		return Optional.of(Resources.withFallback(new WicketResources(contextClass, getLocalizer(), locale),
-				getParentResourcesFactory().getOptionalResources(contextClass, locale)));
+				getParentResourcesFactory().findResources(contextClass, locale)));
 	}
 
 }

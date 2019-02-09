@@ -67,7 +67,7 @@ public class ResourceBundleResources extends AbstractStringResources {
 	 * @see #dereferenceString(String)
 	 */
 	@Override
-	public <T> Optional<T> getOptionalObject(final String key) throws ConfigurationException {
+	public <T> Optional<T> findObject(final String key) throws ConfigurationException {
 		final String normalizedKey = normalizeKey(key);
 		final ResourceBundle resourceBundle = getResourceBundle();
 		//See if the resource bundle contains the key;

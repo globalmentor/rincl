@@ -304,7 +304,7 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 	 * @see #getResourceBundleControl()
 	 */
 	@Override
-	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
+	public Optional<Resources> findResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
 		Resources resources = null; //at first we don't know if we'll find any resources
 		//get a list of the resolving classes to use, and for each one try to get a resource bundle
 		for(final Class<?> resolvingClass : (Iterable<Class<?>>)() -> getResolvingClassStrategy().resolvingClasses(contextClass).iterator()) {
@@ -314,7 +314,7 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 				resources = resources == null ? resolvingResources : resources.withFallback(resolvingResources);
 			}
 		}
-		final Optional<Resources> parentResources = getParentResourcesFactory().getOptionalResources(contextClass, locale);
+		final Optional<Resources> parentResources = getParentResourcesFactory().findResources(contextClass, locale);
 		//if there are no resources for the class and its hierarchy, we use the parent resources (if any) as is
 		//otherwise, if there are parent resources, add them as a fallback
 		return resources == null ? parentResources : Optional.of(Resources.withFallback(resources, parentResources));

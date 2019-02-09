@@ -73,7 +73,7 @@ public class EmptyResourceI18nConcern implements ResourceI18nConcern {
 	 * @see Optional#empty()
 	 */
 	@Override
-	public Optional<Resources> getOptionalResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
+	public Optional<Resources> findResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
 		return Optional.empty();
 	}
 

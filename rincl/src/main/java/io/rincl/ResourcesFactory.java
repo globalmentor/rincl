@@ -38,7 +38,7 @@ public interface ResourcesFactory {
 	 * The context class returned by {@link Resources#getContextClass()} may not necessarily reflect the class of the context provided here.
 	 * </p>
 	 * <p>
-	 * The default implementation delegates to {@link #getOptionalResources(Object, Locale)}.
+	 * The default implementation delegates to {@link #findResources(Object, Locale)}.
 	 * </p>
 	 * <p>
 	 * If no resources are available, empty resources will be returned.
@@ -51,7 +51,7 @@ public interface ResourcesFactory {
 	 * @see #getResources(Class, Locale)
 	 */
 	public default @Nonnull Resources getResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ConfigurationException {
-		return getOptionalResources(context, locale).orElseGet(() -> new EmptyResources(context.getClass()));
+		return findResources(context, locale).orElseGet(() -> new EmptyResources(context.getClass()));
 	}
 
 	/**
@@ -69,7 +69,7 @@ public interface ResourcesFactory {
 	 * @throws ConfigurationException if there is a configuration error.
 	 */
 	public default @Nonnull Resources getResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ConfigurationException {
-		return getOptionalResources(contextClass, locale).orElseGet(() -> new EmptyResources(contextClass));
+		return findResources(contextClass, locale).orElseGet(() -> new EmptyResources(contextClass));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public interface ResourcesFactory {
 	 * The context class returned by {@link Resources#getContextClass()} may not necessarily reflect the class of the context provided here.
 	 * </p>
 	 * <p>
-	 * The default implementation delegates to {@link #getOptionalResources(Class, Locale)} providing the class of the given instance. Implementations of this
+	 * The default implementation delegates to {@link #findResources(Class, Locale)} providing the class of the given instance. Implementations of this
 	 * interface should if at all possible implement the class-based resource lookup method variations and leave these default delegating method implementations
 	 * so as to provide the most flexibility to consumers.
 	 * </p>
@@ -89,8 +89,8 @@ public interface ResourcesFactory {
 	 * @throws ConfigurationException if there is a configuration error.
 	 * @see #getResources(Class, Locale)
 	 */
-	public default @Nonnull Optional<Resources> getOptionalResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ConfigurationException {
-		return getOptionalResources(context.getClass(), locale);
+	public default @Nonnull Optional<Resources> findResources(@Nonnull final Object context, @Nonnull final Locale locale) throws ConfigurationException {
+		return findResources(context.getClass(), locale);
 	}
 
 	/**
@@ -104,6 +104,6 @@ public interface ResourcesFactory {
 	 * @throws NullPointerException if the given context class and/or locale is <code>null</code>.
 	 * @throws ConfigurationException if there is a configuration error.
 	 */
-	public @Nonnull Optional<Resources> getOptionalResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ConfigurationException;
+	public @Nonnull Optional<Resources> findResources(@Nonnull final Class<?> contextClass, @Nonnull final Locale locale) throws ConfigurationException;
 
 }

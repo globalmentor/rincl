@@ -46,9 +46,9 @@ public class ChildResourcesDecorator extends BaseChildConfigurationDecorator<Res
 	//String
 
 	@Override
-	public Optional<String> getOptionalString(final String key, final Object... arguments) throws ConfigurationException {
-		return or(getConfiguration().getOptionalString(key, arguments),
-				() -> getParentConfiguration().flatMap(configuration -> configuration.getOptionalString(key, arguments)));
+	public Optional<String> findString(final String key, final Object... arguments) throws ConfigurationException {
+		return or(getConfiguration().findString(key, arguments),
+				() -> getParentConfiguration().flatMap(configuration -> configuration.findString(key, arguments)));
 	}
 
 }
