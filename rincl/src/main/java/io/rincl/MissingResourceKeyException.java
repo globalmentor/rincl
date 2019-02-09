@@ -40,7 +40,7 @@ public class MissingResourceKeyException extends MissingConfigurationKeyExceptio
 
 	/**
 	 * Message and key constructor.
-	 * @param message An explanation of why the input could not be parsed, or <code>null</code> if a default message should be used.
+	 * @param message An explanation of why the input could not be parsed, or <code>null</code> if no message should be used.
 	 * @param key The key of the configuration configuration that was not found.
 	 */
 	public MissingResourceKeyException(@Nullable final String message, @Nonnull final String key) {
@@ -48,17 +48,17 @@ public class MissingResourceKeyException extends MissingConfigurationKeyExceptio
 	}
 
 	/**
-	 * Cause constructor.
+	 * Cause constructor. The message of the cause will be used if available.
 	 * @param key The key of the configuration configuration that was not found.
 	 * @param cause The cause error or <code>null</code> if the cause is nonexistent or unknown.
 	 */
 	public MissingResourceKeyException(@Nonnull final String key, @Nullable final Throwable cause) {
-		this(null, key, cause);
+		this(cause == null ? null : cause.toString(), key, cause);
 	}
 
 	/**
 	 * Message, key, and cause constructor.
-	 * @param message An explanation of why the input could not be parsed, or <code>null</code> if a default message should be used.
+	 * @param message An explanation of why the input could not be parsed, or <code>null</code> if no message should be used.
 	 * @param key The key of the configuration configuration that was not found.
 	 * @param cause The cause error or <code>null</code> if the cause is nonexistent or unknown.
 	 */
