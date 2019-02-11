@@ -27,6 +27,7 @@ import io.rincl.*;
 
 /**
  * Access to i18n resources stored in a {@link ResourceBundle}.
+ * @implSpec This implementation only supports resource bundles that natively store string objects.
  * @author Garret Wilson
  */
 public class ResourceBundleResources extends AbstractStringResources {
@@ -56,37 +57,6 @@ public class ResourceBundleResources extends AbstractStringResources {
 	@Override
 	protected boolean hasConfigurationValueImpl(String key) throws ConfigurationException {
 		return getResourceBundle().containsKey(key); //check the resource bundle directly
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @implSpec This implementation delegates to {@link ResourceBundle#getObject(String)}. If the returned object is a string, it is dereferenced.
-	 * @implNote This implementation performs much of the same functionality as {@link #findConfigurationValueImpl(String)}, but is written to retrieve objects
-	 *           directly from the resource bundle. This implementation is therefore somewhat incongruent with other "object" retrieval methods, all of which
-	 *           assume there the value is stored as a string to be converted, making no allowance for retrieving the object directly.
-	 * @see #dereferenceString(String)
-	 */
-	@Override
-	public <T> Optional<T> findObject(final String key) throws ConfigurationException {
-		final String normalizedKey = normalizeKey(key);
-		final ResourceBundle resourceBundle = getResourceBundle();
-		//See if the resource bundle contains the key;
-		//otherwise, catching the exception and filling in the stack trace every time we need
-		//simply to delegate to the parent resources afterwards causes too much overhead.
-		if(resourceBundle.containsKey(normalizedKey)) {
-			try {
-				Object object = resourceBundle.getObject(normalizedKey); //get the object
-				if(object instanceof String) { //if the object is a string, dereference it
-					object = dereferenceString((String)object);
-				}
-				@SuppressWarnings("unchecked")
-				final T typedObject = (T)object;
-				return Optional.of(typedObject);
-			} catch(final MissingResourceException missingResourceException) { //we don't expect this (because we checked up front)...
-				//...but it may not be impossible, and perhaps means the resource has been removed; this is benign, so just fall back as normal (below)
-			}
-		}
-		return Optional.empty();
 	}
 
 	/**
