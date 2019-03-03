@@ -46,6 +46,10 @@
 		<url>https://bitbucket.org/globalmentor/rincl</url>
 	</scm>
 
+	<properties>
+		<csar.version>0.8.0-SNAPSHOT</csar.version>
+	</properties>
+
 	<modules>
 		<module>rincl</module>
 		<module>rincl-resourcebundle</module>
@@ -83,7 +87,7 @@
 			<dependency>
 				<groupId>io.csar</groupId>
 				<artifactId>csar</artifactId>
-				<version>0.7.0</version>
+				<version>${csar.version}</version>
 			</dependency>
 
 			<dependency>
