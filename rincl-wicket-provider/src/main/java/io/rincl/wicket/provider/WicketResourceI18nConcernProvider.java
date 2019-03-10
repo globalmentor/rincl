@@ -16,7 +16,7 @@
 
 package io.rincl.wicket.provider;
 
-import java.util.stream.Stream;
+import static java.util.Collections.*;
 
 import io.csar.*;
 import io.rincl.wicket.*;
@@ -28,8 +28,8 @@ import io.rincl.wicket.*;
 public class WicketResourceI18nConcernProvider implements ConcernProvider {
 
 	@Override
-	public Stream<Concern> concerns() {
-		return Stream.of(new WicketResourceI18nConcern());
+	public Iterable<Concern> getConcerns() {
+		return singleton(new WicketResourceI18nConcern());
 	}
 
 }
