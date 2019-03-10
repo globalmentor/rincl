@@ -16,7 +16,7 @@
 
 package io.rincl.resourcebundle.provider;
 
-import static java.util.Collections.*;
+import java.util.stream.Stream;
 
 import io.csar.*;
 import io.rincl.resourcebundle.ResourceBundleResourceI18nConcern;
@@ -28,7 +28,7 @@ import io.rincl.resourcebundle.ResourceBundleResourceI18nConcern;
 public class ResourceBundleResourceI18nConcernProvider implements ConcernProvider {
 
 	@Override
-	public Iterable<Concern> getConcerns() {
-		return singleton(new ResourceBundleResourceI18nConcern());
+	public Stream<Concern> concerns() {
+		return Stream.of(new ResourceBundleResourceI18nConcern());
 	}
 }
