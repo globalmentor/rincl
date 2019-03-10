@@ -17,11 +17,11 @@
 package io.rincl.resourcebundle;
 
 import static java.nio.charset.StandardCharsets.*;
+import static java.util.Collections.*;
 
 import java.io.*;
 import java.nio.charset.CharacterCodingException;
 import java.util.*;
-import java.util.stream.Stream;
 
 import com.globalmentor.io.BOMInputStreamReader;
 
@@ -30,7 +30,7 @@ import com.globalmentor.io.BOMInputStreamReader;
  * encoding (including UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE) for which a Byte Order Mark (BOM) is present. The implementation throws an error if
  * the input stream does not contain valid UTF-* data; it does not fall back to ISO-8859-1.
  * <p>
- * This implementation recognizes files with the extension suffix {@value #EXTENSION_SUFFIX}, stored in the format specified in {@link Properties#load(Reader)}.
+ * This implementation recognizes files with the extension {@value #FILENAME_EXTENSION}, stored in the format specified in {@link Properties#load(Reader)}.
  * </p>
  * <p>
  * This implementation is not meant for normal registration, but is used directly by the Rincl resource bundle control to improve Java properties file loading.
@@ -43,16 +43,16 @@ public class UtfPropertiesResourceBundleLoader implements ResourceBundleLoader {
 	/** The shared singleton instance of the class. */
 	public static final UtfPropertiesResourceBundleLoader INSTANCE = new UtfPropertiesResourceBundleLoader();
 
-	/** The supported extension suffix. */
-	public static final String EXTENSION_SUFFIX = "properties";
+	/** The supported filename extension. */
+	public static final String FILENAME_EXTENSION = "properties";
 
 	/** This class cannot be publicly instantiated. */
 	protected UtfPropertiesResourceBundleLoader() {
 	}
 
 	@Override
-	public Stream<String> getFilenameExtensionSuffixes() {
-		return Stream.of(EXTENSION_SUFFIX);
+	public Set<String> getFilenameExtensions() {
+		return singleton(FILENAME_EXTENSION);
 	}
 
 	/**

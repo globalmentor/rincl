@@ -16,7 +16,6 @@
 
 package io.rincl.resourcebundle;
 
-import static java.util.stream.Collectors.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -30,10 +29,10 @@ import org.junit.*;
  */
 public class XmlPropertiesResourceBundleLoaderTest {
 
-	/** @see XmlPropertiesResourceBundleLoader#getFilenameExtensionSuffixes() */
+	/** @see XmlPropertiesResourceBundleLoader#getFilenameExtensions() */
 	@Test
 	public void testGetFilenameExtensionSuffixes() {
-		assertThat(new XmlPropertiesResourceBundleLoader().getFilenameExtensionSuffixes().collect(toSet()), containsInAnyOrder("properties.xml"));
+		assertThat(new XmlPropertiesResourceBundleLoader().getFilenameExtensions(), containsInAnyOrder("properties.xml"));
 	}
 
 	/**

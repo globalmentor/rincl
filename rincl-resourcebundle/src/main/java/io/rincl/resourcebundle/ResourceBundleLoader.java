@@ -19,7 +19,7 @@ package io.rincl.resourcebundle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -32,14 +32,14 @@ public interface ResourceBundleLoader {
 	/**
 	 * Retrieves the extension suffixes of files supported by this resource bundle loader.
 	 * <p>
-	 * An <dfn>extension suffix</dfn> is merely a file suffix of any type, except that it is understood that the full stop <code>.</code> character
-	 * <code>U+002E</code> will be prepended to the suffix. For example, an extension suffix of <code>foo.bar</code> would match a file ending in
-	 * <code>.foo.bar</code>, such as <code>example.foo.bar</code>.
+	 * An <dfn>extension</dfn> is merely a file suffix of any type, except that it is understood that the full stop <code>.</code> character <code>U+002E</code>
+	 * will be prepended to the suffix. For example, an extension of <code>foo.bar</code> would match a file ending in <code>.foo.bar</code>, such as
+	 * <code>example.foo.bar</code>.
 	 * </p>
 	 * @return The extension suffixes of filenames for file type supported by this loader.
 	 * @see ResourceBundle.Control#toResourceName(String, String)
 	 */
-	public Stream<String> getFilenameExtensionSuffixes();
+	public Set<String> getFilenameExtensions();
 
 	/**
 	 * Loads a resource bundle from the given input stream.

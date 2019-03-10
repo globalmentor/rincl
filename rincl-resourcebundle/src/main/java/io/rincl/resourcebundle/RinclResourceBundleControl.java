@@ -18,7 +18,6 @@ package io.rincl.resourcebundle;
 
 import static java.util.Collections.*;
 import static java.util.Objects.*;
-import static java.util.stream.Collectors.*;
 import static java.util.stream.StreamSupport.*;
 
 import java.io.*;
@@ -47,8 +46,8 @@ import com.globalmentor.util.PropertiesUtilities;
  * </pre>
  * <p>
  * When the {@link #DEFAULT} instance of this resource bundle control class is first created, it will enumerate all resource bundle loaders so listed and
- * register them with the {@link #DEFAULT} instance, using the {@link ResourceBundleLoader#getFilenameExtensionSuffixes()} supplied by each as the supported
- * resource bundle format identifiers.
+ * register them with the {@link #DEFAULT} instance, using the {@link ResourceBundleLoader#getFilenameExtensions()} supplied by each as the supported resource
+ * bundle format identifiers.
  * </p>
  * <p>
  * This library provides an {@link XmlPropertiesResourceBundleLoader} resource bundle loader, registered as a service provider using exactly the mechanism
@@ -69,7 +68,7 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 	 * </p>
 	 * <p>
 	 * This library be default provides an {@link XmlPropertiesResourceBundleLoader} which will be registered for the
-	 * {@value XmlPropertiesResourceBundleLoader#EXTENSION_SUFFIX} extension suffix.
+	 * {@value XmlPropertiesResourceBundleLoader#FILENAME_EXTENSION} filename extensions.
 	 * </p>
 	 */
 	public static final RinclResourceBundleControl DEFAULT;
@@ -84,9 +83,9 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 	/**
 	 * Resource bundle loaders constructor. The provided resource bundle loaders will be registered with this control instance.
 	 * <p>
-	 * The value returned by each {@link ResourceBundleLoader#getFilenameExtensionSuffixes()} will be used as format identifiers. If multiple resource bundle
-	 * loaders indicate the same filename extension suffix, the last resource bundle loader will replace the others for that format. Otherwise the formats will be
-	 * attempted in the order given, before the default Java supported formats are attempted.
+	 * The value returned by each {@link ResourceBundleLoader#getFilenameExtensions()} will be used as format identifiers. If multiple resource bundle loaders
+	 * indicate the same filename extension, the last resource bundle loader will replace the others for that format. Otherwise the formats will be attempted in
+	 * the order given, before the default Java supported formats are attempted.
 	 * </p>
 	 * <p>
 	 * A special resource bundle loader for handling UTF-8 encoded properties files is also registered (but can be overridden by one of the given resource bundle
@@ -101,7 +100,7 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 		resourceBundleLoadersMap.put(JAVA_PROPERTIES_FORMAT, UtfPropertiesResourceBundleLoader.INSTANCE);
 		//register all the given resource bundle loaders, potentially overriding the properties format we installed
 		resourceBundleLoaders.forEach(resourceBundleLoader -> {
-			resourceBundleLoader.getFilenameExtensionSuffixes().forEach(format -> {
+			resourceBundleLoader.getFilenameExtensions().forEach(format -> {
 				resourceBundleLoadersMap.put(format, resourceBundleLoader);
 			});
 		});
@@ -140,7 +139,7 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 		if(resourceBundleLoader != null) {
 			final boolean isJavaProperties = JAVA_PROPERTIES_FORMAT.equals(format);
 			assert isJavaProperties //the "java.properties" format was registered specially
-					|| resourceBundleLoader.getFilenameExtensionSuffixes().collect(toSet()).contains(format) : "Resource bundle loader incorrectly registered.";
+					|| resourceBundleLoader.getFilenameExtensions().contains(format) : "Resource bundle loader incorrectly registered.";
 			try {
 				final String bundleName = toBundleName(baseName, locale);
 				//normally we use the format as the extension, except for the special Java-recognized formats
