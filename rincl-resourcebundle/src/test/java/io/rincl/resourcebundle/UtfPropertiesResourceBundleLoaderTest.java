@@ -16,7 +16,6 @@
 
 package io.rincl.resourcebundle;
 
-import static java.util.stream.Collectors.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -30,10 +29,10 @@ import org.junit.*;
  */
 public class UtfPropertiesResourceBundleLoaderTest {
 
-	/** @see UtfPropertiesResourceBundleLoader#getFilenameExtensionSuffixes() */
+	/** @see UtfPropertiesResourceBundleLoader#getFilenameExtensions() */
 	@Test
 	public void testGetFilenameExtensionSuffixes() {
-		assertThat(UtfPropertiesResourceBundleLoader.INSTANCE.getFilenameExtensionSuffixes().collect(toSet()), containsInAnyOrder("properties"));
+		assertThat(UtfPropertiesResourceBundleLoader.INSTANCE.getFilenameExtensions(), containsInAnyOrder("properties"));
 	}
 
 	/**

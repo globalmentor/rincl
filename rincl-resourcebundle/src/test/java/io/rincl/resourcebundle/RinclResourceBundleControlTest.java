@@ -132,7 +132,7 @@ public class RinclResourceBundleControlTest {
 	@Test
 	public void testNewBundleXmlPropertiesUtf8NoBom() throws IOException, InstantiationException, IllegalAccessException {
 		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-8-no-bom"), Locale.ROOT,
-				XmlPropertiesResourceBundleLoader.EXTENSION_SUFFIX, getClass().getClassLoader(), true);
+				XmlPropertiesResourceBundleLoader.FILENAME_EXTENSION, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
 
@@ -145,7 +145,7 @@ public class RinclResourceBundleControlTest {
 	@Test
 	public void testNewBundleXmlPropertiesUtf8Bom() throws IOException, InstantiationException, IllegalAccessException {
 		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-8-bom"), Locale.ROOT,
-				XmlPropertiesResourceBundleLoader.EXTENSION_SUFFIX, getClass().getClassLoader(), true);
+				XmlPropertiesResourceBundleLoader.FILENAME_EXTENSION, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
 

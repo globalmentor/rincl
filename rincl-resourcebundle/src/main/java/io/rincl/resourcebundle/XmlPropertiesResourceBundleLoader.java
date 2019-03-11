@@ -16,16 +16,17 @@
 
 package io.rincl.resourcebundle;
 
+import static java.util.Collections.*;
+
 import java.io.*;
 import java.util.*;
-import java.util.stream.Stream;
 
 import com.globalmentor.util.HashMapResourceBundle;
 
 /**
  * Strategy for loading resource bundles from properties files stored in XML format.
  * <p>
- * This implementation recognizes files with the extension suffix {@value #EXTENSION_SUFFIX}, stored in the XML schema recognized by
+ * This implementation recognizes files with the extension {@value #FILENAME_EXTENSION}, stored in the XML schema recognized by
  * {@link Properties#loadFromXML(InputStream)}.
  * </p>
  * @author Garret Wilson
@@ -33,12 +34,12 @@ import com.globalmentor.util.HashMapResourceBundle;
  */
 public class XmlPropertiesResourceBundleLoader implements ResourceBundleLoader {
 
-	/** The supported extension suffix. */
-	public static final String EXTENSION_SUFFIX = "properties.xml";
+	/** The supported filename extension. */
+	public static final String FILENAME_EXTENSION = "properties.xml";
 
 	@Override
-	public Stream<String> getFilenameExtensionSuffixes() {
-		return Stream.of(EXTENSION_SUFFIX);
+	public Set<String> getFilenameExtensions() {
+		return singleton(FILENAME_EXTENSION);
 	}
 
 	@Override
