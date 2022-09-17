@@ -23,6 +23,7 @@ import java.util.*;
 import javax.annotation.Nonnull;
 
 import io.confound.config.ConfigurationException;
+import io.confound.config.Section;
 import io.rincl.*;
 
 /**
@@ -48,6 +49,15 @@ public class ResourceBundleResources extends AbstractStringResources {
 	public ResourceBundleResources(@Nonnull final Class<?> contextClass, @Nonnull final ResourceBundle resourceBundle) {
 		super(contextClass);
 		this.resourceBundle = requireNonNull(resourceBundle);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation always returns {@link Optional#empty()}, as resource bundles do not support sections.
+	 */
+	@Override
+	public Optional<Section> findSection(final String key) throws ConfigurationException {
+		return Optional.empty();
 	}
 
 	/**

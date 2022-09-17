@@ -27,6 +27,7 @@ import org.apache.wicket.Localizer;
 import org.apache.wicket.model.IModel;
 
 import io.confound.config.ConfigurationException;
+import io.confound.config.Section;
 import io.rincl.*;
 
 /**
@@ -97,6 +98,15 @@ public class WicketResources extends AbstractStringResources {
 		this.localizer = requireNonNull(localizer);
 		this.locale = requireNonNull(locale);
 		this.contextComponent = requireNonNull(contextComponent);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @implSpec This implementation always returns {@link Optional#empty()}, as the Wicket localizer does not support sections.
+	 */
+	@Override
+	public Optional<Section> findSection(final String key) throws ConfigurationException {
+		return Optional.empty();
 	}
 
 	/**
