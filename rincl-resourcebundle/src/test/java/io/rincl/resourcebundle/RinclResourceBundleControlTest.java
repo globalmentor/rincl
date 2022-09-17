@@ -16,15 +16,15 @@
 
 package io.rincl.resourcebundle;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.*;
 
+import org.junit.jupiter.api.*;
+
 import static com.globalmentor.java.Classes.*;
 import static io.rincl.resourcebundle.RinclResourceBundleControl.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.*;
 
 /**
  * Tests of {@link RinclResourceBundleControl}.

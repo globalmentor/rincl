@@ -16,12 +16,13 @@
 
 package io.rincl.resourcebundle;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 /**
  * Tests for {@link XmlPropertiesResourceBundleLoader}.

@@ -16,14 +16,14 @@
 
 package io.rincl;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Locale;
 import java.util.Locale.Category;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
 import io.csar.Csar;
 
@@ -35,21 +35,21 @@ public class RinclTest {
 
 	private Locale defaultLocale, defaultDisplayLocale, defaultFormatLocale; //TODO transfer to an ExternalResource in a rincl-test package
 
-	@Before
+	@BeforeEach
 	public void saveDefaultLocales() {
 		defaultLocale = Locale.getDefault();
 		defaultDisplayLocale = Locale.getDefault(Category.DISPLAY);
 		defaultFormatLocale = Locale.getDefault(Category.FORMAT);
 	}
 
-	@After
+	@AfterEach
 	public void revertDefaultLocales() {
 		Locale.setDefault(defaultLocale);
 		Locale.setDefault(Category.DISPLAY, defaultDisplayLocale);
 		Locale.setDefault(Category.FORMAT, defaultFormatLocale);
 	}
 
-	@After
+	@AfterEach
 	public void resetRincl() {
 		Csar.unregisterDefaultConcern(ResourceI18nConcern.class); //unregister any default concern 
 	}

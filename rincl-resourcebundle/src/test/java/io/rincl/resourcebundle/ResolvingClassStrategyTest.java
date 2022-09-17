@@ -16,12 +16,12 @@
 
 package io.rincl.resourcebundle;
 
-import static org.junit.Assert.*;
-
 import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 /**
  * Tests of {@link ResolvingClassStrategy}.

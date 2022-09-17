@@ -16,14 +16,14 @@
 
 package io.rincl;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
 /**
  * Test default methods of {@link Resources}.

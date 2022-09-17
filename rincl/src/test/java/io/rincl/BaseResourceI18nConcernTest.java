@@ -16,13 +16,13 @@
 
 package io.rincl;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import java.util.*;
 import java.util.Locale.Category;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
 import io.confound.config.*;
 
@@ -34,14 +34,14 @@ public class BaseResourceI18nConcernTest {
 
 	private Locale defaultLocale, defaultDisplayLocale, defaultFormatLocale;
 
-	@Before
+	@BeforeEach
 	public void saveDefaultLocales() {
 		defaultLocale = Locale.getDefault();
 		defaultDisplayLocale = Locale.getDefault(Category.DISPLAY);
 		defaultFormatLocale = Locale.getDefault(Category.FORMAT);
 	}
 
-	@After
+	@AfterEach
 	public void revertDefaultLocales() {
 		Locale.setDefault(defaultLocale);
 		Locale.setDefault(Category.DISPLAY, defaultDisplayLocale);

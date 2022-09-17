@@ -16,13 +16,13 @@
 
 package io.rincl.resourcebundle;
 
-import static org.junit.Assert.*;
-
 import java.util.*;
 import java.util.Locale.Category;
 
+import org.junit.jupiter.api.*;
+
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.*;
 
 import io.rincl.Resources;
 
@@ -34,7 +34,7 @@ public class ResourceBundleResourceI18ConcernTest {
 
 	private Locale defaultLocale, defaultDisplayLocale, defaultFormatLocale;
 
-	@Before
+	@BeforeEach
 	public void setTestLocale() {
 		defaultLocale = Locale.getDefault();
 		defaultDisplayLocale = Locale.getDefault(Category.DISPLAY);
@@ -42,7 +42,7 @@ public class ResourceBundleResourceI18ConcernTest {
 		Locale.setDefault(Locale.ENGLISH);
 	}
 
-	@After
+	@AfterEach
 	public void revertDefaultLocales() {
 		Locale.setDefault(defaultLocale);
 		Locale.setDefault(Category.DISPLAY, defaultDisplayLocale);
