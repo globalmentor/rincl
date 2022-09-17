@@ -33,9 +33,10 @@ import io.rincl.*;
 /**
  * Access to i18n resources using a Wicket {@link Localizer}.
  * <p>
- * Even though {@link Localizer} provides access to resources from arbitrary locales, in the Rincl model {@link Resources} provides resources to a single
- * locale. Thus this implementation uses its stored locale via {@link #getLocale()} to determine the resources to retrieve from the {@link Localizer}. Consumers
- * of this class should therefore retrieve new resources as needed as the {@link Resources} implementation will not change locale as dynamically.
+ * Even though {@link Localizer} provides access to resources from arbitrary locales, in the Rincl model {@link io.rincl.Resources} provides resources to a
+ * single locale. Thus this implementation uses its stored locale via {@link #getLocale()} to determine the resources to retrieve from the {@link Localizer}.
+ * Consumers of this class should therefore retrieve new resources as needed as the {@link io.rincl.Resources} implementation will not change locale as
+ * dynamically.
  * </p>
  * @author Garret Wilson
  */
