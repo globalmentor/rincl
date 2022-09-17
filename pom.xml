@@ -5,23 +5,23 @@
 	<parent>
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-base</artifactId>
-		<version>0.6.0</version>
+		<version>0.7.2-SNAPSHOT</version>
 	</parent>
 
 	<groupId>io.rincl</groupId>
-	<artifactId>rincl-parent</artifactId>
+	<artifactId>rincl-bom</artifactId>
 	<version>0.8.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rincl Parent</name>
-	<description>Parent POM of all Rincl projects.</description>
+	<description>Parent POM and bill of materials of all Rincl projects.</description>
 	<url>https://rincl.io/</url>
 	<inceptionYear>2016</inceptionYear>
 
 	<licenses>
 		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<name>Apache-2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -46,11 +46,6 @@
 		<url>https://bitbucket.org/globalmentor/rincl</url>
 	</scm>
 
-	<properties>
-		<confound.version>0.7.0</confound.version>
-		<csar.version>0.8.0</csar.version>
-	</properties>
-
 	<modules>
 		<module>rincl</module>
 		<module>rincl-resourcebundle</module>
@@ -64,7 +59,7 @@
 			<dependency>
 				<groupId>io.confound</groupId>
 				<artifactId>config</artifactId>
-				<version>${confound.version}</version>
+				<version>0.7.3-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
@@ -81,14 +76,26 @@
 
 			<dependency>
 				<groupId>io.rincl</groupId>
+				<artifactId>rincl-resourcebundle-provider</artifactId>
+				<version>0.8.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket</artifactId>
+				<version>0.8.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.rincl</groupId>
+				<artifactId>rincl-wicket-provider</artifactId>
 				<version>0.8.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.csar</groupId>
 				<artifactId>csar</artifactId>
-				<version>${csar.version}</version>
+				<version>0.8.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
