@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.*;
 
-import com.globalmentor.util.PropertiesUtilities;
+import com.globalmentor.util.PropertiesFiles;
 
 /**
  * Custom resource bundle control implementation that provides custom resource bundle loading for Rincl.
@@ -143,7 +143,7 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 			try {
 				final String bundleName = toBundleName(baseName, locale);
 				//normally we use the format as the extension, except for the special Java-recognized formats
-				final String suffix = isJavaProperties ? PropertiesUtilities.PROPERTIES_NAME_EXTENSION : format;
+				final String suffix = isJavaProperties ? PropertiesFiles.FILENAME_EXTENSION : format;
 				final String resourceName = toResourceName(bundleName, suffix);
 				final URL resourceURL = classLoader.getResource(resourceName);
 				if(resourceURL != null) {
