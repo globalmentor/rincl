@@ -109,9 +109,7 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This implementation returns additional the formats supported by the registered {@link ResourceBundleLoader}s.
-	 * </p>
+	 * @implSpec This implementation returns additional the formats supported by the registered {@link ResourceBundleLoader}s.
 	 */
 	@Override
 	public List<String> getFormats(final String baseName) {
@@ -127,9 +125,7 @@ public class RinclResourceBundleControl extends ResourceBundle.Control {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This implementation adds support for additional formats using the registered {@link ResourceBundleLoader}s.
-	 * </p>
+	 * @implSpec This implementation adds support for additional formats using the registered {@link ResourceBundleLoader}s.
 	 */
 	@Override
 	public ResourceBundle newBundle(final String baseName, final Locale locale, final String format, final ClassLoader classLoader, final boolean reload)

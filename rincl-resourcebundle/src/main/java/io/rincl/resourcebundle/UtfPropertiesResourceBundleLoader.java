@@ -29,12 +29,10 @@ import com.globalmentor.io.BOMInputStreamReader;
  * Strategy for loading resource bundles from properties files stored in standard properties format but using the UTF-8 charset by default, or any UTF-*
  * encoding (including UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE) for which a Byte Order Mark (BOM) is present. The implementation throws an error if
  * the input stream does not contain valid UTF-* data; it does not fall back to ISO-8859-1.
- * <p>
- * This implementation recognizes files with the extension {@value #FILENAME_EXTENSION}, stored in the format specified in {@link Properties#load(Reader)}.
- * </p>
- * <p>
- * This implementation is not meant for normal registration, but is used directly by the Rincl resource bundle control to improve Java properties file loading.
- * </p>
+ * @implSpec This implementation recognizes files with the extension {@value #FILENAME_EXTENSION}, stored in the format specified in
+ *           {@link Properties#load(Reader)}.
+ * @implSpec This implementation is not meant for normal registration, but is used directly by the Rincl resource bundle control to improve Java properties file
+ *           loading.
  * @author Garret Wilson
  * @see Properties#load(Reader)
  */

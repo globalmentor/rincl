@@ -30,17 +30,13 @@ import io.rincl.*;
 
 /**
  * Resource internationalization concern that returns resources from a Wicket {@link Localizer}, with fallback to resources backed by a {@link ResourceBundle}.
- * <p>
- * This implementation uses the Wicket session locale and thus does not distinguish between {@link Category}. Because of limits in Wicket's locale storage, the
- * locale category will therefore be ignored when retrieving or setting a locale.
- * </p>
- * <p>
- * Retrieving and setting the current locale will adjust the Wicket session locale using {@link Session#getLocale()} and {@link Session#setLocale(Locale)}; the
- * current {@link Component} context, if any, will be ignored. However retrieving resources providing the context of a {@link Component} will provide resources
- * for locale of that component <em>at the time the resources were retrieved</em>. Following Rincl's design of fixed-locale {@link Resources}, the resources
- * locale will not dynamically change if the underlying {@link Component} changes its locale. Instead resources should be retrieved as needed rather than
- * keeping them for the life of the component.
- * </p>
+ * @implSpec This implementation uses the Wicket session locale and thus does not distinguish between {@link Category}. Because of limits in Wicket's locale
+ *           storage, the locale category will therefore be ignored when retrieving or setting a locale.
+ * @implNote Retrieving and setting the current locale will adjust the Wicket session locale using {@link Session#getLocale()} and
+ *           {@link Session#setLocale(Locale)}; the current {@link Component} context, if any, will be ignored. However retrieving resources providing the
+ *           context of a {@link Component} will provide resources for locale of that component <em>at the time the resources were retrieved</em>. Following
+ *           Rincl's design of fixed-locale {@link Resources}, the resources locale will not dynamically change if the underlying {@link Component} changes its
+ *           locale. Instead resources should be retrieved as needed rather than keeping them for the life of the component.
  * @author Garret Wilson
  * @see WicketResources
  */
@@ -111,9 +107,7 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This implementation uses {@link Session#getLocale()} and therefore ignores the category passed.
-	 * </p>
+	 * @implSpec This implementation uses {@link Session#getLocale()} and therefore ignores the category passed.
 	 * @see Session#get()
 	 */
 	@Override
@@ -124,9 +118,7 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This implementation uses {@link Session#setLocale(Locale)} and therefore ignores the category passed.
-	 * </p>
+	 * @implSpec This implementation uses {@link Session#setLocale(Locale)} and therefore ignores the category passed.
 	 * @see Session#get()
 	 */
 	@Override
@@ -137,9 +129,7 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * This version uses the component's locale if a Wicket {@link Component} is supplied as the context.
-	 * </p>
+	 * @implSpec This version uses the component's locale if a Wicket {@link Component} is supplied as the context.
 	 */
 	@Override
 	public Resources getResources(final Object context) throws ConfigurationException {
@@ -151,23 +141,21 @@ public class WicketResourceI18nConcern extends AbstractResourceI18nConcern {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * If a Wicket {@link Component} is supplied as the context, this version passes it along to the resources.
-	 * </p>
+	 * @implSpec If a Wicket {@link Component} is supplied as the context, this version passes it along to the resources.
 	 */
 	@Override
 	public Optional<Resources> findResources(final Object context, final Locale locale) throws ConfigurationException {
 		if(context instanceof Component) { //if a Wicket Component is supplied, pass it to the resources
-			return Optional.of(Resources.withFallback(new WicketResources((Component)context, getLocalizer(), locale),
-					getParentResourcesFactory().findResources(context, locale)));
+			return Optional.of(
+					Resources.withFallback(new WicketResources((Component)context, getLocalizer(), locale), getParentResourcesFactory().findResources(context, locale)));
 		}
 		return super.findResources(context, locale); //otherwise retrieve the resources normally
 	}
 
 	@Override
 	public Optional<Resources> findResources(final Class<?> contextClass, final Locale locale) throws ConfigurationException {
-		return Optional.of(Resources.withFallback(new WicketResources(contextClass, getLocalizer(), locale),
-				getParentResourcesFactory().findResources(contextClass, locale)));
+		return Optional
+				.of(Resources.withFallback(new WicketResources(contextClass, getLocalizer(), locale), getParentResourcesFactory().findResources(contextClass, locale)));
 	}
 
 }

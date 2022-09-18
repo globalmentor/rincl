@@ -291,14 +291,13 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation returns a hierarchy of {@link ResourceBundleResources} implementations from the discovered resource bundles loaded via
-	 * {@link ResourceBundle#getBundle(String, Locale, ClassLoader, ResourceBundle.Control)}; using the base names returned by the {@link #getBaseNameStrategy()},
-	 * the classes returned by {@link #getResolvingClassStrategy()}, the locale returned by {@link Rincl#getLocale(Locale.Category)} for
-	 * {@link Locale.Category#DISPLAY}, the class loader of each reference class, and the resource bundle control returned by {@link #getResourceBundleControl()}.
-	 * </p>
-	 * <p>
 	 * TODO implement resources caching
 	 * </p>
+	 * @implSpec This implementation returns a hierarchy of {@link ResourceBundleResources} implementations from the discovered resource bundles loaded via
+	 *           {@link ResourceBundle#getBundle(String, Locale, ClassLoader, ResourceBundle.Control)}; using the base names returned by the
+	 *           {@link #getBaseNameStrategy()}, the classes returned by {@link #getResolvingClassStrategy()}, the locale returned by
+	 *           {@link Rincl#getLocale(Locale.Category)} for {@link Locale.Category#DISPLAY}, the class loader of each reference class, and the resource bundle
+	 *           control returned by {@link #getResourceBundleControl()}.
 	 * @see Rincl#getLocale(Locale.Category)
 	 * @see Locale.Category#DISPLAY
 	 * @see #getResourceBundleControl()
@@ -322,11 +321,9 @@ public class ResourceBundleResourcesFactory implements ResourcesFactory {
 
 	/**
 	 * Retrieves a resource bundle for the given context class in the given locale.
-	 * <p>
-	 * This implementation calls {@link ResourceBundle#getBundle(String, Locale, ClassLoader, ResourceBundle.Control)} using the base names returned by
-	 * {@link #getBaseNameStrategy()} for the reference class, the given locale, the class loader of the reference class, and the resource bundle control returned
-	 * by {@link #getResourceBundleControl()}. Only the first base name that returns a resource bundle will be used.
-	 * </p>
+	 * @implSpec This implementation calls {@link ResourceBundle#getBundle(String, Locale, ClassLoader, ResourceBundle.Control)} using the base names returned by
+	 *           {@link #getBaseNameStrategy()} for the reference class, the given locale, the class loader of the reference class, and the resource bundle
+	 *           control returned by {@link #getResourceBundleControl()}. Only the first base name that returns a resource bundle will be used.
 	 * @param referenceClass The class with which these resources are related.
 	 * @param locale The locale to use for retrieving the resource bundles.
 	 * @return The resource bundle discovered for the given context class and locale.
