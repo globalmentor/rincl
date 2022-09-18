@@ -21,7 +21,7 @@ import java.util.*;
 
 import org.junit.jupiter.api.*;
 
-import static com.globalmentor.java.Classes.*;
+import static com.globalmentor.io.ClassResources.*;
 import static io.rincl.resourcebundle.RinclResourceBundleControl.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -40,7 +40,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundlePropertiesIso88591() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-iso-8859-1"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-iso-8859-1"), Locale.ROOT,
 				JAVA_PROPERTIES_FORMAT, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -53,7 +53,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundlePropertiesUtf8NoBom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-8-no-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-8-no-bom"), Locale.ROOT,
 				JAVA_PROPERTIES_FORMAT, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -66,7 +66,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundlePropertiesUtf8Bom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-8-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-8-bom"), Locale.ROOT,
 				JAVA_PROPERTIES_FORMAT, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -79,7 +79,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundlePropertiesUtf16BeBom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-16be-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-16be-bom"), Locale.ROOT,
 				JAVA_PROPERTIES_FORMAT, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -92,7 +92,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundlePropertiesUtf16LeBom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-16le-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-16le-bom"), Locale.ROOT,
 				JAVA_PROPERTIES_FORMAT, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -105,7 +105,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundlePropertiesUtf32BeBom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-32be-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-32be-bom"), Locale.ROOT,
 				JAVA_PROPERTIES_FORMAT, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -118,7 +118,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundlePropertiesUtf32LeBom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-32le-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-32le-bom"), Locale.ROOT,
 				JAVA_PROPERTIES_FORMAT, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -131,7 +131,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundleXmlPropertiesUtf8NoBom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-8-no-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-8-no-bom"), Locale.ROOT,
 				XmlPropertiesResourceBundleLoader.FILENAME_EXTENSION, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
@@ -144,7 +144,7 @@ public class RinclResourceBundleControlTest {
 	 */
 	@Test
 	public void testNewBundleXmlPropertiesUtf8Bom() throws IOException, InstantiationException, IllegalAccessException {
-		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(resolveResourcePath(getClass(), "test-utf-8-bom"), Locale.ROOT,
+		final ResourceBundle resourceBundle = RinclResourceBundleControl.DEFAULT.newBundle(getClassLoaderResourcePath(getClass(), "test-utf-8-bom"), Locale.ROOT,
 				XmlPropertiesResourceBundleLoader.FILENAME_EXTENSION, getClass().getClassLoader(), true);
 		assertThat(resourceBundle.getString("test"), is("touché"));
 	}
