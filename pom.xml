@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-base</artifactId>
-		<version>0.7.2-SNAPSHOT</version>
+		<version>0.7.2</version>
 	</parent>
 
 	<groupId>io.rincl</groupId>
 	<artifactId>rincl-bom</artifactId>
-	<version>0.8.1-SNAPSHOT</version>
+	<version>0.8.1</version>
 	<packaging>pom</packaging>
 
 	<name>Rincl Parent</name>
@@ -28,7 +28,7 @@
 
 	<organization>
 		<name>GlobalMentor, Inc.</name>
-		<url>http://www.globalmentor.com/</url>
+		<url>https://www.globalmentor.com/</url>
 	</organization>
 
 	<developers>
@@ -36,7 +36,7 @@
 			<name>Garret Wilson</name>
 			<email>garret@globalmentor.com</email>
 			<organization>GlobalMentor, Inc.</organization>
-			<organizationUrl>http://www.globalmentor.com/</organizationUrl>
+			<organizationUrl>https://www.globalmentor.com/</organizationUrl>
 		</developer>
 	</developers>
 
@@ -59,43 +59,43 @@
 			<dependency>
 				<groupId>io.confound</groupId>
 				<artifactId>config</artifactId>
-				<version>0.7.3-SNAPSHOT</version>
+				<version>0.7.3</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl</artifactId>
-				<version>0.8.1-SNAPSHOT</version>
+				<version>0.8.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-resourcebundle</artifactId>
-				<version>0.8.1-SNAPSHOT</version>
+				<version>0.8.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-resourcebundle-provider</artifactId>
-				<version>0.8.1-SNAPSHOT</version>
+				<version>0.8.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket</artifactId>
-				<version>0.8.1-SNAPSHOT</version>
+				<version>0.8.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket-provider</artifactId>
-				<version>0.8.1-SNAPSHOT</version>
+				<version>0.8.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.csar</groupId>
 				<artifactId>csar</artifactId>
-				<version>0.8.1-SNAPSHOT</version>
+				<version>0.8.1</version>
 			</dependency>
 
 			<dependency>
