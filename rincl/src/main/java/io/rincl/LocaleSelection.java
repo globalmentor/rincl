@@ -16,6 +16,7 @@
 
 package io.rincl;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import javax.annotation.*;
@@ -27,7 +28,7 @@ import javax.annotation.*;
 public class LocaleSelection implements LocaleSelectable {
 
 	@SuppressWarnings("unchecked")
-	private final Optional<Locale>[] locales = new Optional[Locale.Category.values().length];
+	private final Optional<Locale>[] locales = (Optional<Locale>[])Array.newInstance(Optional.class, Locale.Category.values().length);
 
 	@Override
 	public Locale getLocale(@Nonnull Locale.Category category) {
