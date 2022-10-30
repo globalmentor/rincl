@@ -11,7 +11,7 @@
 
 	<groupId>io.rincl</groupId>
 	<artifactId>rincl-bom</artifactId>
-	<version>0.8.3-SNAPSHOT</version>
+	<version>0.8.3</version>
 	<packaging>pom</packaging>
 
 	<name>Rincl Parent</name>
@@ -66,49 +66,49 @@
 			<dependency>
 				<groupId>io.confound</groupId>
 				<artifactId>config</artifactId>
-				<version>0.7.3</version>
+				<version>0.7.4</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl</artifactId>
-				<version>0.8.3-SNAPSHOT</version>
+				<version>0.8.3</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-resourcebundle</artifactId>
-				<version>0.8.3-SNAPSHOT</version>
+				<version>0.8.3</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-resourcebundle-provider</artifactId>
-				<version>0.8.3-SNAPSHOT</version>
+				<version>0.8.3</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket</artifactId>
-				<version>0.8.3-SNAPSHOT</version>
+				<version>0.8.3</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket-provider</artifactId>
-				<version>0.8.3-SNAPSHOT</version>
+				<version>0.8.3</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.csar</groupId>
 				<artifactId>csar</artifactId>
-				<version>0.8.1</version>
+				<version>0.8.2</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.ibm.icu</groupId>
 				<artifactId>icu4j</artifactId>
-				<version>71.1</version>
+				<version>72.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
