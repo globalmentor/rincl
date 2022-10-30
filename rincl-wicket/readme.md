@@ -1,6 +1,6 @@
 # Rincl Wicket
 
-Rincl implementation for [Apache Wicket](http://wicket.apache.org/).
+Rincl implementation for [Apache Wicket](https://wicket.apache.org/).
 
 ## Download
 

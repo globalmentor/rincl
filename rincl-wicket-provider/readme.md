@@ -1,6 +1,6 @@
 # Rincl Wicket Provider
 
-Rincl implementation provider for [Apache Wicket](http://wicket.apache.org/).
+Rincl implementation provider for [Apache Wicket](https://wicket.apache.org/).
 
 This library installs a global, default `WicketResourceI18nConcern` instance via the `WicketResourceI18nConcernProvider`.
 
