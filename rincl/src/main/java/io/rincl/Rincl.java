@@ -22,7 +22,6 @@ import javax.annotation.*;
 
 import io.confound.config.ConfigurationException;
 import io.csar.*;
-import io.rincl.Resources;
 
 /**
  * The Resource I18n Concern Library (Rincl) facilitates internationalization by providing access to localization {@link Resources} via {@link Csar}.
