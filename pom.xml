@@ -10,7 +10,7 @@
 
 	<groupId>io.rincl</groupId>
 	<artifactId>rincl-bom</artifactId>
-	<version>0.8.2</version>
+	<version>0.8.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rincl Parent</name>
@@ -65,31 +65,31 @@
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl</artifactId>
-				<version>0.8.2</version>
+				<version>0.8.3-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-resourcebundle</artifactId>
-				<version>0.8.2</version>
+				<version>0.8.3-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-resourcebundle-provider</artifactId>
-				<version>0.8.2</version>
+				<version>0.8.3-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket</artifactId>
-				<version>0.8.2</version>
+				<version>0.8.3-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket-provider</artifactId>
-				<version>0.8.2</version>
+				<version>0.8.3-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
