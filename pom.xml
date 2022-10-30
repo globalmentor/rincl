@@ -4,8 +4,9 @@
 
 	<parent>
 		<groupId>com.globalmentor</groupId>
-		<artifactId>globalmentor-base</artifactId>
-		<version>0.7.2</version>
+		<artifactId>globalmentor-root</artifactId>
+		<version>0.8.14</version>
+		<relativePath />
 	</parent>
 
 	<groupId>io.rincl</groupId>
@@ -56,6 +57,12 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-core</artifactId>
+				<version>0.7.3</version>
+			</dependency>
+
 			<dependency>
 				<groupId>io.confound</groupId>
 				<artifactId>config</artifactId>
