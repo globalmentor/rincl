@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-root</artifactId>
-		<version>0.8.14</version>
+		<version>1.0.1</version>
 		<relativePath />
 	</parent>
 
@@ -59,14 +59,18 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-core</artifactId>
-				<version>0.7.3</version>
+				<artifactId>globalmentor-base</artifactId>
+				<version>0.17.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>io.confound</groupId>
-				<artifactId>config</artifactId>
-				<version>0.7.4</version>
+				<artifactId>confound-bom</artifactId>
+				<version>0.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<dependency>
@@ -102,13 +106,13 @@
 			<dependency>
 				<groupId>io.csar</groupId>
 				<artifactId>csar</artifactId>
-				<version>0.8.2</version>
+				<version>0.9.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.ibm.icu</groupId>
 				<artifactId>icu4j</artifactId>
-				<version>72.1</version>
+				<version>74.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
