@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.rincl</groupId>
+		<artifactId>rincl-bom</artifactId>
+		<version>0.9.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>rincl-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>Resource I18n Concern Library (Rincl)</name>
+	<description>Rincl parent POM managing common dependencies.</description>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-base</artifactId>
+				<version>0.17.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>io.csar</groupId>
+				<artifactId>csar</artifactId>
+				<version>0.9.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.confound</groupId>
+				<artifactId>confound-bom</artifactId>
+				<version>0.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.ibm.icu</groupId>
+				<artifactId>icu4j</artifactId>
+				<version>74.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
