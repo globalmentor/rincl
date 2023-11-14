@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-root</artifactId>
-		<version>0.8.14</version>
+		<version>1.0.1</version>
 		<relativePath />
 	</parent>
 
@@ -15,7 +15,7 @@
 	<packaging>pom</packaging>
 
 	<name>Rincl Parent</name>
-	<description>Parent POM and bill of materials of all Rincl projects.</description>
+	<description>Aggregate bill of materials of all Rincl projects.</description>
 	<url>https://rincl.io/</url>
 	<inceptionYear>2016</inceptionYear>
 
@@ -48,6 +48,7 @@
 	</scm>
 
 	<modules>
+		<module>parent</module>
 		<module>rincl</module>
 		<module>rincl-resourcebundle</module>
 		<module>rincl-resourcebundle-provider</module>
@@ -57,18 +58,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-core</artifactId>
-				<version>0.7.3</version>
-			</dependency>
-
-			<dependency>
-				<groupId>io.confound</groupId>
-				<artifactId>config</artifactId>
-				<version>0.7.4</version>
-			</dependency>
-
 			<dependency>
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl</artifactId>
@@ -97,18 +86,6 @@
 				<groupId>io.rincl</groupId>
 				<artifactId>rincl-wicket-provider</artifactId>
 				<version>0.9.0-SNAPSHOT</version>
-			</dependency>
-
-			<dependency>
-				<groupId>io.csar</groupId>
-				<artifactId>csar</artifactId>
-				<version>0.8.2</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.ibm.icu</groupId>
-				<artifactId>icu4j</artifactId>
-				<version>72.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
