@@ -11,7 +11,7 @@
 	<artifactId>rincl-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>Resource I18n Concern Library (Rincl)</name>
+	<name>Rincl Parent</name>
 	<description>Rincl parent POM managing common dependencies.</description>
 
 	<dependencyManagement>
