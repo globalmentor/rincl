@@ -14,7 +14,7 @@
 	<version>0.9.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Rincl Parent</name>
+	<name>Rincl BOM</name>
 	<description>Aggregate bill of materials of all Rincl projects.</description>
 	<url>https://rincl.io/</url>
 	<inceptionYear>2016</inceptionYear>
